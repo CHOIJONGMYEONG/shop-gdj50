@@ -1,5 +1,42 @@
+<%@page import="shop.vo.Customer"%>
+<%@page import="shop.vo.Employee"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <% 
+ 
+	if(session.getAttribute("loginType")==null){
+		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");		
+		return;
+	}
+ 	
+
+	
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+   String loginType = (String)session.getAttribute("loginType");
+	String Id = "";
+	String Name = "";
+	
+   if (loginType.equals("customer")){
+	    Id= ((Customer)session.getAttribute("loginCustomer")).getCustomerId();
+	  Name= ((Customer)session.getAttribute("loginCustomer")).getCustomerName();   
+   }else if ( loginType.equals("employee")) {
+	   
+	   Id=((Employee)session.getAttribute("loginEmployee")).getEmployeeId();
+	    Name=((Employee)session.getAttribute("loginEmployee")).getEmployeeName();
+	   
+   }
+ 
+   
+%>   
+    
+    
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,13 +46,16 @@
 <body>
 
 
-<%=session.getAttribute("user") %>   <!-- customer / employee-->
-<br>
-<%=session.getAttribute("id") %>   <!-- 로그인 아이디 -->
-<br>
-<%=session.getAttribute("name") %>   <!-- 로그인 이름 -->
+<div> 
+	<%=Name%>님 환영합니다
+	당신의 Id는<%=Id %>입니다.
+	<a href="<%=request.getContextPath()%>/logout.jsp">로그아웃</a>
+	<a href="<%=request.getContextPath()%>/shopOne.jsp">정보보기</a>
+	
+	</div>
 
+ <!-- 로그인 아이디 -->
 
-
+  <!-- 로그인 이름 -->
 </body>
 </html>
