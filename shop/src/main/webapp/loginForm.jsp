@@ -22,8 +22,10 @@
                </tr>
             </table>
             <button type="button" id="customerBtn">고객 로그인</button>
+              <a href="<%=request.getContextPath()%>/customerInsertForm.jsp">회원가입</a>
          </fieldset>
       </form>
+    
    </div>
    
    
@@ -42,8 +44,10 @@
                </tr>
             </table>
             <button type="button" id="employeeBtn">스텝 로그인</button>
+             <a href="<%=request.getContextPath()%>/employeeInsertForm.jsp">회원가입</a>
          </fieldset>
       </form>
+       
    </div>
 </body>
 <script>

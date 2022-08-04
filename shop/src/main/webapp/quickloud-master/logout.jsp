@@ -4,6 +4,6 @@
 
 	session.invalidate();// 세션리셋
 	
-	response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
+	response.sendRedirect(request.getContextPath()+"/quickloud-master/loginForm.jsp");
 	
 %>

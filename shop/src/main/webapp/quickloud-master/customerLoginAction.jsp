@@ -1,5 +1,5 @@
 <%@page import="shop.vo.Customer"%>
-<%@page import="shop.model.CustomerDao"%>
+<%@page import="shop.repository.CustomerDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -35,9 +35,9 @@
 	// Object <-다형성 String 추상화,상속,다형성,캡슐화
 	session.setAttribute("loginCustomer", customer); // Object <-다형성 Integer <-오토박싱 int
 	session.setAttribute("loginType", "customer");
-	response.sendRedirect(request.getContextPath()+"/index.jsp");
+	response.sendRedirect(request.getContextPath()+"/quickloud-master/index.jsp");
 	
-	}else{response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
+	}else{response.sendRedirect(request.getContextPath()+"/quickloud-master/loginForm.jsp");
 	
 	}
 	

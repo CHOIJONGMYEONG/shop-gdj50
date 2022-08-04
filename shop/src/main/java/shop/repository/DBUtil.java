@@ -1,4 +1,4 @@
-package shop.model;
+package shop.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

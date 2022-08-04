@@ -1,5 +1,6 @@
+<%@page import="service.EmployeeService"%>
 <%@page import="shop.vo.Employee"%>
-<%@page import="shop.model.EmployeeDao"%>
+<%@page import="shop.repository.EmployeeDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -16,22 +17,22 @@
 		return; // retrun; 대신 else 블록을 사용해도 된다.
 	} */
 	
-	EmployeeDao login = new EmployeeDao();
-	Employee employee = new Employee();
+	EmployeeService loginEmployee = new EmployeeService();
+	Employee paramEmployee = new Employee();
 	
 	
-	employee.setEmployeeId(employeeId);
-	employee.setEmployeePass(employeePass);	
+	paramEmployee.setEmployeeId(employeeId);
+	paramEmployee.setEmployeePass(employeePass);	
 	
-	if ((employee = login.Employeelogin(employee))==null){
+	if ((paramEmployee = loginEmployee.getEmpolyee(paramEmployee))==null){
 	response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 		
 	}
 	
 	
-	if(employee.getEmployeeId()!=null){
+	if(paramEmployee.getEmployeeId()!=null){
 	// Object <-다형성 String 추상화,상속,다형성,캡슐화
-	session.setAttribute("loginEmployee", employee); // Object <-다형성 Integer <-오토박싱 int
+	session.setAttribute("loginEmployee", paramEmployee); // Object <-다형성 Integer <-오토박싱 int
 	session.setAttribute("loginType", "employee");
 	response.sendRedirect(request.getContextPath()+"/index.jsp");
 	

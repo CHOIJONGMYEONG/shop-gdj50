@@ -52,8 +52,8 @@
 			<div class="modal-body customer-box">
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs">
-					<li><a class="active" href="#Login" data-toggle="tab">Login</a></li>
-					<li><a href="#Registration" data-toggle="tab">Registration</a></li>
+					<li><a class="active" href="#Login" data-toggle="tab">Customer</a></li>
+					<li><a href="#Registration" data-toggle="tab">employee</a></li>
 				</ul>
 				<!-- Tab panes -->
 				<div class="tab-content">
@@ -62,7 +62,7 @@
 					
 					
 					
-						<form role="form" class="form-horizontal" id="customerForm" method="post" action="<%=request.getContextPath()%>/customerLoginAction.jsp">
+						<form role="form" class="form-horizontal" id="customerForm" method="post" action="<%=request.getContextPath()%>/quickloud-master/customerLoginAction.jsp">
 							<div class="form-group">
 								<div class="col-sm-12">
 									<input class="form-control" id="customerId" placeholder="ID" type="text" name="customerId">
@@ -88,8 +88,8 @@
 						
 						
 					</div>
-					<div class="tab-pane" id="Registration">
-						<form role="form" class="form-horizontal" id="employeeForm" method="post" action="<%=request.getContextPath()%>/employeeLoginAction.jsp">
+					<div class="tab-pane " id="Registration">
+						<form role="form" class="form-horizontal" id="employeeForm" method="post" action="<%=request.getContextPath()%>/quickloud-master/employeeLoginAction.jsp">
 							<div class="form-group">
 								<div class="col-sm-12">
 									<input class="form-control" name="employeeId" id="employeeId" placeholder="ID" type="text">
@@ -103,7 +103,7 @@
 						
 							<div class="row">							
 								<div class="col-sm-10">
-									<button type="button" class="btn btn-light btn-radius btn-brd grd1">
+									<button type="button" id="employeeBtn" class="btn btn-light btn-radius btn-brd grd1">
 										스텝로그인
 									</button>
 									
