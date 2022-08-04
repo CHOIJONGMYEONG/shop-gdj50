@@ -1,3 +1,4 @@
+<%@page import="service.CustomerService"%>
 <%@page import="shop.vo.Customer"%>
 <%@page import="shop.repository.CustomerDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -15,25 +16,24 @@
 	
 	/*if(session.getAttribute("loginMember")==null) {
 		response.sendRedirect(request.getContextPath()+"/index.jsp?errorMsg=Invalid Access");
-		return; // retrun; 대신 else 블록을 사용해도 된다.
+		return; // 
 	} */
 	
-	CustomerDao login = new CustomerDao();
-	Customer customer = new Customer();
+	CustomerService loginCustomer =new CustomerService();
+	Customer paramCustomer = new Customer();
 	
+	paramCustomer.setCustomerId(customerId);
+	paramCustomer.setCustomerPass(customerPass);	
 	
-	customer.setCustomerId(customerId);
-	customer.setCustomerPass(customerPass);	
-	
-	if ((customer = login.Customerlogin(customer))==null){
-	response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
+	if ((paramCustomer = loginCustomer.getCustomer(paramCustomer))==null){
+	response.sendRedirect(request.getContextPath()+"/quickloud-master/loginForm.jsp");
 		
 	}
 	
 	
-	if(customer.getCustomerId()!=null){
+	if(paramCustomer.getCustomerId()!=null){
 	// Object <-다형성 String 추상화,상속,다형성,캡슐화
-	session.setAttribute("loginCustomer", customer); // Object <-다형성 Integer <-오토박싱 int
+	session.setAttribute("loginCustomer", paramCustomer); // Object <-다형성 Integer <-오토박싱 int
 	session.setAttribute("loginType", "customer");
 	response.sendRedirect(request.getContextPath()+"/quickloud-master/index.jsp");
 	

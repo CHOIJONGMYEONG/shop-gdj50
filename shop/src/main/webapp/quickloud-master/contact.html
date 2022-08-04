@@ -36,7 +36,18 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+<style>
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
 
+</style>
 </head>
 <body class="host_version"> 
 
@@ -177,7 +188,6 @@
         <div class="container-fulid">
             <div class="section-title text-center">
                 <h3>Need Help? Sure we are Online!</h3>
-                <p class="lead">Let us give you more details about the special offer website you want us. Please fill out the form below. <br>We have million of website owners who happy to work with us!</p>
             </div><!-- end title -->
 
             <div class="row">
@@ -186,18 +196,39 @@
                         <div id="message"></div>
                         <form id="contactform" class="" action="contact.php" name="contactform" method="post">
                             <fieldset class="row row-fluid">
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="First Name">
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text" value="고객아이디" name="first_name" id="first_name" class="form-control" readonly>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Last Name">
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="">
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <input type="email" name="email" id="email" class="form-control" placeholder="Your Email">
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="email"value="비밀번호" name="email" id="email" class="form-control" readonly>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" name="phone" id="phone" class="form-control" placeholder="Your Phone">
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" name="phone" id="phone" class="form-control" placeholder="">
                                 </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text" value="이름" name="first_name" id="first_name" class="form-control" readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="email"value="주소" name="email" id="email" class="form-control"readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" name="phone" id="phone" class="form-control" placeholder="">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="email"value="전화번호" name="email" id="email" class="form-control"readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" name="phone" id="phone" class="form-control" placeholder="">
+                                </div>
+                                
+                                
+                                
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <textarea class="form-control" name="comments" id="comments" rows="6" placeholder="Give us more details.."></textarea>
                                 </div>
@@ -208,11 +239,7 @@
                         </form>
                     </div>
                 </div><!-- end col -->
-				<div class="col-xl-6 col-md-12 col-sm-12">
-					<div class="map-box">
-						<div id="custom-places" class="small-map"></div>
-					</div>
-				</div>
+				
             </div><!-- end row -->
         </div><!-- end container -->
     </div><!-- end section -->

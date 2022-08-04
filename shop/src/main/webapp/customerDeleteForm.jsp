@@ -9,10 +9,9 @@
 <body>
 
 <div>
-		<form action="<%=request.getContextPath()%>/employeeDeleteAction.jsp" method="post">
-			비밀번호: <input type="password" name="employeePass">
+		<form action="<%=request.getContextPath()%>/customerDeleteAction.jsp" method="post">
+			비밀번호: <input type="password" name="customerPass">
 			<button type="submit">삭제</button>
-			
 		</form>
 
 

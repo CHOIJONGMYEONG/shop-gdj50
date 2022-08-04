@@ -1,3 +1,4 @@
+<%@page import="service.EmployeeService"%>
 <%@page import="shop.repository.EmployeeDao"%>
 <%@page import="shop.vo.Employee"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -24,15 +25,15 @@ System.out.print(employeeName);
    } */
 
 
-   Employee employee = new Employee();
+   Employee paramEmpolyee = new Employee();
 
-   employee.setEmployeeId(employeeId);
-   employee.setEmployeePass(employeePass);
-   employee.setEmployeeName(employeeName);
+   paramEmpolyee.setEmployeeId(employeeId);
+   paramEmpolyee.setEmployeePass(employeePass);
+   paramEmpolyee.setEmployeeName(employeeName);
 
 
-   EmployeeDao employeedao = new EmployeeDao();
-   employeedao.EmployeeInsert(employee);
+   EmployeeService insertService = new EmployeeService();
+   insertService.addEmpolyee(paramEmpolyee);
 
 
 response.sendRedirect(request.getContextPath()+"/loginForm.jsp");

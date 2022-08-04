@@ -1,3 +1,4 @@
+<%@page import="service.CustomerService"%>
 <%@page import="shop.vo.Customer"%>
 <%@page import="shop.repository.CustomerDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -11,11 +12,11 @@ String customerName = request.getParameter("customerName");
 String customeTelephone = request.getParameter("customeTelephone");
 String customerAddress = request.getParameter("customerAddress");
 
-System.out.print(customerId);
-System.out.print(customerPass);
-System.out.print(customerName);
-System.out.print(customeTelephone);
-System.out.print(customerAddress);
+System.out.println(customerId);
+System.out.println(customerPass);
+System.out.println(customerName);
+System.out.println(customeTelephone);
+System.out.println(customerAddress);
 
 //사용가능한 ID인지 분기
   
@@ -27,16 +28,16 @@ System.out.print(customerAddress);
    }*/
 
 
-   Customer customer = new Customer();
+   Customer paramCustomer = new Customer();
 
-   customer.setCustomerId(customerId);
-   customer.setCustomerPass(customerPass);
-   customer.setCustomerName(customerName);
-   customer.setCustomerAddress(customerAddress);
-   customer.setCustomerTelephone(customeTelephone);
+   paramCustomer.setCustomerId(customerId);
+   paramCustomer.setCustomerPass(customerPass);
+   paramCustomer.setCustomerName(customerName);
+   paramCustomer.setCustomerAddress(customerAddress);
+   paramCustomer.setCustomerTelephone(customeTelephone);
 
-   CustomerDao customerdao = new CustomerDao();
-   customerdao.CustomeInsert(customer);
+   CustomerService insertService = new CustomerService();
+    insertService.addCustomer(paramCustomer);
 
 
 response.sendRedirect(request.getContextPath()+"/loginForm.jsp");

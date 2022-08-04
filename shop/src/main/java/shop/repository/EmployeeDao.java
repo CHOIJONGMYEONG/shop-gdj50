@@ -14,12 +14,13 @@ public int deleteEmployee(Connection conn, Employee paramEmployee) throws Except
 		// 동일한 conn
 		// conn.close()X
 		int row = 0;
-		String sql = "DELETE FROM employee WHERE employee_id= ?";
+		String sql = "DELETE FROM employee WHERE employee_id = ? AND employee_pass = password(?)";
 		
 		 PreparedStatement stmt=null;
 		try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, paramEmployee.getEmployeeId());
+			stmt.setString(2, paramEmployee.getEmployeePass());
 			row =stmt.executeUpdate();
 		 
 		
@@ -30,28 +31,22 @@ public int deleteEmployee(Connection conn, Employee paramEmployee) throws Except
 		return row;
 		
 		
-		
-		
 	}
 	
 	
 	
-	
-	
-	public int EmployeeInsert(Employee employee) throws Exception {
+	public int EmployeeInsert(Connection conn,Employee employee) throws Exception {
 		int a =0;
 		
 		String sql = "insert into employee (employee_id,employee_pass,employee_name,update_date,create_date) values(?,password(?),?,now(),now())";
 		
-		Connection conn =null;
+		
 		PreparedStatement stmt = null;
 		
-		DBUtil dbutil= new DBUtil();
 		System.out.print(employee.getEmployeeId());
 		System.out.print(employee.getEmployeePass());
 		System.out.print(employee.getEmployeeName());
 		try {
-			conn =dbutil.getConnection();
 			
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1,employee.getEmployeeId());
@@ -64,7 +59,7 @@ public int deleteEmployee(Connection conn, Employee paramEmployee) throws Except
 		
 		}finally {
 			if(stmt!=null) {stmt.close();}
-			if(conn!=null) {conn.close();}
+			
 		}
 	
 		return a;

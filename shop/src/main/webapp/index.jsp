@@ -18,12 +18,12 @@
    if (loginType.equals("customer")){
 	    Id= ((Customer)session.getAttribute("loginCustomer")).getCustomerId();
 	  Name= ((Customer)session.getAttribute("loginCustomer")).getCustomerName(); 
-	  delete = "customerDeleteAction.jsp";
+	  delete = "customerDeleteForm.jsp";
    }else if ( loginType.equals("employee")) {
 	   
 	   Id=((Employee)session.getAttribute("loginEmployee")).getEmployeeId();
 	    Name=((Employee)session.getAttribute("loginEmployee")).getEmployeeName();
-	    delete = "employeeDeleteAction.jsp";
+	    delete = "employeeDeleteForm.jsp";
    }
  
    

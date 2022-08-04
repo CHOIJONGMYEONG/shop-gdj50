@@ -17,12 +17,13 @@ public class CustomerDao {
 		// 동일한 conn
 		// conn.close()X
 		int row = 0;
-		String sql = "DELETE FROM customer WHERE customer_id= ?";
+		String sql = "DELETE FROM customer WHERE customer_id = ? AND customer_pass = password(?)";
 		
 		 PreparedStatement stmt=null;
 		try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, paramCustomer.getCustomerId());
+			stmt.setString(2, paramCustomer.getCustomerPass());
 			row =stmt.executeUpdate();
 		 
 		
@@ -86,18 +87,17 @@ public class CustomerDao {
 		
 	}
 	
-	public int CustomeInsert(Customer customer) throws Exception {
+	public int CustomerInsert(Connection conn,Customer customer) throws Exception {
 		int a =0;
 		
 		String sql = "insert into customer (customer_id,customer_pass,customer_name,customer_address,customer_telephone,update_date,create_date) values(?,password(?),?,?,?,now(),now())";
 		
-		Connection conn =null;
+		
 		PreparedStatement stmt = null;
 		
-		DBUtil dbutil= new DBUtil();
+		
 		
 		try {
-			conn =dbutil.getConnection();
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1,customer.getCustomerId());
 			stmt.setString(2, customer.getCustomerPass());
@@ -110,11 +110,50 @@ public class CustomerDao {
 		
 		}finally {
 			if(stmt!=null) {stmt.close();}
-			if(conn!=null) {conn.close();}
+			
 		}
 	
 		return a;
 		
 	}
+	
+	public String selectCustomerExistId(String id) throws Exception {
+		String sql = "SELECT t.id\r\n"
+				+ "from (SELECT customer_id id FROM customer\r\n"
+				+ "UNION\r\n"
+				+ "SELECT employee_id id FROM employee\r\n"
+				+ "UNION\r\n"
+				+ "SELECT out_id id FROM outid) t\r\n"
+				+ "WHERE t.id = 'xxx' ;";
+		String returnId = null;
+		Connection conn =null;
+		PreparedStatement stmt = null;
+		
+		DBUtil dbutil= new DBUtil();
+		ResultSet rs =null;
+		
+		try {
+			conn =dbutil.getConnection();
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1,id);
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				returnId= rs.getString("id");
+			}
+	
+		
+		
+		}finally {
+			rs.close();
+			stmt.close();
+			conn.close();
+		}
+		return returnId;  // null 아이디 사용가능 , !null사용불가
+		
+		
+	}
+	
+	
+	
 	
 }
