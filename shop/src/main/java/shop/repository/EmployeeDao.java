@@ -3,6 +3,7 @@ package shop.repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import shop.vo.Customer;
 import shop.vo.Employee;
@@ -114,4 +115,117 @@ public int deleteEmployee(Connection conn, Employee paramEmployee) throws Except
 		
 		
 	}
+	
+	public ArrayList<Employee> selectEmployeeInfo(Connection conn,int rowPerPage , int beginRow) throws Exception {
+		Employee infoEmployee = null;
+		ArrayList<Employee> infoList =null; 
+		String sql = "SELECT employee_id , employee_pass, employee_name, update_date, create_date , active FROM employee ORDER BY employee_id DESC LIMIT ?, ?";
+		
+	
+		PreparedStatement stmt = null;
+		
+		
+		ResultSet rs =null;
+		
+		try {
+			
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, beginRow);
+			stmt.setInt(2, rowPerPage);
+			rs = stmt.executeQuery();
+			
+			
+			infoList = new ArrayList<Employee>();
+			while(rs.next()) {
+				infoEmployee = new Employee();	
+				infoEmployee.setEmployeeId(rs.getString("employee_id"));
+				infoEmployee.setEmployeePass(rs.getString("employee_pass"));
+				infoEmployee.setEmployeeName(rs.getString("employee_name"));
+				infoEmployee.setUpdateDate(rs.getString("update_date"));
+				infoEmployee.setCreateDate(rs.getString("create_date"));
+				infoEmployee.setActive(rs.getString("active"));
+				infoList.add(infoEmployee);
+			}
+				
+			System.out.println(infoEmployee.getEmployeeId());
+		
+		
+		}finally {
+			if(rs!=null) {rs.close();}
+			if(stmt!=null) {stmt.close();}
+		
+		}
+	
+		
+		
+		
+		return infoList;
+
+		
+		
+	}
+	
+	public int EmployeeAppovalUpdate(Connection conn,Employee paramEmpolyee) throws Exception {
+		int a =0;
+		
+		String sql = "update employee set active = ? WHERE employee_id = ?";
+		
+		
+		PreparedStatement stmt = null;
+		
+		System.out.print(paramEmpolyee.getEmployeeId());
+		System.out.print(paramEmpolyee.getActive());
+	
+		try {
+			
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, paramEmpolyee.getActive());
+			stmt.setString(2,paramEmpolyee.getEmployeeId());
+			
+			
+			
+			a = stmt.executeUpdate();
+			
+		
+		}finally {
+			if(stmt!=null) {stmt.close();}
+			
+		}
+	
+		return a;
+		
+	}
+	
+	public int selectEmployeeAllCount(Connection conn) throws Exception {
+		String sql = "SELECT count(*) count from employee";
+		 int totalRow = 0;
+	
+		PreparedStatement stmt = null;
+		ResultSet rs =null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				totalRow= rs.getInt("count");
+				
+			}
+		
+		}finally {
+			if(rs!=null) {rs.close();}
+			if(stmt!=null) {stmt.close();}
+		
+		}
+		
+		
+		return totalRow;
+
+		
+		
+	}
+	
+	
+	
+	
+	
 }
