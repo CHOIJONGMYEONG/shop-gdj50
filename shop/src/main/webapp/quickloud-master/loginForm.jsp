@@ -78,7 +78,8 @@
 									<button type="button" id="customerBtn" class="btn btn-light btn-radius btn-brd grd1">
 										고객 로그인
 									</button>
-									<a class="for-pwd" href="javascript:;">Forgot your password?</a>
+									<a class="for-pwd" href="<%=request.getContextPath()%>/quickloud-master/customerInsertForm.jsp">고객 회원가입</a>
+									<a class="for-pwd" href="javascript:;">Forgot password?</a>
 								</div>
 							</div>
 						</form>
@@ -106,7 +107,7 @@
 									<button type="button" id="employeeBtn" class="btn btn-light btn-radius btn-brd grd1">
 										스텝로그인
 									</button>
-									
+										<a class="for-pwd" href="<%=request.getContextPath()%>/quickloud-master/employeeInsertForm.jsp">관리자회원가입</a>
 								</div>
 							</div>
 						</form>
@@ -121,6 +122,8 @@
 		</div>
 	  </div>
 	</div>
+
+
 
     <!-- LOADER -->
 	<div id="preloader">

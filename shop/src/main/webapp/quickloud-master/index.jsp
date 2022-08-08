@@ -97,21 +97,28 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-host">
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
-						<li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
-						<li class="nav-item"><a class="nav-link" href="features.html">Features </a></li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Hosting </a>
-							<div class="dropdown-menu" aria-labelledby="dropdown-a">
-								<a class="dropdown-item" href="hosting.html">Web Hosting </a>
-								<a class="dropdown-item" href="hosting.html">WordPress Hosting </a>
-								<a class="dropdown-item" href="hosting.html">Cloud Server </a>
-								<a class="dropdown-item" href="hosting.html">Reseller Package </a>
-								<a class="dropdown-item" href="hosting.html">Dedicated Hosting </a>
-							</div>
-						</li>
-						<li class="nav-item"><a class="nav-link" href="domain.html">Domain</a></li>
-						<li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
+					
+					<div>
+	<ul>
+	<li><a href="<%=request.getContextPath()%>/admin/employeeList.jsp">사원관리</a></li>
+	<li><a href="<%=request.getContextPath()%>/admin/adminGoodsList.jsp">상품관리</a></li> <!-- 상품목록/등록/수정(품절)/삭제(장바구니 ,주문이 없는 경우) -->
+	<li><a href="<%=request.getContextPath()%>/admin/adminOrdersList.jsp">주문관리</a></li><!-- 주문목록/수정 -->
+	<li><a href="<%=request.getContextPath()%>/admin/adminCustomerList.jsp">고객관리</a></li><!-- 고객목록/강제탈퇴/비밀번호수정(전달구현X) -->
+	<li><a href="<%=request.getContextPath()%>/admin/adminNoticeList.jsp">공지관리</a></li><!-- CRUD -->
+</ul>
+</div>
+					
+					
+					
+					
+					
+					
+						<li class="nav-item active"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/employeeList.jsp">사원관리</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/admin/adminGoodsList.jsp">상품관리</a></li>
+						<li class="nav-item"><a class="nav-link" href="features.html">주문관리 </a></li>
+					
+						<li class="nav-item"><a class="nav-link" href="domain.html">고객관리</a></li>
+						<li class="nav-item"><a class="nav-link" href="pricing.html">공지관리</a></li>
 						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
 						<li class="nav-item"><a class="nav-link" > <%=Name %>님 환영합니다</a></li>
 						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/shopOne.jsp" >내정보</a></li>
