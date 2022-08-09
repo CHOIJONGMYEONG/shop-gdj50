@@ -21,7 +21,8 @@
 	String originFilename = (String)map.get("originFilename");
 	String contentType = (String)map.get("contentType");
 	String creatDate =(String) map.get("createDate");
-
+	
+	System.out.println(fileName +"경로");
 	
 %>   
     

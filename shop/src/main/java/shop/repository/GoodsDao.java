@@ -16,7 +16,7 @@ public class GoodsDao {
 		
 		int keyId= 0;
 		String sql = "INSERT INTO goods (goods_name, goods_price , update_date , create_date) VALUES(?,?,now(),now())"; //Statement.RETURN_GENERATED_KEYS;
-		PreparedStatement stmt = conn.prepareStatement(sql);
+		PreparedStatement stmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 		// 1) insert
 		// 2) select last_ai_key 
 		stmt.setString(1,goods.getGoodsName() );

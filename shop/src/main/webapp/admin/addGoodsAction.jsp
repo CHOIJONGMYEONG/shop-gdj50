@@ -23,7 +23,7 @@
 
 	// 업로드된 파일이 이미지 파일이 아닐경우
 	// if(!(contentType.equals("image/gif")&& !(contentType.equals("image/png"))|| !(contentType.equals("image/jpg")))){ 
-	if( !(contentType.equals("image/gif")||contentType.equals("image/png")||contentType.equals("image/jpg"))){
+	if( !(contentType.equals("image/gif")||contentType.equals("image/jpeg")||contentType.equals("image/png")||contentType.equals("image/jpg"))){
 		// 이미 업로드된 파일을 삭제
 		File f = new File(dir+"\\"+ systemFilename);
 		if(f.exists()){

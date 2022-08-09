@@ -1,43 +1,47 @@
-
-<%@page import="shop.vo.Goods"%>
-<%@page import="java.util.List"%>
-<%@page import="service.GoodsService"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%>
+<%@page import="service.OrderService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-    
-    
- <%
-	if(session.getAttribute("loginType")==null){
-		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");		
-		return;
-	}
- 
- int rowPerPage = 5;
- int currentPage= 1;
- if (request.getParameter("currentPage") != null) {
+<%
+if(session.getAttribute("loginType")==null){
+	response.sendRedirect(request.getContextPath()+"/loginForm.jsp");		
+	return;
+}
+
+int rowPerPage = 5;
+int currentPage= 1;
+if (request.getParameter("currentPage") != null) {
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
- 
- 
- 
 
- List<Goods> GoodsList = new ArrayList<Goods>();
- GoodsService goodsService = new GoodsService();
- 
- GoodsList = goodsService.getGoodsListByPage(rowPerPage, currentPage);
- int totalRow = goodsService.getGoodsAllCount();
- int lastPage = totalRow/rowPerPage;
- if(totalRow %rowPerPage!=0){
+String customerId= request.getParameter("customerId");
+System.out.println(customerId);
+OrderService orderService = new OrderService();
+
+
+List<Map<String,Object>> list = new ArrayList<>();
+
+
+list = orderService.getOrdersListByCustomer(customerId, rowPerPage, currentPage);
+
+int totalRow = orderService.getOrderAllCount();
+
+int lastPage = totalRow/rowPerPage;
+if(totalRow %rowPerPage!=0){
 		lastPage +=1;}
- 
- int pageBegin = ((currentPage - 1) / rowPerPage) * rowPerPage + 1; // 페이지 시작 넘버
+
+int pageBegin = ((currentPage - 1) / rowPerPage) * rowPerPage + 1; // 페이지 시작 넘버
 int pageEnd = pageBegin + rowPerPage - 1; // 페이지 끝 글 구하는 공식
 pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
- 
- 
- %>   
+
+
+%>    
+  
+    
+    
     
 <!DOCTYPE html>
 <html>
@@ -46,6 +50,7 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 <title>Insert title here</title>
 </head>
 <body>
+
 <div>
 	<ul>
 	<li><a href="<%=request.getContextPath()%>/admin/employeeList.jsp">사원관리</a></li>
@@ -57,8 +62,8 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 </div>
 
 
- <h1>상품리스트</h1>
- 	<a href="<%=request.getContextPath()%>/admin/addGoodsForm.jsp">상품추가</a>	
+ <h1>고객상세리스트</h1>
+ 		
 			<table border="1">
       <thead>
          <tr>
@@ -71,14 +76,15 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
       <tbody>
    
         <%
-		for (Goods a : GoodsList ){
+		for (Map<String,Object> a : list ){
+			System.out.print(a.get("customerId"));
 		%>
 
     	         <tr>
     	         
-    	        <td><a href="<%=request.getContextPath()%>/adminGoodsOneForm.jsp?goodsNo=<%=a.getGoodsNo()%>"><%=a.getGoodsNo() %></a></td>
-    	          <td><%=a.getGoodsName()%> </td>
-              	  <td><%=a.getGoodsPrice() %> </td>
+    	        <td><a href="<%=request.getContextPath()%>/admin/adminOrdersOneForm.jsp?orderNo=<%=a.get("ordersNo")%>"><%=a.get("ordersNo") %></a></td>
+    	          <td><%=a.get("customerId")%> </td>
+              	  <td><%=a.get("ordersPrice") %> </td>
               	
               	 </tr>
               	 <%
@@ -89,7 +95,7 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
          </tbody>
    </table>
 	
-<%
+	<%
 	/*int lastPage = boardDao.selectBoardLastPage(ROW_PER_PAGE);*/
 	System.out.println(lastPage);
 	if (pageBegin > rowPerPage) {
@@ -107,7 +113,6 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 		}
 	
 	
-	
 	if (pageEnd < lastPage) {
 	%>
 	
@@ -115,7 +120,7 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 	<%
 	}
 	%>
-	
+
 
 
 

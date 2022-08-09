@@ -1,3 +1,41 @@
+
+<%@page import="java.util.ArrayList"%>
+<%@page import="shop.vo.Employee"%>
+<%@page import="service.EmployeeService"%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+    <%
+	if(session.getAttribute("loginType")==null){
+		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");		
+		return;
+	}
+ 
+ int rowPerPage = 5;
+ int currentPage= 1;
+ if (request.getParameter("currentPage") != null) {
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	}
+ 
+ 
+ 
+
+ ArrayList<Employee> employeeList = new ArrayList<Employee>();
+ EmployeeService employeeService = new EmployeeService();
+ 
+ employeeList = employeeService.getinfoEmpolyee(rowPerPage,currentPage);
+ int totalRow = employeeService.getEmployeeAllCount();
+ int lastPage = totalRow/rowPerPage;
+ if(totalRow %rowPerPage!=0){
+		lastPage +=1;}
+ 
+ int pageBegin = ((currentPage - 1) / rowPerPage) * rowPerPage + 1; // 페이지 시작 넘버
+int pageEnd = pageBegin + rowPerPage - 1; // 페이지 끝 글 구하는 공식
+pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
+ 
+ 
+ %>  
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -173,82 +211,120 @@
     <div class="section lb">
         <div class="container">
             <div class="section-title text-center">
-                <h3>Ready to get started?</h3>
+                <h3>관리자리스트</h3>
 				<div class="dmoain-pricing">
 					<div class="table-responsive-sm">
 						<table>
 							<thead>
 								<tr class="domain-head">
 									<th scope="col">
-										Domain Name
+										관리자아이디
 									</th>
 									<th scope="col">
-										Registration Pricing
+										관리자이름
 									</th>
 									<th scope="col">
-										Renewal Pricing
+										승인여부
 									</th>
-									<th scope="col">
-										Transfer Pricing
-									</th>
+									
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td data-label="DOMAIN NAME">.com</td>
-									<td data-label="registration pricing">15.00 / yr</td>
-									<td data-label="renewal pricing">$30 / yr</td>
-									<td data-label="transfer-price">$45.00</td>
-								</tr>
-								<tr>
-									<td data-label="DOMAIN NAME">.net</td>
-									<td data-label="registration pricing">15.00 / yr</td>
-									<td data-label="renewal pricing">$20 / yr</td>
-									<td data-label="transfer-price">$45.00</td>
-								</tr>
-								<tr>
-									<td data-label="DOMAIN NAME">.org</td>
-									<td data-label="registration pricing">15.00 / yr</td>
-									<td data-label="renewal pricing">$19 / yr</td>
-									<td data-label="transfer-price">$45.00</td>
-								</tr>
-								<tr>
-									<td data-label="DOMAIN NAME">.in</td>
-									<td data-label="registration pricing">15.00 / yr</td>
-									<td data-label="renewal pricing">$18 / yr</td>
-									<td data-label="transfer-price">$45.00</td>
-								</tr>
-								<tr>
-									<td data-label="DOMAIN NAME">.biz</td>
-									<td data-label="registration pricing">15.00 / yr</td>
-									<td data-label="renewal pricing">$17 / yr</td>
-									<td data-label="transfer-price">$45.00</td>
-								</tr>
-								<tr>
-									<td data-label="Acount">.info</td>
-									<td data-label="registration pricing">15.00 / yr</td>
-									<td data-label="renewal pricing">$16 / yr</td>
-									<td data-label="transfer-price">$45.00</td>
-								</tr>
-								<tr>
-									<td data-label="DOMAIN NAME">.co.uk</td>
-									<td data-label="registration pricing">15.00 / yr</td>
-									<td data-label="renewal pricing">$15 / yr</td>
-									<td data-label="transfer-price">$45.00</td>
-								</tr>
-								<tr>
-									<td data-label="DOMAIN NAME">.name</td>
-									<td data-label="registration pricing">15.00 / yr</td>
-									<td data-label="renewal pricing">$14 / yr</td>
-									<td data-label="transfer-price">$45.00</td>
-								</tr>
+								
+								
+								 <%
+		for (Employee a : employeeList ){
+		%>
+
+    	           <tr>
+                  <td data-label="DOMAIN NAME"><%=a.getEmployeeId()%></td>
+                  <td data-label="DOMAIN NAME"><%=a.getEmployeeName()%></td>
+                  
+                   <td data-label="DOMAIN NAME">
+                   	<form action="<%=request.getContextPath()%>/employeeApprovalAction.jsp" method="post">
+                  	<select name ="approval">
+
+				<%
+					if(a.getActive().equals("N")){
+				%>
+			
+			
+					<option>Y</option>
+					<option selected="selected">N</option>
+			
+				<%
+					}else{
+				%>
+					<option  selected="selected">Y</option>
+					<option>N</option>
+					</select>
+			                  
+			                   
+			         <%      
+			            }
+			         %>           
+			         <input type="hidden" value="<%=a.getEmployeeId()%>" name="employeeId">
+			         <button type="submit">승인변경</button>
+			           </form> 
+			                    </td> 
+			                    
+			                  
+			               </tr>
+			           	
+						
+			         <%      
+			            }
+			         %>
+								
+								
+								
+								
+								
+								
 							</tbody>
 						</table>
 					</div>
 				</div>
+				
+				<%
+	/*int lastPage = boardDao.selectBoardLastPage(ROW_PER_PAGE);*/
+	
+	
+	
+	System.out.println(lastPage);
+	if (pageBegin > rowPerPage) {
+	%>
+	
+	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/employeeList.jsp?currentPage=<%=pageBegin - rowPerPage%>">이전</a>
+
+	<%
+	}
+
+	for(int i = pageBegin; i <= pageEnd; i++){
+		%>
+	
+	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/employeeList.jsp?currentPage=<%=i%>"><%=i%></a>
+		
+		<%
+		}
+	
+	
+	
+	if (pageEnd < lastPage) {
+	%>
+	
+	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/employeeList.jsp?currentPage=<%=pageBegin + rowPerPage%>">다음</a>
+	<%
+	}
+	%>
+	
+			
             </div><!-- end title -->
         </div><!-- end container -->
     </div><!-- end section -->
+
+
+
 
     <div id="testimonials" class="parallax section db parallax-off" style="background-image:url('images/parallax_04.jpg');">
         <div class="container">
