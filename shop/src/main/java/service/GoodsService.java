@@ -21,6 +21,153 @@ public class GoodsService {
 	private GoodsDao goodsDao;
 	private GoodsImgDao goodsImgDao;
 	
+	public Map<String,Object>getCustomerOneGoods(int goodsNO) {
+		Connection conn = null;
+		Map<String,Object> m = new HashMap<String,Object>();
+		this.goodsDao = new GoodsDao();
+		
+			try{conn = new DBUtil().getConnection();
+			conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+			
+			 m = goodsDao.selectCustomerOneGoods(conn , goodsNO);
+			
+			conn.commit();
+			}catch(Exception e) {
+				e.printStackTrace(); // console에 예외메세지 출력
+				
+			}finally {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return m;
+		
+		
+	}
+	
+	 public List<Map<String,Object>> selectCustomerHotGoodsListByPage(int rowPerPage , int currentPage){
+		 
+			Connection conn = null;
+			List<Map<String,Object>> list = new ArrayList<>();
+			 int beginRow = (currentPage - 1) * rowPerPage;
+			this.goodsDao = new GoodsDao();
+			
+				try{conn = new DBUtil().getConnection();
+				conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+				
+				list = goodsDao.selectCustomerHotGoodsListByPage(conn , rowPerPage,beginRow);
+				
+				conn.commit();
+				}catch(Exception e) {
+					e.printStackTrace(); // console에 예외메세지 출력
+					
+				}finally {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				return list;
+			
+		 }
+	
+	
+	
+	
+	 public List<Map<String,Object>> selectCustomerNewGoodsListByPage(int rowPerPage , int currentPage){
+		 
+			Connection conn = null;
+			List<Map<String,Object>> list = new ArrayList<>();
+			 int beginRow = (currentPage - 1) * rowPerPage;
+			this.goodsDao = new GoodsDao();
+			
+				try{conn = new DBUtil().getConnection();
+				conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+				
+				list = goodsDao.selectCustomerNewGoodsListByPage(conn , rowPerPage,beginRow);
+				
+				conn.commit();
+				}catch(Exception e) {
+					e.printStackTrace(); // console에 예외메세지 출력
+					
+				}finally {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				return list;
+			
+		 }
+	
+	
+	 public List<Map<String,Object>> selectCustomerHighGoodsListByPage(int rowPerPage , int currentPage){
+		 
+			Connection conn = null;
+			List<Map<String,Object>> list = new ArrayList<>();
+			 int beginRow = (currentPage - 1) * rowPerPage;
+			this.goodsDao = new GoodsDao();
+			
+				try{conn = new DBUtil().getConnection();
+				conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+				
+				list = goodsDao.selectCustomerHighGoodsListByPage(conn , rowPerPage,beginRow);
+				
+				conn.commit();
+				}catch(Exception e) {
+					e.printStackTrace(); // console에 예외메세지 출력
+					
+				}finally {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				return list;
+			
+		 }
+	
+	
+	
+	 public List<Map<String,Object>> selectCustomerRowGoodsListByPage(int rowPerPage , int currentPage){
+		 
+			Connection conn = null;
+			List<Map<String,Object>> list = new ArrayList<>();
+			 int beginRow = (currentPage - 1) * rowPerPage;
+			this.goodsDao = new GoodsDao();
+			
+				try{conn = new DBUtil().getConnection();
+				conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+				
+				list = goodsDao.selectCustomerRowGoodsListByPage(conn , rowPerPage,beginRow);
+				
+				conn.commit();
+				}catch(Exception e) {
+					e.printStackTrace(); // console에 예외메세지 출력
+					
+				}finally {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				return list;
+			
+		 }
+	
+	
+	
+	
+	
+	
+	
+	
  public List<Map<String,Object>> selectCustomerGoodsListByPage(int rowPerPage , int currentPage){
 		 
 		Connection conn = null;

@@ -12,6 +12,75 @@ import shop.vo.Goods;
 public class GoodsDao {
 	
 	
+	
+	public Map<String,Object> selectCustomerOneGoods(Connection conn , int goodsNO) throws Exception{
+		
+		Map<String,Object> m = new HashMap<String,Object>();
+		PreparedStatement stmt = null;
+		PreparedStatement hitstmt = null;
+		ResultSet rs =null;
+		int row = 0;
+		String sql=  "SELECT g.goods_no,g.goods_name,g.goods_price,g.update_date ,g.create_date ,g.sold_out ,gi.filename , gi.origin_filename,gi.content_type , gi.create_date FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no WHERE g.goods_no = ?";
+		String sql1= "UPDATE goods SET hit=hit+1 WHERE goods_no = ?";
+		/*
+		    SELECT g.*, gi.*
+			FROM goods g INNER JOIN goods_img gi
+			ON g.goods_no = gi.goods_no
+			WHERE g.goods_no = 1
+		  
+		 
+		while(rs.next()) {
+			Map<String,Object> m = new HashMap<String, Object>();
+			m.put("goodsNo", rs.getInt("goodsNo"));		
+			
+		}
+		쿼리에서 where 조건이 없다면 ..반환타입 List<Map<String,Object>> list
+		*/
+		
+		
+		try {
+			
+			hitstmt =conn.prepareStatement(sql1);
+			hitstmt.setInt(1, goodsNO);
+			row = hitstmt.executeUpdate();
+			
+		
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, goodsNO);
+			rs = stmt.executeQuery();
+			
+			
+			if(rs.next()) {
+				System.out.println(rs.getInt("g.goods_no"));
+				System.out.println(rs.getString("g.goods_name"));
+			m.put("goodsNo", rs.getInt("g.goods_no"));
+			m.put("goodsName",rs.getString("g.goods_name"));
+			m.put("goodsPrice", rs.getInt("g.goods_price"));
+			m.put("updateDate",rs.getString("g.update_date") );
+			m.put("createDate", rs.getString("g.create_date"));
+			m.put("soldOut",rs.getString("g.sold_out") );
+			m.put("fileName",rs.getString("gi.filename") );
+			m.put("originFilename", rs.getString("gi.origin_filename"));
+			m.put("contentType",rs.getString("gi.content_type") );
+			m.put("createDate",rs.getString("gi.create_date") );
+				
+				
+			}
+			System.out.print("업데이트성공 ??"+row);
+			System.out.println(m.get("goodsNo"));
+			System.out.println(m.get("goodsName"));
+		
+		
+		}finally {
+			if(rs!=null) {rs.close();}
+			if(stmt!=null) {stmt.close();}
+		
+		}
+		
+		
+		return m;
+	}
+	
 	public int insertGoods(Connection conn, Goods goods) throws SQLException {
 		
 		int keyId= 0;
@@ -211,13 +280,273 @@ public class GoodsDao {
 				+ " ON g.goods_no = t.goods_no\r\n"
 				+ "INNER JOIN goods_img gi\r\n"
 				+ " ON g.goods_no = gi.goods_no\r\n"
-				+ "ORDER BY IFNULL(t.sumNUm, 0) DESC;\r\n";
+				+ "ORDER BY IFNULL(t.sumNUm, 0) DESC LIMIT ?, ? \r\n";
 			
 		PreparedStatement stmt = null;
 		ResultSet rs =null;
 		
 		try {
 			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,beginRow );
+			stmt.setInt(2,rowrPerpage );
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				Map<String ,Object> map =new HashMap<String,Object>();
+				map.put("goodsNo", rs.getInt("goodsNo"));
+				map.put("goodsName", rs.getString("goodsName"));
+				map.put("goodsPrice", rs.getInt("goodsPrice"));
+				map.put("soldOut", rs.getString("soldOut"));
+				map.put("filename", rs.getString("filename"));
+				
+				list.add(map);
+				
+			}
+		
+		}finally {
+			if(rs!=null) {rs.close();}
+			if(stmt!=null) {stmt.close();}
+		
+		}
+		
+		
+		return list;
+
+		
+		
+	}
+	
+	public List<Map<String,Object>> selectCustomerRowGoodsListByPage (Connection conn ,int rowrPerpage  ,int beginRow) throws Exception {
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		
+		/*
+		 고객이 판매량수 많은것 부터
+		SELECT g.*, IFNULL( t.sumNum,0) sumNum 
+		FROM
+		 goods g LEFT JOIN (SELECT orders, SUM(order_quantity)
+				 FROM orders
+				 GROUP BY goods_no) t 
+				
+		 		ON g.goods_no = t.goods_no
+		 			INNER JOIN goods_img gi
+		 			ON g.goods_no = go.goods_no
+		 ORDER BY IFNULL( t.sumNum,0) DESC
+		 */
+		
+		String sql = "SELECT g.goods_no goodsNo\r\n"
+				+ ", g.goods_name goodsName\r\n"
+				+ ", g.goods_price goodsPrice\r\n"
+				+ ", g.sold_out soldOut\r\n"
+				+ ", gi.filename filename\r\n"
+				+ " FROM\r\n"
+				+ " goods g LEFT JOIN (SELECT goods_no, SUM(order_quantity) sumNum\r\n"
+				+ " FROM orders\r\n"
+				+ " GROUP BY goods_no) t\r\n"
+				+ " ON g.goods_no = t.goods_no\r\n"
+				+ "INNER JOIN goods_img gi\r\n"
+				+ " ON g.goods_no = gi.goods_no\r\n"
+				+ "ORDER BY goodsPrice LIMIT ?, ? \r\n";
+			
+		PreparedStatement stmt = null;
+		ResultSet rs =null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,beginRow );
+			stmt.setInt(2,rowrPerpage );
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				Map<String ,Object> map =new HashMap<String,Object>();
+				map.put("goodsNo", rs.getInt("goodsNo"));
+				map.put("goodsName", rs.getString("goodsName"));
+				map.put("goodsPrice", rs.getInt("goodsPrice"));
+				map.put("soldOut", rs.getString("soldOut"));
+				map.put("filename", rs.getString("filename"));
+				
+				list.add(map);
+				
+			}
+		
+		}finally {
+			if(rs!=null) {rs.close();}
+			if(stmt!=null) {stmt.close();}
+		
+		}
+		
+		
+		return list;
+
+		
+		
+	}
+	
+	
+	public List<Map<String,Object>> selectCustomerHighGoodsListByPage (Connection conn ,int rowrPerpage  ,int beginRow) throws Exception {
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		
+		/*
+		 고객이 판매량수 많은것 부터
+		SELECT g.*, IFNULL( t.sumNum,0) sumNum 
+		FROM
+		 goods g LEFT JOIN (SELECT orders, SUM(order_quantity)
+				 FROM orders
+				 GROUP BY goods_no) t 
+				
+		 		ON g.goods_no = t.goods_no
+		 			INNER JOIN goods_img gi
+		 			ON g.goods_no = go.goods_no
+		 ORDER BY IFNULL( t.sumNum,0) DESC
+		 */
+		
+		String sql = "SELECT g.goods_no goodsNo\r\n"
+				+ ", g.goods_name goodsName\r\n"
+				+ ", g.goods_price goodsPrice\r\n"
+				+ ", g.sold_out soldOut\r\n"
+				+ ", gi.filename filename\r\n"
+				+ " FROM\r\n"
+				+ " goods g LEFT JOIN (SELECT goods_no, SUM(order_quantity) sumNum\r\n"
+				+ " FROM orders\r\n"
+				+ " GROUP BY goods_no) t\r\n"
+				+ " ON g.goods_no = t.goods_no\r\n"
+				+ "INNER JOIN goods_img gi\r\n"
+				+ " ON g.goods_no = gi.goods_no\r\n"
+				+ "ORDER BY goodsPrice DESC LIMIT ?, ? \r\n";
+			
+		PreparedStatement stmt = null;
+		ResultSet rs =null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,beginRow );
+			stmt.setInt(2,rowrPerpage );
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				Map<String ,Object> map =new HashMap<String,Object>();
+				map.put("goodsNo", rs.getInt("goodsNo"));
+				map.put("goodsName", rs.getString("goodsName"));
+				map.put("goodsPrice", rs.getInt("goodsPrice"));
+				map.put("soldOut", rs.getString("soldOut"));
+				map.put("filename", rs.getString("filename"));
+				
+				list.add(map);
+				
+			}
+		
+		}finally {
+			if(rs!=null) {rs.close();}
+			if(stmt!=null) {stmt.close();}
+		
+		}
+		
+		
+		return list;
+
+		
+		
+	}
+	
+	public List<Map<String,Object>> selectCustomerNewGoodsListByPage (Connection conn ,int rowrPerpage  ,int beginRow) throws Exception {
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		
+		/*
+		 고객이 판매량수 많은것 부터
+		SELECT g.*, IFNULL( t.sumNum,0) sumNum 
+		FROM
+		 goods g LEFT JOIN (SELECT orders, SUM(order_quantity)
+				 FROM orders
+				 GROUP BY goods_no) t 
+				
+		 		ON g.goods_no = t.goods_no
+		 			INNER JOIN goods_img gi
+		 			ON g.goods_no = go.goods_no
+		 ORDER BY IFNULL( t.sumNum,0) DESC
+		 */
+		
+		String sql = "SELECT g.goods_no goodsNo\r\n"
+				+ ", g.goods_name goodsName\r\n"
+				+ ", g.goods_price goodsPrice\r\n"
+				+ ", g.sold_out soldOut\r\n"
+				+ ", gi.filename filename\r\n"
+				+ " FROM\r\n"
+				+ " goods g LEFT JOIN (SELECT goods_no, SUM(order_quantity) sumNum\r\n"
+				+ " FROM orders\r\n"
+				+ " GROUP BY goods_no) t\r\n"
+				+ " ON g.goods_no = t.goods_no\r\n"
+				+ "INNER JOIN goods_img gi\r\n"
+				+ " ON g.goods_no = gi.goods_no\r\n"
+				+ "ORDER BY goodsNo DESC LIMIT ?, ? \r\n";
+			
+		PreparedStatement stmt = null;
+		ResultSet rs =null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,beginRow );
+			stmt.setInt(2,rowrPerpage );
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				Map<String ,Object> map =new HashMap<String,Object>();
+				map.put("goodsNo", rs.getInt("goodsNo"));
+				map.put("goodsName", rs.getString("goodsName"));
+				map.put("goodsPrice", rs.getInt("goodsPrice"));
+				map.put("soldOut", rs.getString("soldOut"));
+				map.put("filename", rs.getString("filename"));
+				
+				list.add(map);
+				
+			}
+		
+		}finally {
+			if(rs!=null) {rs.close();}
+			if(stmt!=null) {stmt.close();}
+		
+		}
+		
+		
+		return list;
+
+		
+		
+	}
+	
+	public List<Map<String,Object>> selectCustomerHotGoodsListByPage (Connection conn ,int rowrPerpage  ,int beginRow) throws Exception {
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		
+		/*
+		 고객이 판매량수 많은것 부터
+		SELECT g.*, IFNULL( t.sumNum,0) sumNum 
+		FROM
+		 goods g LEFT JOIN (SELECT orders, SUM(order_quantity)
+				 FROM orders
+				 GROUP BY goods_no) t 
+				
+		 		ON g.goods_no = t.goods_no
+		 			INNER JOIN goods_img gi
+		 			ON g.goods_no = go.goods_no
+		 ORDER BY IFNULL( t.sumNum,0) DESC
+		 */
+		
+		String sql = "SELECT g.goods_no goodsNo\r\n"
+				+ ", g.goods_name goodsName\r\n"
+				+ ", g.goods_price goodsPrice\r\n"
+				+ ", g.sold_out soldOut\r\n"
+				+ ", g.hit hit\r\n"
+				+ ", gi.filename filename\r\n"
+				+ " FROM\r\n"
+				+ " goods g LEFT JOIN (SELECT goods_no, SUM(order_quantity) sumNum\r\n"
+				+ " FROM orders\r\n"
+				+ " GROUP BY goods_no) t\r\n"
+				+ " ON g.goods_no = t.goods_no\r\n"
+				+ "INNER JOIN goods_img gi\r\n"
+				+ " ON g.goods_no = gi.goods_no\r\n"
+				+ "ORDER BY hit DESC LIMIT ?, ? \r\n";
+			
+		PreparedStatement stmt = null;
+		ResultSet rs =null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,beginRow );
+			stmt.setInt(2,rowrPerpage );
 			rs = stmt.executeQuery();
 			while(rs.next()) {
 				Map<String ,Object> map =new HashMap<String,Object>();

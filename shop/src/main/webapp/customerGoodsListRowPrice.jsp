@@ -18,7 +18,7 @@
 	
 	GoodsService goodsService =new GoodsService();
 	// listll
-	List<Map<String,Object>> list = goodsService.selectCustomerGoodsListByPage(rowPerPage, currentPage);
+	List<Map<String,Object>> list = goodsService.selectCustomerRowGoodsListByPage(rowPerPage, currentPage);
 	 int totalRow = goodsService.getGoodsAllCount();
 	 int lastPage = totalRow/rowPerPage;
 	 if(totalRow %rowPerPage!=0){
@@ -99,14 +99,14 @@
 	if (pageBegin > rowPerPage) {
 	%>
 	
-	<a href="<%=request.getContextPath()%>/customerGoodsList.jsp?currentPage=<%=pageBegin - rowPerPage%>">이전</a>
+	<a href="<%=request.getContextPath()%>/customerGoodsListRowPrice.jsp?currentPage=<%=pageBegin - rowPerPage%>">이전</a>
 
 	<%
 	}
 
 	for(int y = pageBegin; y <= pageEnd; y++){
 		%>
-			<a href="<%=request.getContextPath()%>/customerGoodsList.jsp?currentPage=<%=y%>"><%=y%></a>
+			<a href="<%=request.getContextPath()%>/customerGoodsListRowPrice.jsp?currentPage=<%=y%>"><%=y%></a>
 		<%
 		}
 	
@@ -115,7 +115,7 @@
 	if (pageEnd < lastPage) {
 	%>
 	
-	<a href="<%=request.getContextPath()%>/admin/adminGoodsList.jsp?currentPage=<%=pageBegin + rowPerPage%>">다음</a>
+	<a href="<%=request.getContextPath()%>/customerGoodsListRowPrice.jsp?currentPage=<%=pageBegin + rowPerPage%>">다음</a>
 	<%
 	}
 	%>

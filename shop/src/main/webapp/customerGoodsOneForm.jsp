@@ -33,20 +33,38 @@
 <title>Insert title here</title>
 </head>
 <body>
+<div>
+ <h1>상품</h1>
+ 
+			<table border="1">
+      <thead>
+         <tr>
+            <th>상품명</th>
+            <th>가격</th>
+            <th>품절여부</th> 
+           
+         </tr>
+      </thead>
+      <tbody>
+   		<tr>
+   		<td><%=goodsName %></td>
+   		<td><%=goodsPrice %></td>
+   		<td><%=soldOut %></td>
+   		
+   		</tr>
+      
+              
+         </tbody>
+   </table>
 
 
-
-
-	<div>
-		<a href="<%=request.getContextPath()%>/upload/<%=fileName%>" 
-			download="<%=originFilename%>">
+	
 			<img src="<%=request.getContextPath()%>/upload/<%=fileName%>">
-		</a>
 	</div>
 
 	<div>
-		<a href="<%=request.getContextPath()%>/updateGoodsImgForm.jsp">수정</a>
-		<a href="<%=request.getContextPath()%>/deleteGoodsImgForm.jsp">삭제</a>
+		<a href="<%=request.getContextPath()%>/">구매</a>
+		<a href="<%=request.getContextPath()%>/">장바구니담기</a>
 	</div>
 
 
