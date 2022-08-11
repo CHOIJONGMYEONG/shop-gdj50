@@ -68,65 +68,63 @@
 			<div class="modal-body customer-box">
 				<!-- Nav tabs -->
 				<ul class="nav nav-tabs">
-					<li><a class="active" href="#Login" data-toggle="tab">Login</a></li>
-					<li><a href="#Registration" data-toggle="tab">Registration</a></li>
+					<li><a class="active" href="#Login" data-toggle="tab">Customer</a></li>
+					<li><a href="#Registration" data-toggle="tab">employee</a></li>
 				</ul>
 				<!-- Tab panes -->
 				<div class="tab-content">
 					<div class="tab-pane active" id="Login">
-						<form role="form" class="form-horizontal">
+					
+					
+						<form role="form" class="form-horizontal" id="customerForm" method="post" action="<%=request.getContextPath()%>/quickloud-master/customerLoginAction.jsp">
 							<div class="form-group">
 								<div class="col-sm-12">
-									<input class="form-control" id="email1" placeholder="Name" type="text">
+									<input class="form-control" id="customerId" placeholder="ID" type="text" name="customerId">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-12">
-									<input class="form-control" id="exampleInputPassword1" placeholder="Email" type="email">
+									<input class="form-control" id="customerPass" name="customerPass" placeholder="password" type="password">
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-10">
-									<button type="submit" class="btn btn-light btn-radius btn-brd grd1">
-										Submit
+									<button type="button" id="customerBtn" class="btn btn-light btn-radius btn-brd grd1">
+										고객 로그인
 									</button>
-									<a class="for-pwd" href="javascript:;">Forgot your password?</a>
+									<a class="for-pwd" href="<%=request.getContextPath()%>/quickloud-master/customerInsertForm.jsp">고객 회원가입</a>
+									<a class="for-pwd" href="javascript:;">Forgot password?</a>
 								</div>
 							</div>
 						</form>
+						
+						
+						
 					</div>
-					<div class="tab-pane" id="Registration">
-						<form role="form" class="form-horizontal">
+					<div class="tab-pane " id="Registration">
+						<form role="form" class="form-horizontal" id="employeeForm" method="post" action="<%=request.getContextPath()%>/quickloud-master/employeeLoginAction.jsp">
 							<div class="form-group">
 								<div class="col-sm-12">
-									<input class="form-control" placeholder="Name" type="text">
+									<input class="form-control" name="employeeId" id="employeeId" placeholder="ID" type="text">
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-12">
-									<input class="form-control" id="email" placeholder="Email" type="email">
+									<input class="form-control" id="employeePass" placeholder="password" type="password" name="employeePass">
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="col-sm-12">
-									<input class="form-control" id="mobile" placeholder="Mobile" type="email">
-								</div>
-							</div>
-							<div class="form-group">
-								<div class="col-sm-12">
-									<input class="form-control" id="password" placeholder="Password" type="password">
-								</div>
-							</div>
+						
 							<div class="row">							
 								<div class="col-sm-10">
-									<button type="button" class="btn btn-light btn-radius btn-brd grd1">
-										Save &amp; Continue
+									<button type="button" id="employeeBtn" class="btn btn-light btn-radius btn-brd grd1">
+										스텝로그인
 									</button>
-									<button type="button" class="btn btn-light btn-radius btn-brd grd1">
-										Cancel</button>
+										<a class="for-pwd" href="<%=request.getContextPath()%>/quickloud-master/employeeInsertForm.jsp">관리자회원가입</a>
 								</div>
 							</div>
 						</form>
+						
+						
 					</div>
 				</div>
 			</div>
