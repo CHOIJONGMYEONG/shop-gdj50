@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
@@ -16,39 +17,27 @@
 <body>
 
 
-<!-- id ck form -->
-<form action ="<%=request.getContextPath()%>/idCheckAction.jsp" method="post">
 	<div>
+	<!-- 아이디 중복검사 -->
 		ID 체크 
-		<input type="text" name = "ckId">
-		<button type ="submit">아이디중복검사</button>
-		<input type=hidden name = "jb" value="customer">
+		<input type="text" name="idck" id="idck">
+	<button type="button" id="idckBtn">아이디 중복검사</button>
+		
+		
+	
 	</div>
 
 
-</form>
 
 <!-- 고객가입form -->
-<%
-	String ckId= "";
-	if(request.getParameter("ckId")!=null){
-		ckId= request.getParameter("ckId");
-		
-	}
-	String errorMsg="";
-	if (request.getParameter("errorMsg")!=null){
-		errorMsg = request.getParameter("errorMsg");
-	}
-	
-%>
 
-<%=errorMsg %>
+
 
 <form action ="<%=request.getContextPath()%>/customerInsertAction.jsp" method="post" id ="writeForm">
 <table border="1">
 <tr>
     <td>고객아이디</td>
-    <td><input type="text" name ="customerId" id="customerId" readonly="readonly" value="<%=ckId%>">
+    <td><input type="text" name ="customerId" id="customerId" readonly="readonly">
     </td>
   </tr>
 
@@ -84,6 +73,37 @@
 
 </body>
 <script>
+
+
+
+$('#idckBtn').click(function() {
+	if($('#idck').val().length < 4) {
+		alert('id는 4자이상!');
+	} else {
+		// 비동기 호출	
+		$.ajax({
+			url : '/shop/idckController',
+			type : 'post',
+			data : {idck : $('#idck').val()},
+			success : function(json) {
+				// alert(json);
+				if(json == 'y') {
+					$('#customerId').val($('#idck').val());
+				} else {
+					alert('이미 사용중인 아이디 입니다.');
+					$('#customerId').val('');
+				}
+			}
+		});
+	}
+});
+
+
+
+
+
+
+
 $(function(){
     $("#writeForm").submit(function(){
        if($("#customerId").val()==""){

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import shop.vo.Employee;
 import shop.vo.Orders;
 
 public class OrdersDao {
@@ -251,4 +252,38 @@ public class OrdersDao {
 		return list;
 	}
 
+	
+	public int adminStateUpdate(Connection conn,Orders orders) throws Exception {
+		int a =0;
+		
+		String sql = "update orders set order_state = ? WHERE order_no = ?";
+		
+		
+		PreparedStatement stmt = null;
+		
+		System.out.print(orders.getOrderState());
+		System.out.print(orders.getOrderNo());
+	
+		try {
+			
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, orders.getOrderState());
+			stmt.setInt(2,orders.getOrderNo());
+			
+			
+			
+			a = stmt.executeUpdate();
+			
+		
+		}finally {
+			if(stmt!=null) {stmt.close();}
+			
+		}
+	
+		return a;
+		
+	}
+	
+	
+	
 }

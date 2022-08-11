@@ -10,6 +10,7 @@ import java.util.Map;
 import shop.repository.DBUtil;
 import shop.repository.GoodsDao;
 import shop.repository.OrdersDao;
+import shop.vo.Orders;
 
 public class OrderService {
 
@@ -123,8 +124,35 @@ public class OrderService {
 			}
 			return list;
 		
-		
 	}
 	
+	
+	
+	
+	public int adminStateModify(Orders orders) {
+		Connection conn = null;
+		int complete = 0;
+		this.ordersDao =new OrdersDao();
+		try{conn = new DBUtil().getConnection();
+		conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+		
+		
+		complete = ordersDao.adminStateUpdate(conn, orders);
+		
+	
+		conn.commit();
+		}catch(Exception e) {
+			e.printStackTrace(); // console에 예외메세지 출력
+		
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return complete;
+		
+	}
 	
 }

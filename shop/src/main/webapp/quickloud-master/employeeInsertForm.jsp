@@ -1,18 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
- <%
-	String ckId= "";
-	if(request.getParameter("ckId")!=null){
-		ckId= request.getParameter("ckId");
-		
-	}
-	String errorMsg="";
-	if (request.getParameter("errorMsg")!=null){
-		errorMsg = request.getParameter("errorMsg");
-	}
-	
-%>   
+   
     
 <!DOCTYPE html>
 <html lang="ko">
@@ -64,6 +53,7 @@
 }
 
 </style>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body class="host_version"> 
 
@@ -205,30 +195,31 @@
             <div class="section-title text-center">
                 <h3>관리자 회원가입</h3>
             </div><!-- end title -->
-			<form action ="<%=request.getContextPath()%>/quickloud-master/idCheckAction.jsp" method="post">
-			<div>
-				ID 체크 
-				<input type="text" name = "ckId">
-				<button type ="submit">아이디중복검사</button>
-				<input type=hidden name = "jb" value="employee">
-			</div>
-
-
-			</form>
+		
 
 
             <div class="row">
                 <div class="col-xl-6 col-md-12 col-sm-12">
-                <%=errorMsg %>
+          
                     <div class="contact_form">
                         <div id="message"></div>
                         <form id="writeForm" class="" action="<%=request.getContextPath()%>/quickloud-master/employeeInsertAction.jsp" name="contactform" method="post">
                             <fieldset class="row row-fluid">
+                            	
+	
+                             
+                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+								<input type="text" name="idck" id="idck" class="form-control">
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                <button type="button" id="idckBtn" class="btn btn-light btn-radius btn-brd grd1 btn-block">아이디 중복검사</button>
+                                </div>
+                            
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                     <input type="text" value="고객아이디" name="first_name" id="first_name" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" value = "<%=ckId%>" name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
+                                    <input type="text"  name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                     <input type="email"value="비밀번호" name="email" id="email" class="form-control" readonly>
@@ -367,6 +358,42 @@
 </body>
 
 <script>
+
+
+
+$('#idckBtn').click(function() {
+	if($('#idck').val().length < 4) {
+		alert('id는 4자이상!');
+	} else {
+		// 비동기 호출	
+		$.ajax({
+			url : '/shop/idckController',
+			type : 'post',
+			data : {idck : $('#idck').val()},
+			success : function(json) {
+				// alert(json);
+				if(json == 'y') {
+					$('#employeeId').val($('#idck').val());
+				} else {
+					alert('이미 사용중인 아이디 입니다.');
+					$('#employeeId').val('');
+				}
+			}
+		});
+	}
+});
+
+
+
+
+
+
+
+
+
+
+
+
 $(function(){
     $("#writeForm").submit(function(){
        if($("#employeeId").val()==""){

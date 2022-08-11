@@ -85,8 +85,8 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
     	          <td><a href="<%=request.getContextPath()%>/admin/adminOrderListByCustomer.jsp?customerId=<%=a.get("customerId")%>"><%=a.get("customerId")%></a> </td>
               	  <td><%=a.get("orderPrice") %> </td>
 				 <td>
-                   	<form action="<%=request.getContextPath()%>/employeeApprovalAction.jsp" method="post">
-                  	<select name ="approval">
+                   	<form action="<%=request.getContextPath()%>/admin/adminOrderStateAction.jsp" method="post">
+                  	<select name ="orderState">
 
 				<%
 					if(a.get("orderState").equals("상품준비중")){

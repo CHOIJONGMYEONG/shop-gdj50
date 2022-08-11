@@ -117,41 +117,31 @@ public class CustomerDao {
 		
 	}
 	
-	public String selectCustomerExistId(String id) throws Exception {
-		String sql = "SELECT t.id\r\n"
-				+ "from (SELECT customer_id id FROM customer\r\n"
-				+ "UNION\r\n"
-				+ "SELECT employee_id id FROM employee\r\n"
-				+ "UNION\r\n"
-				+ "SELECT out_id id FROM outid) t\r\n"
-				+ "WHERE t.id = 'xxx' ;";
-		String returnId = null;
-		Connection conn =null;
-		PreparedStatement stmt = null;
-		
-		DBUtil dbutil= new DBUtil();
-		ResultSet rs =null;
-		
-		try {
-			conn =dbutil.getConnection();
-			stmt = conn.prepareStatement(sql);
-			stmt.setString(1,id);
-			rs = stmt.executeQuery();
-			if(rs.next()) {
-				returnId= rs.getString("id");
-			}
-	
-		
-		
-		}finally {
-			rs.close();
-			stmt.close();
-			conn.close();
-		}
-		return returnId;  // null 아이디 사용가능 , !null사용불가
-		
-		
-	}
+	 public String selectIdCheck(Connection conn, String idck) throws SQLException {
+	      String id = null;
+	      
+	      /*
+	       SELECT t.id
+	       FROM
+	       (SELECT customer_id id FROM customer
+	       UNION 
+	       SELECT employee_id id FROM employee
+	       UNION
+	       SELECT out_id id FROM outid) t
+	       WHERE t.id = ?
+	       */
+	      String sql = "SELECT t.id FROM (SELECT customer_id id FROM customer UNION SELECT employee_id id FROM employee UNION SELECT out_id id FROM outid) t WHERE t.id = ?";
+	      PreparedStatement stmt = conn.prepareStatement(sql);
+	      stmt.setString(1, idck);
+	      ResultSet rs = stmt.executeQuery();
+	      if(rs.next()) {
+	         id = rs.getString("t.id");
+	      }
+	      
+	      if(rs != null) { rs.close(); }
+	      if(stmt != null) { stmt.close(); }   
+	      return id; // 사용가능한 아이디면 null 반환
+	   }
 	
 	
 	

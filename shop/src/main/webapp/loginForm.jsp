@@ -25,9 +25,7 @@
               <a href="<%=request.getContextPath()%>/customerInsertForm.jsp">회원가입</a>
          </fieldset>
       </form>
-    
    </div>
-   
    
    <div>
       <form id="employeeForm" method="post" action="<%=request.getContextPath()%>/employeeLoginAction.jsp"">

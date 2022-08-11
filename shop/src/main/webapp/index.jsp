@@ -47,9 +47,16 @@
 	<a href="<%=request.getContextPath()%>/shopOne.jsp">정보보기</a>
 	<a href="<%=request.getContextPath()%>/<%=delete%>">회원탈퇴</a>
 	</div>
+<div>
+	<ul>
+	<li><a href="<%=request.getContextPath()%>/customerGoodsList.jsp">상품리스트</a></li>
+	<li><a href="<%=request.getContextPath()%>">상품관리</a></li> 
+	<li><a href="<%=request.getContextPath()%>">주문관리</a></li>
+	<li><a href="<%=request.getContextPath()%>">고객관리</a></li>
+	<li><a href="<%=request.getContextPath()%>">공지관리</a></li>
+</ul>
+</div>
 
- <!-- 로그인 아이디 -->
 
-  <!-- 로그인 이름 -->
 </body>
 </html>

@@ -3,6 +3,7 @@ package service;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Map;
 import shop.repository.DBUtil;
 import shop.repository.GoodsDao;
 import shop.repository.GoodsImgDao;
+import shop.repository.OrdersDao;
 import shop.vo.Goods;
 import shop.vo.GoodsImg;
 
@@ -18,6 +20,34 @@ public class GoodsService {
 	
 	private GoodsDao goodsDao;
 	private GoodsImgDao goodsImgDao;
+	
+ public List<Map<String,Object>> selectCustomerGoodsListByPage(int rowPerPage , int currentPage){
+		 
+		Connection conn = null;
+		List<Map<String,Object>> list = new ArrayList<>();
+		 int beginRow = (currentPage - 1) * rowPerPage;
+		this.goodsDao = new GoodsDao();
+		
+			try{conn = new DBUtil().getConnection();
+			conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+			
+			list = goodsDao.selectCustomerGoodsListByPage(conn , rowPerPage,beginRow);
+			
+			conn.commit();
+			}catch(Exception e) {
+				e.printStackTrace(); // console에 예외메세지 출력
+				
+			}finally {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return list;
+		
+	 }
+	
 	
 	public void addGoods(Goods goods , GoodsImg goodsImg) {
 		Connection conn = null; 

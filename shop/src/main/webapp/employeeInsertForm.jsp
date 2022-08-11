@@ -15,32 +15,20 @@
 <body>
 
 <!-- id ck form -->
-<form action ="<%=request.getContextPath()%>/idCheckAction.jsp" method="post">
-	<div>
+<div>
+	<!-- 아이디 중복검사 -->
 		ID 체크 
-		<input type="text" name = "ckId">
-		<button type ="submit">아이디중복검사</button>
-		<input type=hidden name = "jb" value="employee">
+		<input type="text" name="idck" id="idck">
+	<button type="button" id="idckBtn">아이디 중복검사</button>
+		
+		
+	
 	</div>
 
 
-</form>
 
 <!-- 고객가입form -->
-<%
-	String ckId= "";
-	if(request.getParameter("ckId")!=null){
-		ckId= request.getParameter("ckId");
-	}
-	String errorMsg="";
-	if (request.getParameter("errorMsg")!=null){
-		errorMsg = request.getParameter("errorMsg");
-	}
-%>
 
-
-
-<%=errorMsg %>
 
 
 
@@ -48,7 +36,7 @@
 <table border="1">
 <tr>
     <td>고객아이디</td>
-    <td><input type="text" name ="employeeId" id="employeeId" readonly="readonly" value="<%=ckId%>" >
+    <td><input type="text" name ="employeeId" id="employeeId" readonly="readonly">
     </td>
   </tr>
 
@@ -74,6 +62,35 @@
 </form>
 </body>
 <script>
+
+$('#idckBtn').click(function() {
+	if($('#idck').val().length < 4) {
+		alert('id는 4자이상!');
+	} else {
+		// 비동기 호출	
+		$.ajax({
+			url : '/shop/idckController',
+			type : 'post',
+			data : {idck : $('#idck').val()},
+			success : function(json) {
+				// alert(json);
+				if(json == 'y') {
+					$('#employeeId').val($('#idck').val());
+				} else {
+					alert('이미 사용중인 아이디 입니다.');
+					$('#employeeId').val('');
+				}
+			}
+		});
+	}
+});
+
+
+
+
+
+
+
 $(function(){
     $("#writeForm").submit(function(){
        if($("#employeeId").val()==""){

@@ -182,6 +182,66 @@ public class GoodsDao {
 		
 		
 	}
-	
+	public List<Map<String,Object>> selectCustomerGoodsListByPage (Connection conn ,int rowrPerpage  ,int beginRow) throws Exception {
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		
+		/*
+		 고객이 판매량수 많은것 부터
+		SELECT g.*, IFNULL( t.sumNum,0) sumNum 
+		FROM
+		 goods g LEFT JOIN (SELECT orders, SUM(order_quantity)
+				 FROM orders
+				 GROUP BY goods_no) t 
+				
+		 		ON g.goods_no = t.goods_no
+		 			INNER JOIN goods_img gi
+		 			ON g.goods_no = go.goods_no
+		 ORDER BY IFNULL( t.sumNum,0) DESC
+		 */
+		
+		String sql = "SELECT g.goods_no goodsNo\r\n"
+				+ ", g.goods_name goodsName\r\n"
+				+ ", g.goods_price goodsPrice\r\n"
+				+ ", g.sold_out soldOut\r\n"
+				+ ", gi.filename filename\r\n"
+				+ " FROM\r\n"
+				+ " goods g LEFT JOIN (SELECT goods_no, SUM(order_quantity) sumNum\r\n"
+				+ " FROM orders\r\n"
+				+ " GROUP BY goods_no) t\r\n"
+				+ " ON g.goods_no = t.goods_no\r\n"
+				+ "INNER JOIN goods_img gi\r\n"
+				+ " ON g.goods_no = gi.goods_no\r\n"
+				+ "ORDER BY IFNULL(t.sumNUm, 0) DESC;\r\n";
+			
+		PreparedStatement stmt = null;
+		ResultSet rs =null;
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				Map<String ,Object> map =new HashMap<String,Object>();
+				map.put("goodsNo", rs.getInt("goodsNo"));
+				map.put("goodsName", rs.getString("goodsName"));
+				map.put("goodsPrice", rs.getInt("goodsPrice"));
+				map.put("soldOut", rs.getString("soldOut"));
+				map.put("filename", rs.getString("filename"));
+				
+				list.add(map);
+				
+			}
+		
+		}finally {
+			if(rs!=null) {rs.close();}
+			if(stmt!=null) {stmt.close();}
+		
+		}
+		
+		
+		return list;
+
+		
+		
+	}
 	
 }
