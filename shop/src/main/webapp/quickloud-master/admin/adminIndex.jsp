@@ -98,10 +98,6 @@
 				<div class="collapse navbar-collapse" id="navbars-host">
 					<ul class="navbar-nav ml-auto">
 			
-					
-					
-					
-					
 						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/employeeList.jsp">사원관리</a></li>
 						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp">상품관리</a></li>
 						<li class="nav-item"><a class="nav-link" href="features.html">주문관리 </a></li>

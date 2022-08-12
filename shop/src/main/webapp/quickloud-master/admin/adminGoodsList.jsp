@@ -145,7 +145,7 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
     <div class="section lb">
    
         <div class="container">
-          <a href="<%=request.getContextPath()%>/admin/addGoodsForm.jsp"><button class="btn grd1 effect-1 btn-radius btn-brd">상품추가</button></a>	
+          <a href="<%=request.getContextPath()%>/quickloud-master/admin/addGoodsForm.jsp"><button class="btn grd1 effect-1 btn-radius btn-brd">상품추가</button></a>	
             <div class="section-title text-center">
                 <h3>상품리스트</h3>
                 

@@ -149,6 +149,11 @@
 				<a class="navbar-brand" href="index.html">
 					<img src="images/logo-hosting.png" alt="" />
 				</a>
+				<div class="collapse navbar-collapse" id="navbars-host">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+					</ul>
+				</div>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -156,22 +161,6 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-host">
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-						<li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
-						<li class="nav-item"><a class="nav-link" href="features.html">Features </a></li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Hosting </a>
-							<div class="dropdown-menu" aria-labelledby="dropdown-a">
-								<a class="dropdown-item" href="hosting.html">Web Hosting </a>
-								<a class="dropdown-item" href="hosting.html">WordPress Hosting </a>
-								<a class="dropdown-item" href="hosting.html">Cloud Server </a>
-								<a class="dropdown-item" href="hosting.html">Reseller Package </a>
-								<a class="dropdown-item" href="hosting.html">Dedicated Hosting </a>
-							</div>
-						</li>
-						<li class="nav-item"><a class="nav-link" href="domain.html">Domain</a></li>
-						<li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
-						<li class="nav-item active"><a class="nav-link" href="contact.html">Contact</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
                         <li><a class="hover-btn-new log" href="#" data-toggle="modal" data-target="#login"><span>Customer Login</span></a></li>
@@ -183,18 +172,17 @@
 	<!-- End header -->
 	
 	<div class="all-title-box">
-		<div class="container text-center">
+		<div class="container-fluid text-center">
 			<h1>Contact<span class="m_1">Lorem Ipsum dolroin gravida nibh vel velit.</span></h1>
 		</div>
 	</div>
 	
     <div id="support" class="section wb">
-        <div class="container-fulid">
+        <div class="container">
             <div class="section-title text-center">
                 <h3>관리자 회원가입</h3>
             </div><!-- end title -->
 		
-
 
             <div class="row">
                 <div class="col-xl-6 col-md-12 col-sm-12">
@@ -204,7 +192,6 @@
                         <form id="writeForm" class="" action="<%=request.getContextPath()%>/quickloud-master/employeeInsertAction.jsp" name="contactform" method="post">
                             <fieldset class="row row-fluid">
                             	
-	
                              
                              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
 								<input type="text" name="idck" id="idck" class="form-control">
@@ -242,9 +229,8 @@
                                 </div>
                             </fieldset>
                         </form>
-                    </div>
                 </div><!-- end col -->
-				
+				</div>
             </div><!-- end row -->
         </div><!-- end container -->
     </div><!-- end section -->

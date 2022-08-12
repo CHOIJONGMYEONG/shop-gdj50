@@ -55,7 +55,7 @@
 	goodsService.addGoods(goods, goodsImg);
 	
 	
-	response.sendRedirect(request.getContextPath()+"/admin/adminGoodsList.jsp");
+	response.sendRedirect(request.getContextPath()+"/quickloud-master/admin/adminGoodsList.jsp");
 	
 	
 %>
