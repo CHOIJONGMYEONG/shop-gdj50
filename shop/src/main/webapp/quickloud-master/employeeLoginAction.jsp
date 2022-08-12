@@ -34,7 +34,7 @@
 	// Object <-다형성 String 추상화,상속,다형성,캡슐화
 	session.setAttribute("loginEmployee", paramEmployee); // Object <-다형성 Integer <-오토박싱 int
 	session.setAttribute("loginType", "employee");
-	response.sendRedirect(request.getContextPath()+"/quickloud-master/index.jsp");
+	response.sendRedirect(request.getContextPath()+"/quickloud-master/admin/adminIndex.jsp");
 	
 	}else{response.sendRedirect(request.getContextPath()+"/quickloud-master/loginForm.jsp");
 	

@@ -102,7 +102,7 @@
 					
 					
 					
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/employeeList.jsp">사원관리</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerGoodsList.jsp">상품리스트</a></li>
 						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/admin/adminGoodsList.jsp">상품관리</a></li>
 						<li class="nav-item"><a class="nav-link" href="features.html">주문관리 </a></li>
 					

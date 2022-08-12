@@ -9,6 +9,34 @@ import shop.repository.*;
 import shop.vo.*;
 
 public class CustomerDao {
+	public int updateCustomer(Connection conn, Customer paramCustomer) throws Exception {
+		
+		// 동일한 conn
+		// conn.close()X
+		int row = 0;
+		String sql = "UPDATE customer SET customer_address = ? ,customer_telephone = ? ,customer_name =?,update_date=now() WHERE customer_id = ?";
+		
+		 PreparedStatement stmt=null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, paramCustomer.getCustomerAddress());
+			stmt.setString(2, paramCustomer.getCustomerTelephone());
+			stmt.setString(3, paramCustomer.getCustomerName());
+			stmt.setString(4, paramCustomer.getCustomerId());
+			row =stmt.executeUpdate();
+		 
+		
+		}finally {
+			stmt.close();
+		}
+	
+		return row;
+		
+		
+		
+		
+	}
+	
 	
 	// 탈퇴
 	// CustomerService.removeCustomer(Customer paramCustomer)가 호출
@@ -43,7 +71,7 @@ public class CustomerDao {
 	public Customer selectCustomerByidAndPw(Connection conn, Customer paramCustomer) throws Exception {
 		Customer loginCustomer = null;
 		
-		String sql = "SELECT customer_id , customer_pass, customer_name, customer_address, customer_telephone , update_date , create_date FROM customer WHERE customer_id=? AND customer_pass = PASSWORD(?)";
+		String sql = "SELECT customer_id , customer_pass, customer_name, customer_address, customer_telephone , update_date , create_date FROM customer WHERE customer_id=?";
 		
 		
 		PreparedStatement stmt = null;
@@ -54,7 +82,6 @@ public class CustomerDao {
 		try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1,paramCustomer.getCustomerId());
-			stmt.setString(2, paramCustomer.getCustomerPass());
 			rs = stmt.executeQuery();
 			
 			loginCustomer = new Customer();	
@@ -65,8 +92,8 @@ public class CustomerDao {
 				loginCustomer.setCustomerName(rs.getString("customer_name"));
 				loginCustomer.setCustomerAddress(rs.getString("customer_address"));
 				loginCustomer.setCustomerTelephone(rs.getString("customer_telephone"));
-				loginCustomer.setCreateDate(rs.getString("update_date"));
-				loginCustomer.setUpdateDate(rs.getString("create_date"));
+				loginCustomer.setCreateDate(rs.getString("create_date"));
+				loginCustomer.setUpdateDate(rs.getString("update_date"));
 			}
 				
 			System.out.println(loginCustomer.getCustomerId());

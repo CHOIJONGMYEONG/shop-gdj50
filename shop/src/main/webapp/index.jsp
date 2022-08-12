@@ -44,7 +44,7 @@
 	<%=Name%>님 환영합니다
 	당신의 Id는<%=Id %>입니다.
 	<a href="<%=request.getContextPath()%>/logout.jsp">로그아웃</a>
-	<a href="<%=request.getContextPath()%>/shopOne.jsp">정보보기</a> 
+	<a href="<%=request.getContextPath()%>/customerOne.jsp">정보보기</a> 
 	<a href="<%=request.getContextPath()%>/<%=delete%>">회원탈퇴</a>
 	</div>
 <div>
