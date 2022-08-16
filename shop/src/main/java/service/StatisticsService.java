@@ -57,7 +57,7 @@ public class StatisticsService {
 		try {
 			conn = new DBUtil().getConnection();
 			conn.setAutoCommit(false);
-			list = statisticsDao.selectCountByOrder(conn, year);
+			list = statisticsDao.selectCountByCustomer(conn, year);
 			conn.commit();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -89,6 +89,36 @@ public class StatisticsService {
 			conn = new DBUtil().getConnection();
 			conn.setAutoCommit(false);
 			list = statisticsDao.selectCountByOutId(conn, year);
+			conn.commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
+	
+	public List<Map<String, Object>> selectCountByOrder(int year) {
+		List<Map<String,Object>> list = null; 
+		Connection  conn = null;
+		list = new ArrayList<>();
+		statisticsDao = new StatisticsDao();
+		System.out.print(year);
+		
+		try {
+			conn = new DBUtil().getConnection();
+			conn.setAutoCommit(false);
+			list = statisticsDao.selectCountByOrder(conn, year);
 			conn.commit();
 		}catch (Exception e) {
 			e.printStackTrace();

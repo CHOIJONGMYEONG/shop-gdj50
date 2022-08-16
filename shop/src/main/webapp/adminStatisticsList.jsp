@@ -15,6 +15,10 @@ $(document).ready(function() {
     let y = [];
     let x1 = [];
     let y1 = [];
+    let x2 = [];
+    let y2 = [];
+    let x3 = [];
+    let y3 = [];
     
    $.ajax({
       url : '/shop/controller/getCountByHiredate',
@@ -98,17 +102,102 @@ $(document).ready(function() {
          
       }
    });
+   $.ajax({
+	      url : '/shop/controller/getCountByOrder',
+	      type : 'get',
+	      success : function(json) {
+	         console.log(json);
+	         $(json).each(function(index, item) {
+				x2.push(item.m);
+				y2.push(item.cnt);
+	        	 let html = '<tr>';
+	            html += '<td>'+item.m+'</td>';
+	            html += '<td>'+item.cnt+'</td>';
+	            html += '</tr>';
+	            $('#deptCnt2').append(html);
+	         });
+	         
+	        
+	         let barColors = ["red", "green","blue","orange","brown"];
+
+	         new Chart("myChart3", {
+	           type: "bar",
+	           data: {
+	             labels: x2,
+	             datasets: [{
+	               backgroundColor: barColors,
+	               data: y2
+	             }]
+	           },
+	           options: {
+	             legend: {display: false},
+	             title: {
+	               display: true,
+	               text: "Goodee2022"
+	             },
+	             scales: {
+	       	      yAxes: [{ticks: {min: 0, max:10}}]
+	       	    }
+	           }
+	         });
+	         
+	      }
+	   });
+   $.ajax({
+	      url : '/shop/controller/getCountByOutId',
+	      type : 'get',
+	      success : function(json) {
+	         console.log(json);
+	         $(json).each(function(index, item) {
+				x3.push(item.m);
+				y3.push(item.cnt);
+	        	 let html = '<tr>';
+	            html += '<td>'+item.m+'</td>';
+	            html += '<td>'+item.cnt+'</td>';
+	            html += '</tr>';
+	            $('#deptCnt3').append(html);
+	         });
+	         
+	        
+	         let barColors = ["red", "green","blue","orange","brown"];
+
+	         new Chart("myChart4", {
+	           type: "bar",
+	           data: {
+	             labels: x3,
+	             datasets: [{
+	               backgroundColor: barColors,
+	               data: y3
+	             }]
+	           },
+	           options: {
+	             legend: {display: false},
+	             title: {
+	               display: true,
+	               text: "Goodee2022"
+	             },
+	             scales: {
+	       	      yAxes: [{ticks: {min: 0, max:10}}]
+	       	    }
+	           }
+	         });
+	         
+	      }
+	   });
+   
+   
+   
    
 });
 </script>
 </head>
 <body>
    <div>
-      <h2>부서별 인원</h2>
+      <h2>입사현황</h2>
       <table border="1">
          <thead>
             <tr>
-               <th>부서명</th>
+               <th>월</th>
                <th>인원수</th>
             </tr>   
          </thead>
@@ -119,7 +208,7 @@ $(document).ready(function() {
    </div>
    
    <div>
-      <h2>월별 입사인원</h2>
+      <h2>회원가입현황</h2>
       <select id="year">
          <option value="2022">2022</option>
       </select>
@@ -135,5 +224,38 @@ $(document).ready(function() {
       </table>
       <canvas id="myChart2" style="width:100%;max-width:700px"></canvas>
    </div>
+   
+   
+   <div>
+      <h2>주문현황</h2>
+     <table border="1">
+         <thead>
+            <tr>
+               <th>월</th>
+               <th>인원수</th>
+            </tr>   
+         </thead>
+         <tbody id="deptCnt2">
+         </tbody>
+      </table>
+      <canvas id="myChart3" style="width:100%;max-width:700px"></canvas>
+   </div>
+   
+   <div>
+      <h2>탈퇴현황</h2>
+     <table border="1">
+         <thead>
+            <tr>
+               <th>월</th>
+               <th>인원수</th>
+            </tr>   
+         </thead>
+         <tbody id="deptCnt3">
+         </tbody>
+      </table>
+      <canvas id="myChart4" style="width:100%;max-width:700px"></canvas>
+   </div>
+   
+   
 </body>
 </html>

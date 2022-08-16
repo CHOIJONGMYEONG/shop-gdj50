@@ -1,60 +1,54 @@
 <%@page import="shop.vo.Employee"%>
 <%@page import="shop.vo.Customer"%>
 <%@page import="shop.vo.Goods"%>
-<%@page import="java.util.List"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="service.GoodsService"%>
-<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-    
-    
  <%
-	if(session.getAttribute("loginType")==null){
+ if(session.getAttribute("loginType")==null){
 		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");		
 		return;
 	}
 
- String loginType = (String)session.getAttribute("loginType");
+String loginType = (String)session.getAttribute("loginType");
 	String Id = "";
 	String Name = "";
 	
- if (loginType.equals("customer")){
+if (loginType.equals("customer")){
 	    Id= ((Customer)session.getAttribute("loginCustomer")).getCustomerId();
 	  Name= ((Customer)session.getAttribute("loginCustomer")).getCustomerName();   
- }else if ( loginType.equals("employee")) {
+}else if ( loginType.equals("employee")) {
 	   
 	   Id=((Employee)session.getAttribute("loginEmployee")).getEmployeeId();
 	    Name=((Employee)session.getAttribute("loginEmployee")).getEmployeeName();
 	   
- }
- 
- int rowPerPage = 5;
- int currentPage= 1;
- if (request.getParameter("currentPage") != null) {
-		currentPage = Integer.parseInt(request.getParameter("currentPage"));
-	}
- 
- 
- 
-
- List<Goods> GoodsList = new ArrayList<Goods>();
- GoodsService goodsService = new GoodsService();
- 
- GoodsList = goodsService.getGoodsListByPage(rowPerPage, currentPage);
- int totalRow = goodsService.getGoodsAllCount();
- int lastPage = totalRow/rowPerPage;
- if(totalRow %rowPerPage!=0){
-		lastPage +=1;}
- 
- int pageBegin = ((currentPage - 1) / rowPerPage) * rowPerPage + 1; // 페이지 시작 넘버
-int pageEnd = pageBegin + rowPerPage - 1; // 페이지 끝 글 구하는 공식
-pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
- 
- 
- %>   
+}
+	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+ 	System.out.print(goodsNo);
+	GoodsService service = new GoodsService();
+	Map<String,Object> map = new HashMap<String,Object>(); 
+			
+		map = service.getCustomerOneGoods(goodsNo);
+	 System.out.print("네임"+map.get("goodsName"));
+	String goodsName = (String)map.get("goodsName");
+	int goodsPrice = (int) map.get("goodsPrice");
+	String updateDate = (String) map.get("updateDate");
+	String createDate = (String)map.get("createDate");
+	String soldOut = (String)map.get("soldOut");
+	String fileName= (String)map.get("fileName");
+	String originFilename = (String)map.get("originFilename");
+	String contentType = (String)map.get("contentType");
+	String creatDate =(String) map.get("createDate");
+	
+	System.out.println(fileName +"경로");
+	
+%>   
     
-<!DOCTYPE html>
+    
+    <!DOCTYPE html>
 <html lang="ko">
 
     <!-- Basic -->
@@ -92,10 +86,41 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+<style>
+.img-fluid {
+    max-width: 100%;
+    height: 500px;
+    
+}
+.contact_form .form-control {
+    background-color: #fff;
+    margin-bottom: 30px;
+    border: 1px solid #ebebeb;
+    box-sizing: border-box;
+    color: black;
+    font-size: 16px;
+    outline: 0 none;
+    padding: 10px 25px;
+    height: 55px;
+    resize: none;
+    box-shadow: none !important;
+    width: 100%;
+}
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    justify-content: center;
+    align-items:center;
+}
+</style>
 </head>
 <body class="host_version"> 
 
+	<!-- Modal -->
 
     <!-- LOADER -->
 	<div id="preloader">
@@ -139,135 +164,90 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 	<!-- End header -->
 	
 	
-	
-
-    <div class="section lb">
-   
+    <div id="overviews" class="section lb">
         <div class="container">
-          <a href="<%=request.getContextPath()%>/quickloud-master/admin/addGoodsForm.jsp"><button class="btn grd1 effect-1 btn-radius btn-brd">상품추가</button></a>	
-            <div class="section-title text-center">
-                <h3>상품리스트</h3>
-                
-				<div class="dmoain-pricing">
-					<div class="table-responsive-sm">
-						<table>
-							<thead>
-								<tr class="domain-head">
-									<th scope="col">
-										상품번호
-									</th>
-									<th scope="col">
-										상품명
-									</th>
-									<th scope="col">
-										가격
-									</th>
-									<th scope="col">
-										등록날짜
-									</th>
-									<th scope="col">
-										수정날짜
-									</th>
-									<th scope="col">
-										품절여부
-									</th>
-									
-								</tr>
-							</thead>
-							<tbody>
-								
-								
-								 <%
-								 for (Goods a : GoodsList ){
-
-		%>
-
-    	           <tr>
-                  <td data-label="DOMAIN NAME"><%=a.getGoodsNo() %></td>
-                  <td data-label="DOMAIN NAME"><a href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsOneForm.jsp?goodsNo=<%=a.getGoodsNo()%>"><button class="btn btn-success"><%=a.getGoodsName()%></button></a> </td>
-                  
-                   <td data-label="DOMAIN NAME">
-                   <%=a.getGoodsPrice() %>
-			                    </td> 
-			                  
-			                   <td data-label="DOMAIN NAME">
-                   <%=a.getCreateDate()%>
-			                    </td> 
-			                     <td data-label="DOMAIN NAME">
-                   <%=a.getUpdateDate()%>
-			                    </td> 
-			                   <td data-label="DOMAIN NAME">
-                   	<form action="<%=request.getContextPath()%>/quickloud-master/admin/adminSoldOutUpdateAction.jsp" method="post">
-                  	<select name ="soldOut" class="btn grd1 effect-1 btn-radius btn-brd">
-
-				<%
-					if(a.getSoldOut().equals("N")){
-				%>
-			
-			
-					<option>Y</option>
-					<option selected="selected">N</option>
-			
-				<%
-					}else{
-				%>
-					<option  selected="selected">Y</option>
-					<option>N</option>
-					</select>
-			                  
-			                   
-			         <%      
-			            }
-			         %>           
-			         <input type="hidden" value="<%=a.getGoodsNo()%>" name="goodsNo">
-			         <button type="submit" class="btn grd1 effect-1 btn-radius btn-brd" >상태변경</button>
-			           </form> 
-			                    </td> 
-			               </tr>
-						
-			         <%      
-			            }
-			         %>
-								
-								
-							</tbody>
-						</table>
-					</div>
-				</div>
-				
-		
-<%
-	/*int lastPage = boardDao.selectBoardLastPage(ROW_PER_PAGE);*/
-	System.out.println(lastPage);
-	if (pageBegin > rowPerPage) {
-	%>
-	
-	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp?currentPage=<%=pageBegin - rowPerPage%>">이전</a>
-
-	<%
-	}
-
-	for(int i = pageBegin; i <= pageEnd; i++){
-		%>
-			<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp?currentPage=<%=i%>"><%=i%></a>
-		<%
-		}
-	
-	
-	
-	if (pageEnd < lastPage) {
-	%>
-	
-	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp?currentPage=<%=pageBegin + rowPerPage%>">다음</a>
-	<%
-	}
-	%>
-	
-			
+            <div class="section-title row text-center">
+                <div class="col-md-8 offset-md-2">
+                    <h3>상품상세보기</h3>
+                </div>
             </div><!-- end title -->
+        
+          
+			<div class="row">
+				<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12">
+                    <div class="post-media wow fadeIn">
+                        <img src="<%=request.getContextPath()%>/upload/<%=fileName %>" alt="" class="img-fluid img-rounded">
+                    </div><!-- end media -->
+                </div><!-- end col -->
+				
+				<div class="col-xl-7 col-lg-7 col-md-12 col-sm-12">
+				
+			
+                    <div class="contact_form">
+                        <div id="message"></div>
+                        <form id="writeForm" class="" action="<%=request.getContextPath()%>/quickloud-master/employeeInsertAction.jsp" name="contactform" method="post">
+                            <fieldset class="row row-fluid">
+                            	
+                             
+                            	
+                            	
+                            	  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text" value="상품번호" name="first_name" id="first_name" class="form-control" readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" value="<%=goodsNo %>" name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
+                                </div>
+                                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text" value="상품명" name="first_name" id="first_name" class="form-control" readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" value="<%=goodsName %>" name="employeeId" id="employeeId" class="form-control" placeholder="">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text" value="상품가격" name="first_name" id="first_name" class="form-control" readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" value="<%=goodsPrice %>" name="employeeId" id="employeeId" class="form-control" placeholder="">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text"value="등록날짜" name="email" id="email" class="form-control" readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" value="<%=createDate %>" name="employeePass" id="employeePass" class="form-control" readonly placeholder="">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text" value="수정날짜" name="first_name" id="first_name" class="form-control" readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" value="<%=updateDate %>" name="employeeName" id="employeeName" class="form-control" readonly placeholder="">
+                                </div>
+                           		  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text" value="품절여부" name="first_name" id="first_name" class="form-control" readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" value="<%=soldOut%>" name="employeeName" id="employeeName" class="form-control" placeholder="">
+                                </div>
+                                
+                                
+                                <div class="text-center pd">
+                                   <button type="submit" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">수정페이지</button>
+                                </div>    
+                                
+                                  <div class="text-center pd">
+                                  <button type="reset" id="submit1" class="btn btn-light btn-radius btn-brd grd1 btn-block">취</button>
+                                </div>    
+                                 
+                            </fieldset>
+                        </form>
+            </div><!-- end row -->
+				
+			</div>	
+                </div><!-- end col -->
+				
+				
+				
         </div><!-- end container -->
     </div><!-- end section -->
-
 
     <div class="parallax section dbcolor">
         <div class="container">
@@ -371,3 +351,17 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 
 </body>
 </html>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  

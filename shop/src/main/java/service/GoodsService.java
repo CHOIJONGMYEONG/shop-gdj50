@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 import shop.repository.DBUtil;
+import shop.repository.EmployeeDao;
 import shop.repository.GoodsDao;
 import shop.repository.GoodsImgDao;
 import shop.repository.OrdersDao;
+import shop.vo.Employee;
 import shop.vo.Goods;
 import shop.vo.GoodsImg;
 
@@ -20,6 +22,43 @@ public class GoodsService {
 	
 	private GoodsDao goodsDao;
 	private GoodsImgDao goodsImgDao;
+	
+	
+	public boolean goodsSoldOutModify(Goods goods) {
+		Connection conn = null;
+		this.goodsDao = new GoodsDao();
+		
+		try{conn = new DBUtil().getConnection();
+		conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+		
+		goodsDao.goodsSoldOutUpdate(conn, goods);
+		
+	
+		conn.commit();
+		}catch(Exception e) {
+			e.printStackTrace(); // console에 예외메세지 출력
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 	public Map<String,Object>getCustomerOneGoods(int goodsNO) {
 		Connection conn = null;

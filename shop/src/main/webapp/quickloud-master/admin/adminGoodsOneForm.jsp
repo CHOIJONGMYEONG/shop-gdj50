@@ -1,3 +1,5 @@
+<%@page import="shop.vo.Employee"%>
+<%@page import="shop.vo.Customer"%>
 <%@page import="shop.vo.Goods"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
@@ -6,6 +8,24 @@
     pageEncoding="UTF-8"%>
     
  <%
+ if(session.getAttribute("loginType")==null){
+		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");		
+		return;
+	}
+
+String loginType = (String)session.getAttribute("loginType");
+	String Id = "";
+	String Name = "";
+	
+if (loginType.equals("customer")){
+	    Id= ((Customer)session.getAttribute("loginCustomer")).getCustomerId();
+	  Name= ((Customer)session.getAttribute("loginCustomer")).getCustomerName();   
+}else if ( loginType.equals("employee")) {
+	   
+	   Id=((Employee)session.getAttribute("loginEmployee")).getEmployeeId();
+	    Name=((Employee)session.getAttribute("loginEmployee")).getEmployeeName();
+	   
+}
 	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
  	System.out.print(goodsNo);
 	GoodsService service = new GoodsService();
@@ -70,9 +90,32 @@
 .img-fluid {
     max-width: 100%;
     height: 500px;
+    
 }
-
-
+.contact_form .form-control {
+    background-color: #fff;
+    margin-bottom: 30px;
+    border: 1px solid #ebebeb;
+    box-sizing: border-box;
+    color: black;
+    font-size: 16px;
+    outline: 0 none;
+    padding: 10px 25px;
+    height: 55px;
+    resize: none;
+    box-shadow: none !important;
+    width: 100%;
+}
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    justify-content: center;
+    align-items:center;
+}
 </style>
 </head>
 <body class="host_version"> 
@@ -103,26 +146,17 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-host">
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-						<li class="nav-item active"><a class="nav-link" href="about.html">About Us</a></li>
-						<li class="nav-item"><a class="nav-link" href="features.html">Features </a></li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Hosting </a>
-							<div class="dropdown-menu" aria-labelledby="dropdown-a">
-								<a class="dropdown-item" href="hosting.html">Web Hosting </a>
-								<a class="dropdown-item" href="hosting.html">WordPress Hosting </a>
-								<a class="dropdown-item" href="hosting.html">Cloud Server </a>
-								<a class="dropdown-item" href="hosting.html">Reseller Package </a>
-								<a class="dropdown-item" href="hosting.html">Dedicated Hosting </a>
-							</div>
-						</li>
-						<li class="nav-item"><a class="nav-link" href="domain.html">Domain</a></li>
-						<li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
+							<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/employeeList.jsp">사원관리</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp">상품관리</a></li>
+						<li class="nav-item"><a class="nav-link" href="features.html">주문관리 </a></li>
+					
+						<li class="nav-item"><a class="nav-link" href="domain.html">고객관리</a></li>
+						<li class="nav-item"><a class="nav-link" href="pricing.html">공지관리</a></li>
 						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+						<li class="nav-item"><a class="nav-link" > <%=Name %>님 환영합니다</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/shopOne.jsp" >내정보</a></li>
+					   <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/logout.jsp" >로그아웃</a></li>
 					</ul>
-					<ul class="nav navbar-nav navbar-right">
-                        <li><a class="hover-btn-new log" href="#" data-toggle="modal" data-target="#login"><span>Customer Login</span></a></li>
-                    </ul>
 				</div>
 			</div>
 		</nav>
@@ -139,10 +173,10 @@
             </div><!-- end title -->
         
           
-			<div class="row align-items-center">
+			<div class="row">
 				<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12">
                     <div class="post-media wow fadeIn">
-                        <img src="images/about_03.jpg" alt="" class="img-fluid img-rounded">
+                        <img src="<%=request.getContextPath()%>/upload/<%=fileName %>" alt="" class="img-fluid img-rounded">
                     </div><!-- end media -->
                 </div><!-- end col -->
 				
@@ -167,36 +201,40 @@
                                     <input type="text" value="상품명" name="first_name" id="first_name" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" value="<%=goodsName %> name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
+                                    <input type="text" value="<%=goodsName %>" name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                     <input type="text" value="상품가격" name="first_name" id="first_name" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text"  name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
+                                    <input type="text" value="<%=goodsPrice %>" name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                    <input type="email"value="등록날짜" name="email" id="email" class="form-control" readonly>
+                                    <input type="text"value="등록날짜" name="email" id="email" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="password" name="employeePass" id="employeePass" class="form-control" placeholder="">
+                                    <input type="text" value="<%=createDate %>" name="employeePass" id="employeePass" class="form-control" readonly placeholder="">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                     <input type="text" value="수정날짜" name="first_name" id="first_name" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" name="employeeName" id="employeeName" class="form-control" placeholder="">
+                                    <input type="text" value="<%=updateDate %>" name="employeeName" id="employeeName" class="form-control" readonly placeholder="">
                                 </div>
                            		  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                     <input type="text" value="품절여부" name="first_name" id="first_name" class="form-control" readonly>
                                 </div>
-                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" name="employeeName" id="employeeName" class="form-control" placeholder="">
+                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" value="<%=soldOut%>" name="employeeName" id="employeeName" class="form-control"  readonly placeholder="">
                                 </div>
                                 
                                 
                                 <div class="text-center pd">
-                                    <button type="submit" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">수정페이지</button>
+                                   <a href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsUpdateForm.jsp?goodsNo=<%=goodsNo%>"><button type="button" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">수정페이지</button></a> 
+                                </div>    
+                                
+                                  <div class="text-center pd">
+                                   <a><button type="button" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">이미지수정</button></a>
                                 </div>    
                                  
                             </fieldset>

@@ -6,12 +6,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import shop.vo.Employee;
 import shop.vo.Goods;
 
 
 public class GoodsDao {
 	
 	
+	
+	public int goodsSoldOutUpdate(Connection conn, Goods goods) throws Exception {
+		int a =0;
+		
+		String sql = "update goods set sold_out = ? WHERE goods_no = ?";
+		
+		
+		PreparedStatement stmt = null;
+		
+		
+	
+		try {
+			
+			stmt = conn.prepareStatement(sql);
+			
+			stmt.setString(1,goods.getSoldOut());
+			stmt.setInt(2,goods.getGoodsNo());
+			
+			
+			a = stmt.executeUpdate();
+			
+		
+		}finally {
+			if(stmt!=null) {stmt.close();}
+			
+		}
+	
+		return a;
+		
+	}
 	
 	public Map<String,Object> selectCustomerOneGoods(Connection conn , int goodsNO) throws Exception{
 		

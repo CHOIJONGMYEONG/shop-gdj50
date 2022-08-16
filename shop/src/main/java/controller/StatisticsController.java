@@ -48,6 +48,13 @@ public class StatisticsController extends HttpServlet {
     		}else if(command.equals("/controller/getCountByCustomer")) {
     				List<Map<String,Object>> list = statisticsService.selectCountByCustomer(year);
     				result = gson.toJson(list);
+    		}else if(command.equals("/controller/getCountByOrder")) {
+				List<Map<String,Object>> list = statisticsService.selectCountByOrder(year);
+				result = gson.toJson(list);
+    		}else if(command.equals("/controller/getCountByOutId")) {
+    				List<Map<String,Object>> list = statisticsService.selectCountByOutId(year);
+    				result = gson.toJson(list);
+    		
     		}else {
     			System.out.println("잘못된 요청");
     		}
