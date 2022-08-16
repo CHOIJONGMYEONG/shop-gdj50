@@ -49,6 +49,7 @@
 	<li><a href="<%=request.getContextPath()%>/admin/adminOrdersList.jsp">주문관리</a></li><!-- 주문목록/수정 -->
 	<li><a href="<%=request.getContextPath()%>/admin/adminCustomerList.jsp">고객관리</a></li><!-- 고객목록/강제탈퇴/비밀번호수정(전달구현X) -->
 	<li><a href="<%=request.getContextPath()%>/admin/adminNoticeList.jsp">공지관리</a></li><!-- CRUD -->
+	<li><a href="<%=request.getContextPath()%>/adminStatisticsList.jsp">통계확인</a></li><!-- CRUD -->
 </ul>
 </div>
 

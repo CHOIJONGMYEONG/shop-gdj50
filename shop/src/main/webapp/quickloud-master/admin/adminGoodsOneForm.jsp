@@ -66,7 +66,14 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+<style>
+.img-fluid {
+    max-width: 100%;
+    height: 500px;
+}
 
+
+</style>
 </head>
 <body class="host_version"> 
 
@@ -148,40 +155,50 @@
                             <fieldset class="row row-fluid">
                             	
                              
-                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-								<input type="text" name="idck" id="idck" class="form-control">
+                            	
+                            	
+                            	  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text" value="상품번호" name="first_name" id="first_name" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                <button type="button" id="idckBtn" class="btn btn-light btn-radius btn-brd grd1 btn-block">아이디 중복검사</button>
+                                    <input type="text" value="<%=goodsNo %>" name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
                                 </div>
-                            
+                                  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text" value="상품명" name="first_name" id="first_name" class="form-control" readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" value="<%=goodsName %> name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
+                                </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                    <input type="text" value="고객아이디" name="first_name" id="first_name" class="form-control" readonly>
+                                    <input type="text" value="상품가격" name="first_name" id="first_name" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                                     <input type="text"  name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                    <input type="email"value="비밀번호" name="email" id="email" class="form-control" readonly>
+                                    <input type="email"value="등록날짜" name="email" id="email" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                                     <input type="password" name="employeePass" id="employeePass" class="form-control" placeholder="">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                    <input type="text" value="이름" name="first_name" id="first_name" class="form-control" readonly>
+                                    <input type="text" value="수정날짜" name="first_name" id="first_name" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                                     <input type="text" name="employeeName" id="employeeName" class="form-control" placeholder="">
                                 </div>
-                           
+                           		  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text" value="품절여부" name="first_name" id="first_name" class="form-control" readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" name="employeeName" id="employeeName" class="form-control" placeholder="">
+                                </div>
                                 
                                 
                                 <div class="text-center pd">
-                                    <button type="submit" value="가입" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">가입</button>
+                                    <button type="submit" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">수정페이지</button>
                                 </div>    
-                                 <div class="text-center pd">
-                                    <button type="reset" value="취소" id="cancel" class="btn btn-light btn-radius btn-brd grd1 btn-block">취소</button>
-                                </div>
+                                 
                             </fieldset>
                         </form>
             </div><!-- end row -->
