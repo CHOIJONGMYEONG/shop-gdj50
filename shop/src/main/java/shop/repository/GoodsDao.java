@@ -11,10 +11,38 @@ import shop.vo.Goods;
 
 
 public class GoodsDao {
-	public int goodsSoldOutUpdat(Connection conn, Goods goods) throws Exception {
+	
+	public int goodsOneDelete(Connection conn, int goodsNo) throws Exception {
 		int a =0;
 		
-		String sql = "update goods set sold_out = ? WHERE goods_no = ?";
+		String sql = "DELETE FROM goods WHERE goods_no= ?";
+		
+		
+		PreparedStatement stmt = null;
+		
+		
+	
+		try {
+			
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,goodsNo);
+			
+			a = stmt.executeUpdate();
+			
+		
+		}finally {
+			if(stmt!=null) {stmt.close();}
+			
+		}
+	
+		return a;
+		
+	}
+	
+	public int goodsOneUpdate(Connection conn, Goods goods) throws Exception {
+		int a =0;
+		
+		String sql = "update goods set goods_name = ?,goods_price =? WHERE goods_no = ?";
 		
 		
 		PreparedStatement stmt = null;
@@ -25,9 +53,9 @@ public class GoodsDao {
 			
 			stmt = conn.prepareStatement(sql);
 			
-			stmt.setString(1,goods.getSoldOut());
-			stmt.setInt(2,goods.getGoodsNo());
-			
+			stmt.setString(1,goods.getGoodsName());
+			stmt.setInt(2,goods.getGoodsPrice());
+			stmt.setInt(3,goods.getGoodsNo());
 			
 			a = stmt.executeUpdate();
 			

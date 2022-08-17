@@ -178,7 +178,7 @@
 	</div>
 	
     <div id="support" class="section wb">
-        <div class="container">
+        <div class="container-fulid">
             <div class="section-title text-center">
                 <h3>관리자 회원가입</h3>
             </div><!-- end title -->

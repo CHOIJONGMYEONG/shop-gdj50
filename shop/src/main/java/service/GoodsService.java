@@ -23,6 +23,105 @@ public class GoodsService {
 	private GoodsDao goodsDao;
 	private GoodsImgDao goodsImgDao;
 	
+	public void removeGoods(int goodsNo) {
+		Connection conn = null; 
+		int row = 0;
+		try {
+			conn = new DBUtil().getConnection();
+			conn.setAutoCommit(false);
+			
+			goodsDao = new GoodsDao();
+			goodsImgDao = new GoodsImgDao();
+			
+			row = goodsImgDao.deleteGoodsImg(conn,goodsNo); // goodsNo가 AI로 자동생성되어 DB입력
+		if(row != 0) {
+			 
+			if (goodsDao.goodsOneDelete(conn, goodsNo) == 0) {
+				throw new Exception (); // 이미지 입력실패시 강제로 롤백(catch절 이동)
+			}
+		}
+			conn.commit();
+		}catch(Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	
+	public void ModifyGoodsImg(GoodsImg goodsImg) {
+		Connection conn = null; 
+		
+		try {
+			conn = new DBUtil().getConnection();
+			conn.setAutoCommit(false);
+			
+			goodsImgDao = new GoodsImgDao();
+			goodsImgDao.updateGoodsImg(conn, goodsImg);
+		
+			conn.commit();
+		}catch(Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	public boolean goodsOneModify(Goods goods) {
+		Connection conn = null;
+		this.goodsDao = new GoodsDao();
+		
+		try{conn = new DBUtil().getConnection();
+		conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+		
+		goodsDao.goodsOneUpdate(conn, goods);
+		
+	
+		conn.commit();
+		}catch(Exception e) {
+			e.printStackTrace(); // console에 예외메세지 출력
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
+		
+	}
 	
 	public boolean goodsSoldOutModify(Goods goods) {
 		Connection conn = null;

@@ -234,9 +234,11 @@ if (loginType.equals("customer")){
                                 </div>    
                                 
                                   <div class="text-center pd">
-                                   <a href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsImgUpdateForm.jsp?goodsNo=<%=goodsNo%>"><button type="button" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">이미지수정</button></a>
+                                   <a href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsImgUpdateForm.jsp?goodsNo=<%=goodsNo%>&fileName=<%=fileName%>"><button type="button" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">이미지수정</button></a>
                                 </div>    
-                                 
+                                  <div class="text-center pd">
+                                     <a href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsDeleteAction.jsp?goodsNo=<%=goodsNo%>&fileName=<%=fileName%>"><button type="button" id="submit1" class="btn btn-light btn-radius btn-brd grd1 btn-block">삭제</button></a>
+                                </div>
                             </fieldset>
                         </form>
             </div><!-- end row -->

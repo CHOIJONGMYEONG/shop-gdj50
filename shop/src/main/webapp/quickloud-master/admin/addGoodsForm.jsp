@@ -170,7 +170,7 @@
                                 
                                 
                                 <div class="text-center pd">
-                                    <button type="submit" value="가입" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">가입</button>
+                                    <button type="submit" value="상품추가" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">상품추가</button>
                                 </div>    
                                  <div class="text-center pd">
                                     <button type="reset" value="취소" id="cancel" class="btn btn-light btn-radius btn-brd grd1 btn-block">취소</button>
