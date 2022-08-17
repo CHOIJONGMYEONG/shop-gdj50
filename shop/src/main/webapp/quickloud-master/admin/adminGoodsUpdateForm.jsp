@@ -188,8 +188,6 @@ if (loginType.equals("customer")){
                         <form id="writeForm" class="" action="<%=request.getContextPath()%>/quickloud-master/employeeInsertAction.jsp" name="contactform" method="post">
                             <fieldset class="row row-fluid">
                             	
-                             
-                            	
                             	
                             	  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                     <input type="text" value="상품번호" name="first_name" id="first_name" class="form-control" readonly>
@@ -221,20 +219,13 @@ if (loginType.equals("customer")){
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                                     <input type="text" value="<%=updateDate %>" name="employeeName" id="employeeName" class="form-control" readonly placeholder="">
                                 </div>
-                           		  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                    <input type="text" value="품절여부" name="first_name" id="first_name" class="form-control" readonly>
-                                </div>
-                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" value="<%=soldOut%>" name="employeeName" id="employeeName" class="form-control" placeholder="">
-                                </div>
-                                
-                                
+                           		
                                 <div class="text-center pd">
-                                   <button type="submit" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">수정페이지</button>
+                                  <a href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsOneForm.jsp?goodsNo=<%=goodsNo%>"> <button type="submit" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">수정하기</button></a>
                                 </div>    
                                 
                                   <div class="text-center pd">
-                                  <button type="reset" id="submit1" class="btn btn-light btn-radius btn-brd grd1 btn-block">취</button>
+                                  <a href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsOneForm.jsp?goodsNo=<%=goodsNo%>"><button type="button" id="submit1" class="btn btn-light btn-radius btn-brd grd1 btn-block">상세페이지로</button></a>
                                 </div>    
                                  
                             </fieldset>

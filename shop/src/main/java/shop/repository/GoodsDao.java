@@ -11,7 +11,35 @@ import shop.vo.Goods;
 
 
 public class GoodsDao {
+	public int goodsSoldOutUpdat(Connection conn, Goods goods) throws Exception {
+		int a =0;
+		
+		String sql = "update goods set sold_out = ? WHERE goods_no = ?";
+		
+		
+		PreparedStatement stmt = null;
+		
+		
 	
+		try {
+			
+			stmt = conn.prepareStatement(sql);
+			
+			stmt.setString(1,goods.getSoldOut());
+			stmt.setInt(2,goods.getGoodsNo());
+			
+			
+			a = stmt.executeUpdate();
+			
+		
+		}finally {
+			if(stmt!=null) {stmt.close();}
+			
+		}
+	
+		return a;
+		
+	}
 	
 	
 	public int goodsSoldOutUpdate(Connection conn, Goods goods) throws Exception {
