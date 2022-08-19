@@ -112,9 +112,9 @@
 						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminIndex.jsp">Home</a></li>
 						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/employeeList.jsp">사원관리</a></li>
 						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp">상품관리</a></li>
-						<li class="nav-item"><a class="nav-link" href="features.html">주문관리 </a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminOrdersList.jsp">주문관리 </a></li>
 					
-						<li class="nav-item"><a class="nav-link" href="domain.html">고객관리</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerList.jsp">고객관리</a></li>
 						<li class="nav-item"><a class="nav-link" href="pricing.html">공지관리</a></li>
 						
 						<li class="nav-item"><a class="nav-link" > <%=Name %>님 환영합니다</a></li>

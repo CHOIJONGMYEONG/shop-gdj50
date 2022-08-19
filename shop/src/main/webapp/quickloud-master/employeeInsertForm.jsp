@@ -51,7 +51,20 @@
     margin-right: -15px;
     margin-left: -15px;
 }
-
+.contact_form .form-control {
+    background-color: #fff;
+    margin-bottom: 30px;
+    border: 1px solid #ebebeb;
+    box-sizing: border-box;
+    color: black;
+    font-size: 16px;
+    outline: 0 none;
+    padding: 10px 25px;
+    height: 55px;
+    resize: none;
+    box-shadow: none !important;
+    width: 100%;
+}
 </style>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
@@ -151,7 +164,7 @@
 				</a>
 				<div class="collapse navbar-collapse" id="navbars-host">
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/loginForm.jsp">Home</a></li>
 					</ul>
 				</div>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
@@ -189,7 +202,7 @@
           
                     <div class="contact_form">
                         <div id="message"></div>
-                        <form id="writeForm" class="" action="<%=request.getContextPath()%>/quickloud-master/employeeInsertAction.jsp" name="contactform" method="post">
+                        <form id="writeForm" class="" action="<%=request.getContextPath()%>/quickloud-master/loginForm.jsp" name="contactform" method="post">
                             <fieldset class="row row-fluid">
                             	
                              

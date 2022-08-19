@@ -1,5 +1,27 @@
+<%@page import="shop.vo.Employee"%>
+<%@page import="shop.vo.Customer"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+if(session.getAttribute("loginType")!=null){
+	String loginType = (String)session.getAttribute("loginType");
+
+	if (loginType.equals("customer")){
+		response.sendRedirect(request.getContextPath()+"/quickloud-master/index.jsp");		
+		return;
+	}else if ( loginType.equals("employee")) {
+		response.sendRedirect(request.getContextPath()+"/quickloud-master/admin/adminIndex.jsp");		
+		return;
+	   
+	}
+	
+	
+}
+
+
+
+%>
 <!DOCTYPE html>
+
 <html lang="ko">
 
     <!-- Basic -->
@@ -142,6 +164,11 @@
 				<a class="navbar-brand" href="index.html">
 					<img src="images/logo-hosting.png" alt="" />
 				</a>
+				<div class="collapse navbar-collapse" id="navbars-host">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/loginForm.jsp">Home</a></li>
+					</ul>
+				</div>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-host" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -149,13 +176,6 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-host">
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerGoodsList.jsp">상품리스트</a></li>
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/admin/adminGoodsList.jsp">상품관리</a></li>
-						<li class="nav-item"><a class="nav-link" href="features.html">주문관리 </a></li>
-					
-						<li class="nav-item"><a class="nav-link" href="domain.html">고객관리</a></li>
-						<li class="nav-item"><a class="nav-link" href="pricing.html">공지관리</a></li>
-						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
                         <li><a class="hover-btn-new log" href="#" data-toggle="modal" data-target="#login"><span>Customer Login</span></a></li>

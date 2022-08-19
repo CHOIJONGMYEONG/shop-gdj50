@@ -1,54 +1,41 @@
 <%@page import="shop.vo.Employee"%>
+<%@page import="service.CustomerService"%>
 <%@page import="shop.vo.Customer"%>
-<%@page import="shop.vo.Goods"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="java.util.Map"%>
-<%@page import="service.GoodsService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
- <%
- if(session.getAttribute("loginType")==null){
-		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");		
-		return;
-	}
+<%
+if(session.getAttribute("loginType")==null){
+	response.sendRedirect(request.getContextPath()+"/loginForm.jsp");		
+	return;
+}
 
 String loginType = (String)session.getAttribute("loginType");
-	String Id = "";
-	String Name = "";
-	
+String Id = "";
+String Name = "";
+
 if (loginType.equals("customer")){
-	    Id= ((Customer)session.getAttribute("loginCustomer")).getCustomerId();
-	  Name= ((Customer)session.getAttribute("loginCustomer")).getCustomerName();   
+    Id= ((Customer)session.getAttribute("loginCustomer")).getCustomerId();
+  Name= ((Customer)session.getAttribute("loginCustomer")).getCustomerName();   
 }else if ( loginType.equals("employee")) {
-	   
-	   Id=((Employee)session.getAttribute("loginEmployee")).getEmployeeId();
-	    Name=((Employee)session.getAttribute("loginEmployee")).getEmployeeName();
-	   
+   
+   Id=((Employee)session.getAttribute("loginEmployee")).getEmployeeId();
+    Name=((Employee)session.getAttribute("loginEmployee")).getEmployeeName();
+   
 }
-	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
- 	System.out.print(goodsNo);
-	GoodsService service = new GoodsService();
-	Map<String,Object> map = new HashMap<String,Object>(); 
-			
-		map = service.getCustomerOneGoods(goodsNo);
-	 System.out.print("네임"+map.get("goodsName"));
-	String goodsName = (String)map.get("goodsName");
-	int goodsPrice = (int) map.get("goodsPrice");
-	String updateDate = (String) map.get("updateDate");
-	String createDate = (String)map.get("createDate");
-	String soldOut = (String)map.get("soldOut");
-	String fileName= (String)map.get("fileName");
-	String originFilename = (String)map.get("originFilename");
-	String contentType = (String)map.get("contentType");
-	String creatDate =(String) map.get("createDate");
-	
-	System.out.println(fileName +"경로");
-	
-%>   
-    
-    
-    <!DOCTYPE html>
+
+
+request.setCharacterEncoding("utf-8");
+String customerId = request.getParameter("customerId");
+Customer paramCustomer = new Customer();
+CustomerService customerservice =new CustomerService();
+paramCustomer.setCustomerId(customerId);
+paramCustomer = customerservice.getAdminCustomer(paramCustomer);
+System.out.print("확인"+paramCustomer.getCustomerId());
+
+
+%>
+ <!DOCTYPE html>
 <html lang="ko">
 
     <!-- Basic -->
@@ -168,77 +155,73 @@ if (loginType.equals("customer")){
         <div class="container">
             <div class="section-title row text-center">
                 <div class="col-md-8 offset-md-2">
-                    <h3>상품상세보기</h3>
+                    <h3>고객상세보기</h3>
                 </div>
             </div><!-- end title -->
         
           
 			<div class="row">
-				<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12">
-                    <div class="post-media wow fadeIn">
-                        <img src="<%=request.getContextPath()%>/upload/<%=fileName %>" alt="" class="img-fluid img-rounded">
-                    </div><!-- end media -->
-                </div><!-- end col -->
-				
-				<div class="col-xl-7 col-lg-7 col-md-12 col-sm-12">
-				
 			
                     <div class="contact_form">
                         <div id="message"></div>
-                        <form id="writeForm" class="" action="<%=request.getContextPath()%>/quickloud-master/employeeInsertAction.jsp" name="contactform" method="post">
+                        <form id="writeForm" action="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerOneUpdate.jsp?customerId=<%=paramCustomer.getCustomerId()%>" class="" method="post">
                             <fieldset class="row row-fluid">
-                            	
-                             
                             	
                             	
                             	  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                    <input type="text" value="상품번호" name="first_name" id="first_name" class="form-control" readonly>
+                                    <input type="text" value="고객아이디" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" value="<%=goodsNo %>" name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
+                                    <input type="text" value="<%=paramCustomer.getCustomerId() %>" name ="customerId" id="customerId" class="form-control" readonly placeholder="">
                                 </div>
                                   <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                    <input type="text" value="상품명" name="first_name" id="first_name" class="form-control" readonly>
+                                    <input type="text" value="비밀번호" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" value="<%=goodsName %>" name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
+                                    <input type="password" value="<%=paramCustomer.getCustomerPass() %>" name ="customerPw" id="customerPw" class="form-control"  placeholder="">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                    <input type="text" value="상품가격" name="first_name" id="first_name" class="form-control" readonly>
+                                    <input type="text" value="이름"  class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" value="<%=goodsPrice %>" name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
+                                    <input type="text" value="<%=paramCustomer.getCustomerName() %>" name ="customerName" id="customerName" class="form-control"  placeholder="">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                    <input type="text"value="등록날짜" name="email" id="email" class="form-control" readonly>
+                                    <input type="text"value="주소" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" value="<%=createDate %>" name="employeePass" id="employeePass" class="form-control" readonly placeholder="">
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                    <input type="text" value="수정날짜" name="first_name" id="first_name" class="form-control" readonly>
-                                </div>
-                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" value="<%=updateDate %>" name="employeeName" id="employeeName" class="form-control" readonly placeholder="">
-                                </div>
-                           		  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                    <input type="text" value="품절여부" name="first_name" id="first_name" class="form-control" readonly>
-                                </div>
-                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" value="<%=soldOut%>" name="employeeName" id="employeeName" class="form-control"  readonly placeholder="">
+                                    <input type="text" value="<%=paramCustomer.getCustomerAddress() %>" name ="customerAddress" id="customerAddress" class="form-control"  placeholder="">
                                 </div>
                                 
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text"value="상세주소입력" class="form-control" readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" value="" name ="customerDetailAddress" id="customerDetailAddress" class="form-control"  placeholder="주소변경 안할시 입력하지마세요">
+                                </div>
                                 
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text" value="전화번호"  class="form-control" readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" value="<%=paramCustomer.getCustomerTelephone() %>" name ="customerTelephone" id="customerTelephone" class="form-control" placeholder="">
+                                    
+                                </div>
+                                
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <input type="text" value="아이디생성일자"  class="form-control" readonly>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                    <input type="text" value="<%=paramCustomer.getCreateDate() %>" name ="createDate" id="createDate" class="form-control" readonly placeholder="">
+                                </div>
+                                
+                               
                                 <div class="text-center pd">
-                                   <a href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsUpdateForm.jsp?goodsNo=<%=goodsNo%>"><button type="button" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">수정페이지</button></a> 
+                                   <button type="submit" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">정보수정</button> 
                                 </div>    
-                                
-                                  <div class="text-center pd">
-                                   <a href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsImgUpdateForm.jsp?goodsNo=<%=goodsNo%>&fileName=<%=fileName%>"><button type="button" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">이미지수정</button></a>
+                                <div class="text-center pd">
+                                   <a href="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerList.jsp"><button type="button" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">고객리스트</button></a> 
                                 </div>    
-                                  <div class="text-center pd">
-                                     <a href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsDeleteAction.jsp?goodsNo=<%=goodsNo%>&fileName=<%=fileName%>"><button type="button" id="submit1" class="btn btn-light btn-radius btn-brd grd1 btn-block">삭제</button></a>
-                                </div>
                             </fieldset>
                         </form>
             </div><!-- end row -->
@@ -350,6 +333,112 @@ if (loginType.equals("customer")){
     <script src="js/all.js"></script>
     <!-- ALL PLUGINS -->
     <script src="js/custom.js"></script>
+<!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
+<div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
+</div>
 
+<script>
+	$('#customerAddress').click(function(){
+		sample2_execDaumPostcode();
+	});
+</script>
+
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script >
+
+	
+    // 우편번호 찾기 화면을 넣을 element
+    var element_layer = document.getElementById('layer'); 
+
+    function closeDaumPostcode() {
+        // iframe을 넣은 element를 안보이게 한다.
+        element_layer.style.display = 'none';
+    }
+
+    function sample2_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+            
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    // document.getElementById("sample2_extraAddress").value = extraAddr;
+                
+                } else {
+                    // document.getElementById("sample2_extraAddress").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                // document.getElementById('sample2_postcode').value = data.zonecode;
+                // document.getElementById("sample2_address").value = addr;
+                
+                // $('#addr').val(data.zonecode + ' ' + addr);
+                document.getElementById('customerAddress').value = data.zonecode + ' ' + addr;
+                
+                
+                // 커서를 상세주소 필드로 이동한다.
+                // document.getElementById("sample2_detailAddress").focus();
+
+                // iframe을 넣은 element를 안보이게 한다.
+                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+                element_layer.style.display = 'none';
+            },
+            width : '100%',
+            height : '100%',
+            maxSuggestItems : 5
+        }).embed(element_layer);
+
+        // iframe을 넣은 element를 보이게 한다.
+        element_layer.style.display = 'block';
+
+        // iframe을 넣은 element의 위치를 화면의 가운데로 이동시킨다.
+        initLayerPosition();
+    }
+
+    // 브라우저의 크기 변경에 따라 레이어를 가운데로 이동시키고자 하실때에는
+    // resize이벤트나, orientationchange이벤트를 이용하여 값이 변경될때마다 아래 함수를 실행 시켜 주시거나,
+    // 직접 element_layer의 top,left값을 수정해 주시면 됩니다.
+    function initLayerPosition(){
+        var width = 300; //우편번호서비스가 들어갈 element의 width
+        var height = 400; //우편번호서비스가 들어갈 element의 height
+        var borderWidth = 5; //샘플에서 사용하는 border의 두께
+
+        // 위에서 선언한 값들을 실제 element에 넣는다.
+        element_layer.style.width = width + 'px';
+        element_layer.style.height = height + 'px';
+        element_layer.style.border = borderWidth + 'px solid';
+        // 실행되는 순간의 화면 너비와 높이 값을 가져와서 중앙에 뜰 수 있도록 위치를 계산한다.
+        element_layer.style.left = (((window.innerWidth || document.documentElement.clientWidth) - width)/2 - borderWidth) + 'px';
+        element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
+    }
+</script>
 </body>
 </html>

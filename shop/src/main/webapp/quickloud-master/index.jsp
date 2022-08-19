@@ -5,7 +5,7 @@
  <% 
  
 	if(session.getAttribute("loginType")==null){
-		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");		
+		response.sendRedirect(request.getContextPath()+"/quickloud-master/loginForm.jsp");		
 		return;
 	}
 

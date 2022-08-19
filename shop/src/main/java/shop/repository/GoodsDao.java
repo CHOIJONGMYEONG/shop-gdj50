@@ -282,8 +282,6 @@ public class GoodsDao {
 			stmt.setInt(2, rowPerPage);
 			rs = stmt.executeQuery();
 			
-			
-			
 			while(rs.next()) {
 				goods = new Goods();	
 				goods.setGoodsNo(rs.getInt("goods_no"));
@@ -298,16 +296,13 @@ public class GoodsDao {
 				
 			System.out.println(goods.getGoodsName());
 		
-		
 		}finally {
 			if(rs!=null) {rs.close();}
 			if(stmt!=null) {stmt.close();}
 		
 		}
 		
-		
 		return list;
-		
 		
 	}
 	

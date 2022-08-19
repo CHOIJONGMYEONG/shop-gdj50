@@ -123,9 +123,9 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 					<ul class="navbar-nav ml-auto">
 							<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/employeeList.jsp">사원관리</a></li>
 						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp">상품관리</a></li>
-						<li class="nav-item"><a class="nav-link" href="features.html">주문관리 </a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminOrdersList.jsp">주문관리 </a></li>
 					
-						<li class="nav-item"><a class="nav-link" href="domain.html">고객관리</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerList.jsp">고객관리</a></li>
 						<li class="nav-item"><a class="nav-link" href="pricing.html">공지관리</a></li>
 						<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
 						<li class="nav-item"><a class="nav-link" > <%=Name %>님 환영합니다</a></li>

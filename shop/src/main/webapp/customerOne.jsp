@@ -1,4 +1,3 @@
-
 <%@page import="service.CustomerService"%>
 <%@page import="shop.vo.Customer"%>
 <%@page import="shop.repository.CustomerDao"%>

@@ -8,11 +8,130 @@ import java.util.Map;
 
 import shop.repository.CustomerDao;
 import shop.repository.DBUtil;
+import shop.repository.GoodsDao;
 import shop.repository.OutIdDao;
 import shop.vo.Customer;
+import shop.vo.Goods;
 
 public class CustomerService {
 	 private CustomerDao customerDao;
+	 
+	 
+	 public Customer getAdminCustomer(Customer paramCustomer){
+			Connection conn = null;
+			Customer customer = new Customer();
+			this.customerDao = new CustomerDao();
+			
+				try{conn = new DBUtil().getConnection();
+				conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+				
+				customer = customerDao.adminSelectCustomer(conn, paramCustomer);
+				
+				conn.commit();
+				}catch(Exception e) {
+					e.printStackTrace(); // console에 예외메세지 출력
+					
+				}finally {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				return customer;
+			
+			
+		}
+	 
+	 
+	 public boolean modifyAdminCustomer(Customer paramCustomer) {
+			Connection conn = null;
+			
+			
+			try{conn = new DBUtil().getConnection();
+			conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+			
+			CustomerDao customerDao= new CustomerDao();
+			customerDao.adminUpdateCustomer(conn, paramCustomer);
+			
+		
+			conn.commit();
+			}catch(Exception e) {
+				e.printStackTrace(); // console에 예외메세지 출력
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				return false;
+			}finally {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return true;
+			
+		}
+	 
+	 public int getCustomerAllCount() {
+			Connection conn = null;
+			int totalRow = 0;
+			this.customerDao =new CustomerDao();
+			try{conn = new DBUtil().getConnection();
+			conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+			
+			
+			totalRow = customerDao.selectCustomerAllCount(conn);
+			
+		
+			conn.commit();
+			}catch(Exception e) {
+				e.printStackTrace(); // console에 예외메세지 출력
+			
+			}finally {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return totalRow;
+			
+		}
+	 
+	 
+	 
+	 
+	 public List<Customer> getCustomerListByPage(int rowPerPage , int currentPage){
+			Connection conn = null;
+			List<Customer> list = null;
+			this.customerDao = new CustomerDao();
+			 int beginRow = (currentPage - 1) * rowPerPage;
+			
+				try{conn = new DBUtil().getConnection();
+				conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+				
+				 list = customerDao.selectCustomerListByPage(conn, rowPerPage, beginRow);
+				
+				conn.commit();
+				}catch(Exception e) {
+					e.printStackTrace(); // console에 예외메세지 출력
+					
+				}finally {
+					try {
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				return list;
+			
+			
+		}
+	 
+	 
 	 
 	 public boolean modifyCustomer(Customer paramCustomer) {
 			Connection conn = null;

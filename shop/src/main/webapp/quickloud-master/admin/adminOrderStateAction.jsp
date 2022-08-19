@@ -17,6 +17,6 @@ OrderService orderService = new OrderService();
 orderService.adminStateModify(orders);
 
 
-response.sendRedirect(request.getContextPath()+"/admin/adminOrdersList.jsp");
+response.sendRedirect(request.getContextPath()+"/quickloud-master/admin/adminOrdersList.jsp");
 
 %>

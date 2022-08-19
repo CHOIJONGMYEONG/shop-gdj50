@@ -1,39 +1,35 @@
-
-<%@page import="shop.vo.Customer"%>
-<%@page import="java.util.ArrayList"%>
+<%@page import="service.CustomerService"%>
 <%@page import="shop.vo.Employee"%>
-<%@page import="service.EmployeeService"%>
-
+<%@page import="shop.vo.Customer"%>
+<%@page import="shop.vo.Goods"%>
+<%@page import="java.util.List"%>
+<%@page import="service.GoodsService"%>
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-    <%
+    
+    
+ <%
 	if(session.getAttribute("loginType")==null){
-		response.sendRedirect(request.getContextPath()+"/quickloud-master/loginForm.jsp");		
+		response.sendRedirect(request.getContextPath()+"/loginForm.jsp");		
 		return;
 	}
- 
 
- 
- 
-   String loginType = (String)session.getAttribute("loginType");
+ String loginType = (String)session.getAttribute("loginType");
 	String Id = "";
 	String Name = "";
 	
-   if (loginType.equals("customer")){
+ if (loginType.equals("customer")){
 	    Id= ((Customer)session.getAttribute("loginCustomer")).getCustomerId();
 	  Name= ((Customer)session.getAttribute("loginCustomer")).getCustomerName();   
-   }else if ( loginType.equals("employee")) {
+ }else if ( loginType.equals("employee")) {
 	   
 	   Id=((Employee)session.getAttribute("loginEmployee")).getEmployeeId();
 	    Name=((Employee)session.getAttribute("loginEmployee")).getEmployeeName();
 	   
-   }
-    
-    
-    
-    
-    
+ }
+ 
  int rowPerPage = 5;
  int currentPage= 1;
  if (request.getParameter("currentPage") != null) {
@@ -43,11 +39,11 @@
  
  
 
- ArrayList<Employee> employeeList = new ArrayList<Employee>();
- EmployeeService employeeService = new EmployeeService();
+ List<Customer> customerList = new ArrayList<Customer>();
+ CustomerService customerService = new CustomerService();
  
- employeeList = employeeService.getinfoEmpolyee(rowPerPage,currentPage);
- int totalRow = employeeService.getEmployeeAllCount();
+ customerList = customerService.getCustomerListByPage(rowPerPage, currentPage);
+ int totalRow = customerService.getCustomerAllCount();
  int lastPage = totalRow/rowPerPage;
  if(totalRow %rowPerPage!=0){
 		lastPage +=1;}
@@ -57,7 +53,8 @@ int pageEnd = pageBegin + rowPerPage - 1; // 페이지 끝 글 구하는 공식
 pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
  
  
- %>  
+ %>   
+    
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -96,6 +93,13 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+<style>
+
+.container{
+    max-width: 1600px;
+}
+
+</style>
 
 </head>
 <body class="host_version"> 
@@ -146,23 +150,35 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 	
 
     <div class="section lb">
+   
         <div class="container">
             <div class="section-title text-center">
-                <h3>사원리스트</h3>
+                <h3>고객리스트</h3>
+                
 				<div class="dmoain-pricing">
 					<div class="table-responsive-sm">
 						<table>
 							<thead>
 								<tr class="domain-head">
 									<th scope="col">
-										사원아이디
+										고객아이디
 									</th>
 									<th scope="col">
-										사원이름
+										이름
 									</th>
 									<th scope="col">
-										승인여부
+										주소
 									</th>
+									<th scope="col">
+										전화번호
+									</th>
+									<th scope="col">
+										아이디생성날짜
+									</th>
+									<th scope="col">
+										고객주문목록
+									</th>
+									
 									
 								</tr>
 							</thead>
@@ -170,44 +186,26 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 								
 								
 								 <%
-		for (Employee a : employeeList ){
-		%>
+								 for (Customer a : customerList ){
+
+					%>
 
     	           <tr>
-                  <td data-label="DOMAIN NAME"><%=a.getEmployeeId()%></td>
-                  <td data-label="DOMAIN NAME"><%=a.getEmployeeName()%></td>
+                  <td data-label="DOMAIN NAME"><a href="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerOne.jsp?customerId=<%=a.getCustomerId()%>"><button class="btn btn-success"><%=a.getCustomerId() %></button></a></td>
+                  <td data-label="DOMAIN NAME"><%=a.getCustomerName()%> </td>
                   
                    <td data-label="DOMAIN NAME">
-                   	<form action="<%=request.getContextPath()%>/quickloud-master/admin/employeeApprovalAction.jsp" method="post">
-                  	<select name ="approval" class="btn grd1 effect-1 btn-radius btn-brd">
-
-				<%
-					if(a.getActive().equals("N")){
-				%>
-			
-			
-					<option>Y</option>
-					<option selected="selected">N</option>
-			
-				<%
-					}else{
-				%>
-					<option  selected="selected">Y</option>
-					<option>N</option>
-					</select>
-			                  
-			                   
-			         <%      
-			            }
-			         %>           
-			         <input type="hidden" value="<%=a.getEmployeeId()%>" name="employeeId">
-			         <button type="submit" class="btn grd1 effect-1 btn-radius btn-brd" >승인변경</button>
-			           </form> 
+                   <%=a.getCustomerAddress() %>
 			                    </td> 
-			                    
 			                  
+			                   <td data-label="DOMAIN NAME">
+                   <%=a.getCustomerTelephone()%>
+			                    </td> 
+			                     <td data-label="DOMAIN NAME">
+                   <%=a.getCreateDate()%>
+			                    </td> 
+			        <td data-label="DOMAIN NAME"><a href="<%=request.getContextPath()%>/quickloud-master/admin/adminOrderListByCustomer.jsp?customerId=<%=a.getCustomerId()%>"><button class="btn grd1 effect-1 btn-radius btn-brd">주문목록가기</button></a></td>            
 			               </tr>
-			           	
 						
 			         <%      
 			            }
@@ -219,25 +217,21 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 					</div>
 				</div>
 				
-				<%
+		
+<%
 	/*int lastPage = boardDao.selectBoardLastPage(ROW_PER_PAGE);*/
-	
-	
-	
 	System.out.println(lastPage);
 	if (pageBegin > rowPerPage) {
 	%>
 	
-	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/employeeList.jsp?currentPage=<%=pageBegin - rowPerPage%>">이전</a>
+	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerList.jsp?currentPage=<%=pageBegin - rowPerPage%>">이전</a>
 
 	<%
 	}
 
 	for(int i = pageBegin; i <= pageEnd; i++){
 		%>
-	
-	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/employeeList.jsp?currentPage=<%=i%>"><%=i%></a>
-		
+			<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerList.jsp?currentPage=<%=i%>"><%=i%></a>
 		<%
 		}
 	
@@ -246,7 +240,7 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 	if (pageEnd < lastPage) {
 	%>
 	
-	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/employeeList.jsp?currentPage=<%=pageBegin + rowPerPage%>">다음</a>
+	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerList.jsp?currentPage=<%=pageBegin + rowPerPage%>">다음</a>
 	<%
 	}
 	%>
