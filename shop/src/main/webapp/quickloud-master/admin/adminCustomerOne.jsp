@@ -221,7 +221,10 @@ System.out.print("확인"+paramCustomer.getCustomerId());
                                 </div>    
                                 <div class="text-center pd">
                                    <a href="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerList.jsp"><button type="button" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">고객리스트</button></a> 
-                                </div>    
+                                </div> 
+                                <div class="text-center pd">
+                                   <a href="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerDeleteAction.jsp?customerId=<%=paramCustomer.getCustomerId()%>"><button type="button" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">고객탈퇴</button></a> 
+                                </div>     
                             </fieldset>
                         </form>
             </div><!-- end row -->

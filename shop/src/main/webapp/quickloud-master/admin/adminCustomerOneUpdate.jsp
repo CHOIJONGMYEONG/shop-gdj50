@@ -10,6 +10,8 @@ String customerPass = request.getParameter("customerPw");
 String customerName = request.getParameter("customerName");
 String customeTelephone = request.getParameter("customerTelephone");
 String customerAddress = request.getParameter("customerAddress");
+
+
 String detailcustomerAddress = request.getParameter("detailcustomerAddress");
 
 System.out.println(customerId);
@@ -28,7 +30,11 @@ System.out.println(customerAddress);
    paramCustomer.setCustomerId(customerId);
    paramCustomer.setCustomerPass(customerPass);
    paramCustomer.setCustomerName(customerName);
-   paramCustomer.setCustomerAddress(customerAddress +" "+detailcustomerAddress);
+   if(detailcustomerAddress==null){
+	   paramCustomer.setCustomerAddress(customerAddress);
+   }else {
+   paramCustomer.setCustomerAddress(customerAddress +" "+detailcustomerAddress);}
+   
    paramCustomer.setCustomerTelephone(customeTelephone);
 
    CustomerService customerService = new CustomerService();
