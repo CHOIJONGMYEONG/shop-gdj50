@@ -33,13 +33,8 @@ if (loginType.equals("customer")) {
 
 int rowPerPage = 20;
 if (request.getParameter("rowPerPage") != null) {
-	String row = request.getParameter("rowPerPage").substring(0,2);
-	rowPerPage = Integer.parseInt(row);
 	rowPerPage = Integer.parseInt(request.getParameter("rowPerPage"));
-	System.out.print(rowPerPage+"  로우펄");
 }
-
-
 
 int currentPage = 1;
 if (request.getParameter("currentPage") != null) {
@@ -48,7 +43,7 @@ if (request.getParameter("currentPage") != null) {
 
 GoodsService goodsService = new GoodsService();
 // listll
-List<Map<String, Object>> list = goodsService.selectCustomerGoodsListByPage(rowPerPage, currentPage);
+List<Map<String, Object>> list = goodsService.selectCustomerRowGoodsListByPage(rowPerPage, currentPage);
 int totalRow = goodsService.getGoodsAllCount();
 int lastPage = totalRow / rowPerPage;
 if (totalRow % rowPerPage != 0) {
@@ -184,7 +179,7 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 								<ul>
 									<li>
 									<a
-										class="btn btn-light grd1 effect-1 btn-radius btn-brd active"
+										class="btn btn-light grd1 effect-1 btn-radius btn-brd"
 										href="<%=request.getContextPath()%>/quickloud-master/customerGoodsList.jsp">누적판매순
 									</a>
 									</li>
@@ -200,7 +195,7 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 									</li>
 									
 									<li><a
-										class="btn btn-light grd1 effect-1 btn-radius btn-brd"
+										class="btn btn-light grd1 effect-1 btn-radius btn-brd active"
 										href="<%=request.getContextPath()%>/quickloud-master/customerGoodsListRowPrice.jsp">낮은가격순</a>
 									</li>
 									
@@ -208,9 +203,8 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 										class="btn btn-light grd1 effect-1 btn-radius btn-brd"
 										href="<%=request.getContextPath()%>/quickloud-master/customerGoodsListNew.jsp">최신순</a>
 									</li>
-									
-									<li>
-									<form name="rowform" action="<%=request.getContextPath()%>/quickloud-master/customerGoodsList.jsp" method="post">
+										<li>
+									<form name="rowform" action="<%=request.getContextPath()%>/quickloud-master/customerGoodsListRowPrice.jsp" method="post">
 									<select onChange="rowform.submit()" name ="rowPerPage" class="btn grd1 effect-1 btn-radius btn-brd">
 									
 									
@@ -225,7 +219,6 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 										</select>
 										</form>
 										</li>
-										
 								</ul>
 							</div>
 						</div>
