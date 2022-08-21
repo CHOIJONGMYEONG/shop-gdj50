@@ -1,5 +1,5 @@
-<%@page import="java.util.Map"%>
-<%@page import="service.OrderService"%>
+<%@page import="service.NoticeService"%>
+<%@page import="shop.vo.Notice"%>
 <%@page import="shop.vo.Employee"%>
 <%@page import="shop.vo.Customer"%>
 <%@page import="shop.vo.Goods"%>
@@ -11,54 +11,50 @@
     
     
     
-<%
-if(session.getAttribute("loginType")==null){
-	response.sendRedirect(request.getContextPath()+"/quickloud-master/loginForm.jsp");		
-	return;
-}
+ <%
+	if(session.getAttribute("loginType")==null){
+		response.sendRedirect(request.getContextPath()+"/quickloud-master/loginForm.jsp");		
+		return;
+	}
 
-
-String loginType = (String)session.getAttribute("loginType");
+ String loginType = (String)session.getAttribute("loginType");
 	String Id = "";
 	String Name = "";
 	
-if (loginType.equals("customer")){
+ if (loginType.equals("customer")){
 	    Id= ((Customer)session.getAttribute("loginCustomer")).getCustomerId();
 	  Name= ((Customer)session.getAttribute("loginCustomer")).getCustomerName();   
-}else if ( loginType.equals("employee")) {
+ }else if ( loginType.equals("employee")) {
 	   
 	   Id=((Employee)session.getAttribute("loginEmployee")).getEmployeeId();
 	    Name=((Employee)session.getAttribute("loginEmployee")).getEmployeeName();
 	   
-}
-
-int rowPerPage = 5;
-int currentPage= 1;
-if (request.getParameter("currentPage") != null) {
+ }
+ 
+ int rowPerPage = 5;
+ int currentPage= 1;
+ if (request.getParameter("currentPage") != null) {
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
+ 
+ 
+ 
 
-
-OrderService orderService = new OrderService();
-
-
-List<Map<String,Object>> list = new ArrayList<>();
-
-
-list = orderService.getOrderList(rowPerPage, currentPage);
-
-int totalRow = orderService.getOrderAllCount();
-
-int lastPage = totalRow/rowPerPage;
-if(totalRow %rowPerPage!=0){
+ List<Notice> NoticeList = new ArrayList<Notice>();
+ NoticeService noticeService = new NoticeService();
+ 
+ NoticeList = noticeService.getNoticeListByPage(rowPerPage, currentPage);
+ int totalRow = noticeService.getNoticeAllCount();
+ int lastPage = totalRow/rowPerPage;
+ if(totalRow %rowPerPage!=0){
 		lastPage +=1;}
-
-int pageBegin = ((currentPage - 1) / rowPerPage) * rowPerPage + 1; // 페이지 시작 넘버
+ 
+ int pageBegin = ((currentPage - 1) / rowPerPage) * rowPerPage + 1; // 페이지 시작 넘버
 int pageEnd = pageBegin + rowPerPage - 1; // 페이지 끝 글 구하는 공식
 pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
-
-
-%>   
+ 
+ 
+ %>   
     
 <!DOCTYPE html>
 <html lang="ko">
@@ -93,18 +89,11 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 
     <!-- Modernizer for Portfolio -->
     <script src="js/modernizer.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-<style>
-
-.container{
-    max-width: 1300px;
-}
-
-</style>
 
 </head>
 <body class="host_version"> 
@@ -157,7 +146,7 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
    
         <div class="container">
             <div class="section-title text-center">
-                <h3>주문리스트</h3>
+                <h3>공지사항</h3>
                 
 				<div class="dmoain-pricing">
 					<div class="table-responsive-sm">
@@ -165,25 +154,13 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 							<thead>
 								<tr class="domain-head">
 									<th scope="col">
-										주문번호
+										번호
+									</th>
+									<th scope="col" colspan="2">
+										제목
 									</th>
 									<th scope="col">
-										고객아이디
-									</th>
-									<th scope="col">
-										가격
-									</th>
-									<th scope="col">
-										주소
-									</th>
-									<th scope="col">
-										주문수량
-									</th>
-									<th scope="col">
-										주문날짜
-									</th>
-									<th scope="col"  colspan="2">
-										주문상태
+										등록날짜
 									</th>
 									
 								</tr>
@@ -192,57 +169,20 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 								
 								
 								 <%
-								 for (Map<String,Object> a : list ){
+								 for (Notice a : NoticeList ){
 
 		%>
 
     	           <tr>
-                  <td data-label="DOMAIN NAME"><a href="<%=request.getContextPath()%>/quickloud-master/admin/adminOrdersOneForm.jsp?orderNo=<%=a.get("orderNo")%>"><button class="btn btn-danger"><%=a.get("orderNo") %></button></a></td>
-                  <td data-label="DOMAIN NAME"><a href="<%=request.getContextPath()%>/quickloud-master/admin/adminOrderListByCustomer.jsp?customerId=<%=a.get("customerId")%>"><button class="btn btn-success"><%=a.get("customerId")%></button></a></td>
-                  <td data-label="DOMAIN NAME"><%=a.get("orderPrice") %></td>
-                  <td data-label="DOMAIN NAME"><%=a.get("orderAddr") %></td>
-                  <td data-label="DOMAIN NAME"><%=a.get("orderQuantity") %></td>
-                  <td data-label="DOMAIN NAME"><%=a.get("OcreateDate") %></td>
+                  <td data-label="DOMAIN NAME"><%=a.getNoticeNo() %></td>
+                  <td data-label="DOMAIN NAME" colspan="2"><a href="<%=request.getContextPath()%>/quickloud-master/admin/adminNoticeOneForm.jsp?noticeNo=<%=a.getNoticeNo()%>"><button class="btn btn-success"><%=a.getNoticeTitle()%></button></a> </td>
                   
-			       
-			       <td data-label="DOMAIN NAME" colspan="2">
-                  <form id="orderStateForm" name="orderStateForm" action="<%=request.getContextPath()%>/quickloud-master/admin/adminOrderStateAction.jsp" method="post">
-                  	<select name ="orderState" class="btn grd1 effect-1 btn-radius btn-brd">
-
-				<%
-					if(a.get("orderState").equals("상품준비중")){
-				%>
-					<option selected="selected">상품준비중</option>
-					<option>배송중</option>
-					<option>배송완료</option>
-			
-				<%
-					}else if(a.get("orderState").equals("배송중")){
-				%>
-					<option>상품준비중</option>
-					<option selected="selected">배송중</option>
-					<option>배송완료</option>
-			                  
-			                   
-			    <%      
-					}else{
-			    %>  <option>상품준비중</option>
-					<option>배송중</option>
-					<option selected="selected">배송완료</option>
-					
-					     
-			    
-			    <%      
-			          }
-			    %>   
-			    </select> 
-			         <input type="hidden" value="<%=a.get("orderNo")%>" name="orderNo">
-			       	  <button id="orderStateBtn" type="submit" class="btn grd1 effect-1 btn-radius btn-brd" >배송현황변경</button>
-			            </form> 
+                   <td data-label="DOMAIN NAME">
+                   <%=a.getUpdateDate() %>
 			                    </td> 
-			                  
+			        
 			               </tr>
-						 
+						
 			         <%      
 			            }
 			         %>
@@ -260,14 +200,14 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 	if (pageBegin > rowPerPage) {
 	%>
 	
-	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/adminOrdersList.jsp?currentPage=<%=pageBegin - rowPerPage%>">이전</a>
+	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp?currentPage=<%=pageBegin - rowPerPage%>">이전</a>
 
 	<%
 	}
 
 	for(int i = pageBegin; i <= pageEnd; i++){
 		%>
-			<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/adminOrdersList.jsp?currentPage=<%=i%>"><%=i%></a>
+			<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp?currentPage=<%=i%>"><%=i%></a>
 		<%
 		}
 	
@@ -276,7 +216,7 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 	if (pageEnd < lastPage) {
 	%>
 	
-	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/adminOrdersList.jsp?currentPage=<%=pageBegin + rowPerPage%>">다음</a>
+	<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp?currentPage=<%=pageBegin + rowPerPage%>">다음</a>
 	<%
 	}
 	%>
@@ -388,14 +328,4 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
     <script src="js/custom.js"></script>
 
 </body>
-<script>
-
-$('#orderStateBtn').click(function(){
-   
-	$('#orderStateForm').submit();
-   
-});
-
-</script>
-
 </html>

@@ -43,7 +43,7 @@
 
 	<!-- for / if 대체기술 : 커스텀태그(JSTL & EL) JSP -->
 	<div>
-		<a href="<%=request.getContextPath()%>/customerGoodsListHot.jsp"">인기순</a>
+		<a href="<%=request.getContextPath()%>/customerGoodsListHot.jsp">인기순</a>
 		<a href="<%=request.getContextPath()%>/customerGoodsList.jsp">판매량순</a>
 		<a href="<%=request.getContextPath()%>/customerGoodsListRowPrice.jsp">낮은가격순</a>
 		<a href="<%=request.getContextPath()%>/customerGoodsListHighPrice.jsp">높은가격순</a>
