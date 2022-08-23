@@ -16,6 +16,32 @@ public class OrderService {
 
 	private OrdersDao ordersDao;
 	
+	public int ordesrAdd(Orders orders) {
+		Connection conn = null;
+		int complete = 0;
+		this.ordersDao =new OrdersDao();
+		try{conn = new DBUtil().getConnection();
+		conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+		
+		
+		complete = ordersDao.ordersInsert(conn, orders);
+		
+	
+		conn.commit();
+		}catch(Exception e) {
+			e.printStackTrace(); // console에 예외메세지 출력
+		
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return complete;
+		
+	}
+	
 	public List<Map<String,Object>> getOrderList(int rowPerPage, int currentPage){
 		Connection conn = null;
 		List<Map<String,Object>> list = new ArrayList<>();

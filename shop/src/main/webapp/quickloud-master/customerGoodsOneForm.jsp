@@ -156,17 +156,23 @@ if (loginType.equals("customer")){
                     <span class="icon-bar"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-host">
-					<ul class="navbar-nav ml-auto">
-							<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/employeeList.jsp">사원관리</a></li>
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp">상품관리</a></li>
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminOrdersList.jsp">주문관리 </a></li>
+						<ul class="navbar-nav ml-auto">
+			
 					
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerList.jsp">고객관리</a></li>
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminNoticeList.jsp">공지관리</a></li>
+					
+					
+					
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerGoodsList.jsp">상품리스트</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerNoticeList.jsp">공지사항</a></li>
+						<li class="nav-item"><a class="nav-link" href="features.html">장바구니</a></li>
 						<li class="nav-item"><a class="nav-link" > <%=Name %>님 환영합니다</a></li>
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/shopOne.jsp" >내정보</a></li>
-					   <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/logout.jsp" >로그아웃</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerOne.jsp" >내정보</a></li>
+					   
 					</ul>
+					<ul class="nav navbar-nav navbar-right">
+					
+                        <li><a class="hover-btn-new log" href="<%=request.getContextPath()%>/quickloud-master/logout.jsp" ><span>Customer LogOut</span></a></li>
+                    </ul>
 				</div>
 			</div>
 		</nav>
@@ -241,10 +247,9 @@ if (loginType.equals("customer")){
                                 <div class="text-center pd">
                                   <button type="submit" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">구매하기</button>
                                 </div>    
-                                
                                   <div class="text-center pd">
-                                   <a href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsImgUpdateForm.jsp?goodsNo=<%=goodsNo%>&fileName=<%=fileName%>"><button type="button" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">장바구니담기</button></a>
-                                </div>    
+                                   <button onclick='return submit2(this.form)' id="frm" type="button" name="frm" value ="cart"id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">장바구니담기</button>
+                                </div>
                             </fieldset>
                         </form>
             </div><!-- end row -->
@@ -355,6 +360,12 @@ if (loginType.equals("customer")){
     <script src="js/all.js"></script>
     <!-- ALL PLUGINS -->
     <script src="js/custom.js"></script>
-
+<script> 
+  function submit2(frm) { 
+    frm.action='customerCartInsertAction.jsp'; 
+    frm.submit(); 
+    return true; 
+  } 
+</script> 
 </body>
 </html>

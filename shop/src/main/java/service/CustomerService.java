@@ -16,7 +16,36 @@ import shop.vo.Goods;
 public class CustomerService {
 	 private CustomerDao customerDao;
 	 
-	 
+	 public boolean modifyCustomerPw(Customer paramCustomer, String nowPw) {
+			Connection conn = null;
+			
+			
+			try{conn = new DBUtil().getConnection();
+			conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+			
+			CustomerDao customerDao= new CustomerDao();
+			customerDao.updatePwCustomer(conn, paramCustomer,nowPw);
+			
+		
+			conn.commit();
+			}catch(Exception e) {
+				e.printStackTrace(); // console에 예외메세지 출력
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				return false;
+			}finally {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return true;
+			
+		}
 	 
 	 public boolean deleteAdminCustomer(Customer paramCustomer) {
 			Connection conn = null;
@@ -243,6 +272,35 @@ public class CustomerService {
 		
 		CustomerDao customerDao= new CustomerDao();
 		customer = customerDao.selectCustomerByidAndPw(conn, paramCustomer);
+		
+	
+		conn.commit();
+		}catch(Exception e) {
+			e.printStackTrace(); // console에 예외메세지 출력
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return customer;
+		
+	}
+	public Customer getCustomerInfo(Customer paramCustomer) {
+		Connection conn = null;
+		Customer customer = new Customer();
+		try{conn = new DBUtil().getConnection();
+		conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+		
+		CustomerDao customerDao= new CustomerDao();
+		customer = customerDao.selectCustomerInfo(conn, paramCustomer);
 		
 	
 		conn.commit();

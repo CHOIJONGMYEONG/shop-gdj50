@@ -26,6 +26,11 @@ if (loginType.equals("customer")) {
 	Name = ((Employee) session.getAttribute("loginEmployee")).getEmployeeName();
 
 }
+
+
+
+
+
 int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
 int orderQuantity = Integer.parseInt(request.getParameter("p_num1"));
 System.out.print(goodsNo);
@@ -135,34 +140,30 @@ utton, input {
 						class="icon-bar"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-host">
-					<ul class="navbar-nav ml-auto">
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/admin/employeeList.jsp">사원관리</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp">상품관리</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/admin/adminOrdersList.jsp">주문관리
-						</a></li>
-
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerList.jsp">고객관리</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/admin/adminNoticeList.jsp">공지관리</a></li>
-						<li class="nav-item"><a class="nav-link"> <%=Name%>님
-								환영합니다
-						</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/shopOne.jsp">내정보</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/logout.jsp">로그아웃</a></li>
+						<ul class="navbar-nav ml-auto">
+			
+					
+					
+					
+					
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerGoodsList.jsp">상품리스트</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/admin/adminGoodsList.jsp">공지사항</a></li>
+						<li class="nav-item"><a class="nav-link" href="features.html">장바구니</a></li>
+						<li class="nav-item"><a class="nav-link" > <%=Name %>님 환영합니다</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerOne.jsp" >내정보</a></li>
+					   
 					</ul>
+					<ul class="nav navbar-nav navbar-right">
+					
+                        <li><a class="hover-btn-new log" href="<%=request.getContextPath()%>/quickloud-master/logout.jsp" ><span>Customer LogOut</span></a></li>
+                    </ul>
 				</div>
 			</div>
 		</nav>
 	</header>
-	<form name="orderform" id="orderform" method="post" class="orderform"
+	<form action="<%=request.getContextPath()%>/quickloud-master/customerOrderBuyAction.jsp" name="orderform" id="orderform" method="post" class="orderform"
 		action="/Page" onsubmit="return false;">
-
+		<input type="hidden" name="goodsNo" value="<%=goodsNo%>">
 		<input type="hidden" name="cmd" value="order">
 		<div class="basketdiv" id="basket">
 			<div class="row head">
@@ -204,7 +205,7 @@ utton, input {
 					<div class="num">
 						<div class="updown">
 							<input type="text" name="p_num1" id="p_num1" size="2"
-								maxlength="4" class="p_num" value="1"
+								maxlength="4" class="p_num" value="<%=orderQuantity %>"
 								onkeyup="javascript:basket.changePNum(1);"> <span
 								onclick="javascript:basket.changePNum(1);"><i
 								class="fas fa-arrow-alt-circle-up up"></i></span> <span
@@ -254,13 +255,13 @@ utton, input {
 			<input type="text" value="상세주소입력" class="form-control" readonly>
 			<input type="text" value="" name="customerDetailAddress"
 				id="customerDetailAddress" class="form-control"
-				placeholder="주소변경 안할시 입력하지마세요">
+				placeholder="상세주소를 입력해주세요">
 		</div>
 		</div>
 		<div id="goorder" class="">
 			<div class="clear"></div>
 			<div class="buttongroup center-align cmd">
-				<a href="javascript:void(0);">선택한 상품 주문</a>
+				<button id="submitbutton" class="btn btn-primary grd1 effect-1 btn-radius btn-brd" type="button">선택한 상품 주문</button>
 			</div>
 		</div>
 
@@ -401,6 +402,14 @@ utton, input {
 <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
 <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
 </div>
+<script>
+$('#submitbutton').click(function(){
+	orderform.submit();
+});
+
+</script>
+
+
 
 <script>
 	$('#customerAddress').click(function(){

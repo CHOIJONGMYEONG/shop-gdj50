@@ -12,6 +12,31 @@ import shop.vo.*;
 
 public class CustomerDao {
 
+	public int updatePwCustomer(Connection conn, Customer paramCustomer , String nowPw) throws Exception {
+
+		// 동일한 conn
+		// conn.close()X
+		int row = 0;
+		String sql = "UPDATE customer SET customer_pass = password(?) WHERE customer_pass = password(?) and customer_id = ?";
+
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, paramCustomer.getCustomerPass());
+			stmt.setString(2, nowPw);
+			stmt.setString(3, paramCustomer.getCustomerId());
+			
+			row = stmt.executeUpdate();
+
+		} finally {
+			stmt.close();
+		}
+
+		return row;
+
+	}
+	
+	
 	public int adminDeleteCustomer(Connection conn, Customer paramCustomer) throws Exception {
 		int row = 0;
 		String sql = "DELETE FROM customer WHERE customer_id = ?";
@@ -219,6 +244,51 @@ public class CustomerDao {
 	public Customer selectCustomerByidAndPw(Connection conn, Customer paramCustomer) throws Exception {
 		Customer loginCustomer = null;
 
+		String sql = "SELECT customer_id , customer_pass, customer_name, customer_address, customer_telephone , update_date , create_date FROM customer WHERE customer_id=? AND customer_pass=password(?)";
+
+		PreparedStatement stmt = null;
+
+		ResultSet rs = null;
+
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, paramCustomer.getCustomerId());
+			stmt.setString(2, paramCustomer.getCustomerPass());
+			rs = stmt.executeQuery();
+
+			loginCustomer = new Customer();
+			if (rs.next()) {
+
+				loginCustomer.setCustomerId(rs.getString("customer_id"));
+				loginCustomer.setCustomerPass(rs.getString("customer_pass"));
+				loginCustomer.setCustomerName(rs.getString("customer_name"));
+				loginCustomer.setCustomerAddress(rs.getString("customer_address"));
+				loginCustomer.setCustomerTelephone(rs.getString("customer_telephone"));
+				loginCustomer.setCreateDate(rs.getString("create_date"));
+				loginCustomer.setUpdateDate(rs.getString("update_date"));
+			}
+
+			System.out.println(loginCustomer.getCustomerId());
+			System.out.println(loginCustomer.getCustomerPass());
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			}
+
+		}
+
+		return loginCustomer;
+
+	}
+	
+	
+	public Customer selectCustomerInfo(Connection conn, Customer paramCustomer) throws Exception {
+		Customer loginCustomer = null;
+
 		String sql = "SELECT customer_id , customer_pass, customer_name, customer_address, customer_telephone , update_date , create_date FROM customer WHERE customer_id=?";
 
 		PreparedStatement stmt = null;
@@ -258,6 +328,7 @@ public class CustomerDao {
 		return loginCustomer;
 
 	}
+	
 
 	public int CustomerInsert(Connection conn, Customer customer) throws Exception {
 		int a = 0;

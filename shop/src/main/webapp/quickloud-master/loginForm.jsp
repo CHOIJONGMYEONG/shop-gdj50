@@ -18,7 +18,6 @@ if(session.getAttribute("loginType")!=null){
 }
 
 
-
 %>
 <!DOCTYPE html>
 

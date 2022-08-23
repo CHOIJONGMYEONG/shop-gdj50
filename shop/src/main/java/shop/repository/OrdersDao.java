@@ -11,6 +11,44 @@ import shop.vo.Orders;
 
 public class OrdersDao {
 
+	
+	
+	
+	public int ordersInsert(Connection conn,Orders orders) throws Exception {
+		int a =0;
+		
+		String sql = "INSERT INTO orders (goods_no,customer_id,order_quantity,order_price,order_addr,order_state,update_date,create_date) VALUES(?,?,?,?,?,?,now(),now())";
+		
+		
+		PreparedStatement stmt = null;
+		
+		System.out.print(orders.getOrderState());
+		System.out.print(orders.getOrderNo());
+	
+		try {
+			
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,orders.getGoodsNo());
+			stmt.setString(2, orders.getCustomerId());
+			stmt.setInt(3,orders.getOrderQuantity());
+			stmt.setInt(4,orders.getOrderPrice());
+			stmt.setString(5, orders.getOrderAddr());
+			stmt.setString(6, orders.getOrderState());
+			
+			
+			
+			
+			a = stmt.executeUpdate();
+			
+		
+		}finally {
+			if(stmt!=null) {stmt.close();}
+			
+		}
+	
+		return a;
+		
+	}
 	// 5-2) 주문상세보기
 	public Map<String, Object> selectOrdersOne(Connection conn, int ordersNo) throws Exception {
 		
@@ -41,7 +79,7 @@ public class OrdersDao {
 				+ ",c.create_date \r\n"
 				+ "FROM orders o INNER JOIN goods g\r\n"
 				+ "ON o.goods_no = g.goods_no\r\n"
-				+ "INNER JOIN customer c ON o.customer_id = c.customer_id\r\n"
+				+ "RIGHT JOIN customer c ON o.customer_id = c.customer_id\r\n"
 				+ "WHERE o.order_no =?";
 
 		
@@ -114,7 +152,7 @@ public class OrdersDao {
 				+ "SELECT \r\n"
 				+ "				 o.order_no, o.customer_id, o.order_price, o.order_addr, o.order_quantity,o.order_state,o.update_date,o.create_date \r\n"
 				+ "				 ,g.goods_no, g.goods_name, g.goods_price, g.update_date, g.create_date, g.sold_out\r\n"
-				+ "				 FROM orders o INNER JOIN goods g\r\n"
+				+ "				 FROM orders o LEFT JOIN goods g\r\n"
 				+ "				ON o.goods_no = g.goods_no \r\n"
 				+ "				 ORDER BY o.create_date DESC  \r\n"
 				+ "				 LIMIT ? , ? ";

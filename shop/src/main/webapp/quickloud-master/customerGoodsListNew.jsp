@@ -104,6 +104,9 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
     padding: 0 0 0 0;
     background: #ffffff;
 }
+.pricing-table-highlighted {
+    margin-top: 60px;
+}
 </style>
 </head>
 <body class="host_version">
@@ -135,27 +138,21 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 						class="icon-bar"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-host">
-					<ul class="navbar-nav ml-auto">
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/admin/employeeList.jsp">사원관리</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp">상품관리</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/admin/adminOrdersList.jsp">주문관리
-						</a></li>
-
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerList.jsp">고객관리</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/admin/adminNoticeList.jsp">공지관리</a></li>
-						<li class="nav-item"><a class="nav-link"> <%=Name%>님
-								환영합니다
-						</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/shopOne.jsp">내정보</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/logout.jsp">로그아웃</a></li>
+						<ul class="navbar-nav ml-auto">
+			
+					
+					
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerGoodsList.jsp">상품리스트</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerNoticeList.jsp">공지사항</a></li>
+						<li class="nav-item"><a class="nav-link" href="features.html">장바구니</a></li>
+						<li class="nav-item"><a class="nav-link" > <%=Name %>님 환영합니다</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerOne.jsp" >내정보</a></li>
+					   
 					</ul>
+					<ul class="nav navbar-nav navbar-right">
+					
+                        <li><a class="hover-btn-new log" href="<%=request.getContextPath()%>/quickloud-master/logout.jsp" ><span>Customer LogOut</span></a></li>
+                    </ul>
 				</div>
 			</div>
 		</nav>
