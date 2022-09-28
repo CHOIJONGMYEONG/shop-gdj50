@@ -3,7 +3,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-
+if (!(session.getAttribute("loginType").equals("customer"))) {
+	response.sendRedirect(request.getContextPath() + "/quickloud-master/loginForm.jsp");
+	return;
+}
 
 request.setCharacterEncoding("utf-8");
 String customerId = ((Customer) session.getAttribute("loginCustomer")).getCustomerId();

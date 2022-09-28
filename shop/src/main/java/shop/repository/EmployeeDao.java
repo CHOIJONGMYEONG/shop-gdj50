@@ -72,7 +72,7 @@ public int deleteEmployee(Connection conn, Employee paramEmployee) throws Except
 	public Employee selectEmployeeByidAndPw(Connection conn, Employee paramEmployee) throws Exception {
 		Employee loginEmployee = null;
 		
-		String sql = "SELECT employee_id , employee_pass, employee_name, update_date, create_date , active FROM employee WHERE employee_id=? AND employee_pass = PASSWORD(?) AND active='Y'";
+		String sql = "SELECT employee_id , employee_pass, employee_name, update_date, create_date , active,lev FROM employee WHERE employee_id=? AND employee_pass = PASSWORD(?) AND active='Y'";
 		
 	
 		PreparedStatement stmt = null;
@@ -96,6 +96,7 @@ public int deleteEmployee(Connection conn, Employee paramEmployee) throws Except
 				loginEmployee.setUpdateDate(rs.getString("update_date"));
 				loginEmployee.setCreateDate(rs.getString("create_date"));
 				loginEmployee.setActive(rs.getString("active"));
+				loginEmployee.setLev(rs.getInt("lev"));
 			}
 				
 			System.out.println(loginEmployee.getEmployeeId());
@@ -224,7 +225,71 @@ public int deleteEmployee(Connection conn, Employee paramEmployee) throws Except
 		
 	}
 	
+	public Employee selectOneEmployee(Connection conn, Employee ParamEmployee) throws Exception {
+
+		String sql = "SELECT employee_id,employee_pass,employee_name,create_date,update_date ,active FROM employee WHERE employee_id=?";
+
+		PreparedStatement stmt = null;
+		Employee employee =new Employee();
+		ResultSet rs = null;
+
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, ParamEmployee.getEmployeeId());
+
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				employee.setEmployeeId(rs.getString("employee_id"));
+				employee.setEmployeePass(rs.getString("employee_pass"));
+				employee.setEmployeeName(rs.getString("employee_name"));
+				employee.setCreateDate(rs.getString("create_date"));
+				employee.setUpdateDate(rs.getString("update_date"));
+				employee.setActive(rs.getString("active"));
+
+			}
+			System.out.println("ParamEmployee 다오 확인 "+ParamEmployee.getEmployeeId());
+			System.out.println("다오 확인 "+employee.getEmployeeId());
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			}
+
+		}
+
+		return employee;
+	}
 	
+	public Employee updateEmployee(Connection conn, Employee ParamEmployee) throws Exception {
+
+		String sql = "UPDATE employee SET employee_pass = PASSWORD(?) ,employee_name = ?,update_date= NOW() WHERE employee_id=?";
+
+		PreparedStatement stmt = null;
+		Employee employee =new Employee();
+
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, ParamEmployee.getEmployeePass());
+			stmt.setString(2, ParamEmployee.getEmployeeName());
+			stmt.setString(3, ParamEmployee.getEmployeeId());
+
+			stmt.executeUpdate();
+
+			System.out.println("ParamEmployee 업데이트 다오 확인 "+ParamEmployee.getEmployeeId());
+
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+
+		}
+
+		return employee;
+	}
 	
 	
 	

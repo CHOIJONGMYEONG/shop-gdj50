@@ -5,10 +5,11 @@
     pageEncoding="UTF-8"%>
 <%
 request.setCharacterEncoding("utf-8");
-if(session.getAttribute("loginType")==null){
-	response.sendRedirect(request.getContextPath()+"/quickloud-master/loginForm.jsp");		
+if (!(session.getAttribute("loginType").equals("customer"))) {
+	response.sendRedirect(request.getContextPath() + "/quickloud-master/loginForm.jsp");
 	return;
 }
+
 
 String customerId= ((Customer)session.getAttribute("loginCustomer")).getCustomerId();
 int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));

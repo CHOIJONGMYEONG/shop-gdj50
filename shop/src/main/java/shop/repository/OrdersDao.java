@@ -10,7 +10,65 @@ import shop.vo.Employee;
 import shop.vo.Orders;
 
 public class OrdersDao {
+	
+	public List<Map<String, Object>> selectOrdersListByCustomerAndImg(Connection conn, String customerId, int rowPerPage, int beginRow) throws SQLException {
+		List<Map<String, Object>> list = null; 
+		Map<String, Object> map = null;
 
+		String sql = "SELECT o.order_no ordersNo, o.order_quantity ordersQuantity\r\n"
+				+ ", o.order_price ordersPrice, o.order_addr ordersAddr, o.order_state ordersState\r\n"
+				+ ", o.update_date updateDate, o.create_date createDate\r\n"
+				+ ", g.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice\r\n"
+				+ ", c.customer_id customerId, c.customer_name customerName\r\n"
+				+ ", gi.filename filename, gi.origin_filename originFileName , gi.content_type contentType\r\n"
+				+ "FROM orders o INNER JOIN goods g ON o.goods_no = g.goods_no\r\n"
+				+ "INNER JOIN customer c ON o.customer_id = c.customer_id\r\n"
+				+ "inner join goods_img gi on g.goods_no = gi.goods_no\r\n"
+				+ "WHERE c.customer_id = ?\r\n"
+				+ "ORDER BY o.create_date DESC LIMIT ?, ?";
+
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			list = new ArrayList<>();
+
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+			stmt.setInt(2, beginRow);
+			stmt.setInt(3, rowPerPage);
+
+			rs = stmt.executeQuery();
+
+			while(rs.next()) {
+				map = new HashMap<String, Object>();
+				map.put("ordersNo", rs.getInt("ordersNo"));
+				map.put("ordersQuantity", rs.getInt("ordersQuantity"));
+				map.put("ordersPrice", rs.getInt("ordersPrice"));
+				map.put("ordersAddr", rs.getString("ordersAddr"));
+				map.put("ordersState", rs.getString("ordersState"));
+				map.put("updateDate", rs.getString("updateDate"));
+				map.put("createDate", rs.getString("createDate"));
+				map.put("goodsNo", rs.getInt("goodsNo"));
+				map.put("goodsName", rs.getString("goodsName"));
+				map.put("goodsPrice", rs.getInt("goodsPrice"));
+				map.put("customerId", rs.getString("customerId"));
+				map.put("customerName", rs.getString("customerName"));
+				map.put("filename", rs.getString("filename"));
+				map.put("originFileName", "originFileName");
+				map.put("contentType", rs.getString("contentType"));
+				list.add(map);
+			}
+		} finally {
+			if(rs != null) {
+				rs.close();
+			}
+			if(stmt != null) {
+				stmt.close();
+			}
+		}
+		return list;
+	}
 	
 	
 	
@@ -322,6 +380,35 @@ public class OrdersDao {
 		
 	}
 	
-	
+	public int selectOrdersOneCustomerAllCount(Connection conn,String customerId) throws Exception {
+		String sql = "SELECT count(*) count from orders WHERE customer_id=?";
+		int totalRow = 0;
+
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				totalRow = rs.getInt("count");
+
+			}
+
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			}
+
+		}
+
+		System.out.print(totalRow);
+		return totalRow;
+
+	}
 	
 }

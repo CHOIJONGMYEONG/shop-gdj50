@@ -1,3 +1,4 @@
+<%@page import="service.CounterService"%>
 <%@page import="java.util.Map"%>
 <%@page import="service.CustomerService"%>
 <%@page import="shop.vo.Employee"%>
@@ -12,24 +13,22 @@
 
 
 <%
-if (session.getAttribute("loginType") == null) {
+if (!(session.getAttribute("loginType").equals("customer"))) {
 	response.sendRedirect(request.getContextPath() + "/quickloud-master/loginForm.jsp");
 	return;
 }
 
-String loginType = (String) session.getAttribute("loginType");
-String Id = "";
-String Name = "";
+Customer SessionCustomer = (Customer) session.getAttribute("loginCustomer");
+String Id = SessionCustomer.getCustomerId();
+String Name = SessionCustomer.getCustomerName();
 
-if (loginType.equals("customer")) {
-	Id = ((Customer) session.getAttribute("loginCustomer")).getCustomerId();
-	Name = ((Customer) session.getAttribute("loginCustomer")).getCustomerName();
-} else if (loginType.equals("employee")) {
 
-	Id = ((Employee) session.getAttribute("loginEmployee")).getEmployeeId();
-	Name = ((Employee) session.getAttribute("loginEmployee")).getEmployeeName();
+CounterService counterService = new CounterService();
 
-}
+int totalCounter = counterService.getTotalCount();
+int todayCounter = counterService.getTodayCount();
+int currentCount = (Integer) (application.getAttribute("currentCounter"));
+
 Customer paramCustomer = ((Customer) session.getAttribute("loginCustomer"));
 
 Customer customer = new Customer();
@@ -143,8 +142,8 @@ System.out.print("확인" + customer.getCustomerId());
 	<header class="top-navbar">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="index.html"> <img
-					src="images/logo-hosting.png" alt="" />
+				<a class="navbar-brand" href="<%=request.getContextPath()%>/quickloud-master/index.jsp">s 
+				<img style="width:150px;height:70px;" src="images/electshop2.png" alt="" />
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 					data-target="#navbars-host" aria-controls="navbars-rs-food"
@@ -161,12 +160,13 @@ System.out.print("확인" + customer.getCustomerId());
 
 						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/quickloud-master/customerGoodsList.jsp">상품리스트</a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/customerNoticeList.jsp">공지사항</a></li>
-						<li class="nav-item"><a class="nav-link" href="features.html">장바구니</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerNoticeList.jsp">공지사항</a></li>
+							
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/cart/cartList.jsp">장바구니</a></li>
 						<li class="nav-item"><a class="nav-link"> <%=Name%>님
 								환영합니다
 						</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerOrderList.jsp">주문목록</a></li>
 						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerOne.jsp" >내정보</a></li>
 
 					</ul>
@@ -181,7 +181,14 @@ System.out.print("확인" + customer.getCustomerId());
 		</nav>
 	</header>
 	<!-- End header -->
-
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		<ul class="navbar-nav">
+			<li class="nav-item active"><a class="nav-link">총접속자:<%=totalCounter %></a>
+			</li>
+			<li class="nav-item active"><a class="nav-link">오늘접속자:<%=todayCounter %></a></li>
+			<li class="nav-item active"><a class="nav-link">현재접속자:<%=currentCount %></a></li>
+		</ul>
+	</nav>
 
 
 

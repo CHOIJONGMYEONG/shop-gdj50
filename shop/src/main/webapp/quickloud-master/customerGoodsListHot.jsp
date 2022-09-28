@@ -1,3 +1,4 @@
+<%@page import="service.CounterService"%>
 <%@page import="java.util.Map"%>
 <%@page import="service.CustomerService"%>
 <%@page import="shop.vo.Employee"%>
@@ -12,24 +13,20 @@
 
 
 <%
-if (session.getAttribute("loginType") == null) {
+if (!(session.getAttribute("loginType").equals("customer"))) {
 	response.sendRedirect(request.getContextPath() + "/quickloud-master/loginForm.jsp");
 	return;
 }
 
-String loginType = (String) session.getAttribute("loginType");
-String Id = "";
-String Name = "";
+Customer SessionCustomer = (Customer) session.getAttribute("loginCustomer");
+String Id = SessionCustomer.getCustomerId();
+String Name = SessionCustomer.getCustomerName();
 
-if (loginType.equals("customer")) {
-	Id = ((Customer) session.getAttribute("loginCustomer")).getCustomerId();
-	Name = ((Customer) session.getAttribute("loginCustomer")).getCustomerName();
-} else if (loginType.equals("employee")) {
+CounterService counterService = new CounterService();
 
-	Id = ((Employee) session.getAttribute("loginEmployee")).getEmployeeId();
-	Name = ((Employee) session.getAttribute("loginEmployee")).getEmployeeName();
-
-}
+int totalCounter = counterService.getTotalCount();
+int todayCounter = counterService.getTodayCount();
+int currentCount = (Integer) (application.getAttribute("currentCounter"));
 
 int rowPerPage = 20;
 if (request.getParameter("rowPerPage") != null) {
@@ -96,16 +93,16 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 <style>
 .container {
 	max-width: 1600px;
-	text-align:center;
-	
+	text-align: center;
 }
 
 .pricing-table-header {
-    padding: 0 0 0 0;
-    background: #ffffff;
+	padding: 0 0 0 0;
+	background: #ffffff;
 }
+
 .pricing-table-highlighted {
-    margin-top: 60px;
+	margin-top: 60px;
 }
 </style>
 </head>
@@ -128,8 +125,10 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 	<header class="top-navbar">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="index.html"> <img
-					src="images/logo-hosting.png" alt="" />
+				<a class="navbar-brand"
+					href="<%=request.getContextPath()%>/quickloud-master/index.jsp">
+					<img style="width: 150px; height: 70px;"
+					src="images/electshop2.png" alt="" />
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 					data-target="#navbars-host" aria-controls="navbars-rs-food"
@@ -138,29 +137,46 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 						class="icon-bar"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-host">
-						<ul class="navbar-nav ml-auto">
-			
-					
-					
-					
-					
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerGoodsList.jsp">상품리스트</a></li>
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerNoticeList.jsp">공지사항</a></li>
-						<li class="nav-item"><a class="nav-link" href="features.html">장바구니</a></li>
-						<li class="nav-item"><a class="nav-link" > <%=Name %>님 환영합니다</a></li>
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerOne.jsp" >내정보</a></li>
-					   
+					<ul class="navbar-nav ml-auto">
+
+
+
+
+
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/quickloud-master/customerGoodsList.jsp">상품리스트</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/quickloud-master/customerNoticeList.jsp">공지사항</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/quickloud-master/cart/cartList.jsp">장바구니</a></li>
+						<li class="nav-item"><a class="nav-link"> <%=Name%>님
+								환영합니다
+						</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/quickloud-master/customerOrderList.jsp">주문목록</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/quickloud-master/customerOne.jsp">내정보</a></li>
+
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-					
-                        <li><a class="hover-btn-new log" href="<%=request.getContextPath()%>/quickloud-master/logout.jsp" ><span>Customer LogOut</span></a></li>
-                    </ul>
+
+						<li><a class="hover-btn-new log"
+							href="<%=request.getContextPath()%>/quickloud-master/logout.jsp"><span>Customer
+									LogOut</span></a></li>
+					</ul>
 				</div>
 			</div>
 		</nav>
 	</header>
 	<!-- End header -->
-
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		<ul class="navbar-nav">
+			<li class="nav-item active"><a class="nav-link">총접속자:<%=totalCounter%></a>
+			</li>
+			<li class="nav-item active"><a class="nav-link">오늘접속자:<%=todayCounter%></a></li>
+			<li class="nav-item active"><a class="nav-link">현재접속자:<%=currentCount%></a></li>
+		</ul>
+	</nav>
 
 
 
@@ -176,49 +192,56 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 						<div class="col-md-12">
 							<div class="list-domain">
 								<ul>
-									<li>
-									<a
+									<li><a
 										class="btn btn-light grd1 effect-1 btn-radius btn-brd"
 										href="<%=request.getContextPath()%>/quickloud-master/customerGoodsList.jsp">누적판매순
-									</a>
-									</li>
-									
+									</a></li>
+
 									<li><a
 										class="btn btn-light grd1 effect-1 btn-radius btn-brd active"
 										href="<%=request.getContextPath()%>/quickloud-master/customerGoodsListHot.jsp">인기순</a>
 									</li>
-									
+
 									<li><a
 										class="btn btn-light grd1 effect-1 btn-radius btn-brd"
 										href="<%=request.getContextPath()%>/quickloud-master/customerGoodsListHighPrice.jsp">높은가격순</a>
 									</li>
-									
+
 									<li><a
 										class="btn btn-light grd1 effect-1 btn-radius btn-brd"
 										href="<%=request.getContextPath()%>/quickloud-master/customerGoodsListRowPrice.jsp">낮은가격순</a>
 									</li>
-									
+
 									<li><a
 										class="btn btn-light grd1 effect-1 btn-radius btn-brd"
 										href="<%=request.getContextPath()%>/quickloud-master/customerGoodsListNew.jsp">최신순</a>
 									</li>
-									
+
 									<li>
-									<form name="rowform" action="<%=request.getContextPath()%>/quickloud-master/customerGoodsListHot.jsp" method="post">
-									<select onChange="rowform.submit()" name ="rowPerPage" class="btn grd1 effect-1 btn-radius btn-brd">
-									
-									
-									<%if(rowPerPage==20){ %>
-										<option value="20" selected="selected">20개씩</option>
-										<option value="40">40개씩</option>
-									<%}else { %>
-										<option value="20">20개씩</option>
-										<option value="40" selected="selected">40개씩</option>
-									<%} %>
-									
-										</select>
+										<form name="rowform"
+											action="<%=request.getContextPath()%>/quickloud-master/customerGoodsListHot.jsp"
+											method="post">
+											<select onChange="rowform.submit()" name="rowPerPage"
+												class="btn grd1 effect-1 btn-radius btn-brd">
+
+
+												<%
+												if (rowPerPage == 20) {
+												%>
+												<option value="20" selected="selected">20개씩</option>
+												<option value="40">40개씩</option>
+												<%
+												} else {
+												%>
+												<option value="20">20개씩</option>
+												<option value="40" selected="selected">40개씩</option>
+												<%
+												}
+												%>
+
+											</select>
 										</form>
-										</li>
+									</li>
 								</ul>
 							</div>
 						</div>
@@ -278,7 +301,9 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 
 										</div>
 										<div class="pricing-table-sign-up">
-											<a href="<%=request.getContextPath()%>/quickloud-master/customerGoodsOneForm.jsp?goodsNo=<%=m.get("goodsNo")%>"class="hover-btn-new"><span>Order Now</span></a>
+											<a
+												href="<%=request.getContextPath()%>/quickloud-master/customerGoodsOneForm.jsp?goodsNo=<%=m.get("goodsNo")%>"
+												class="hover-btn-new"><span>Order Now</span></a>
 										</div>
 									</div>
 								</div>
@@ -287,39 +312,39 @@ pageEnd = Math.min(pageEnd, lastPage); // 둘 중에 작은 값이 pageEnd
 								%>
 
 							</div>
-							
+
 						</div>
 						<!-- end row -->
-						<div class="container text-align-center" style="padding:100px">
-							
+						<div class="container text-align-center" style="padding: 100px">
+
 							<%
 							/*int lastPage = boardDao.selectBoardLastPage(ROW_PER_PAGE);*/
 							System.out.println(lastPage);
 							if (pageBegin > rowPerPage) {
 							%>
 
-							<a
-							 	class="btn grd1 effect-1 btn-radius btn-brd"	href="<%=request.getContextPath()%>/customerGoodsList.jsp?currentPage=<%=pageBegin - rowPerPage%>">이전</a>
+							<a class="btn grd1 effect-1 btn-radius btn-brd"
+								href="<%=request.getContextPath()%>/customerGoodsList.jsp?currentPage=<%=pageBegin - rowPerPage%>">이전</a>
 
 							<%
 							}
 
 							for (int y = pageBegin; y <= pageEnd; y++) {
 							%>
-							<a
-							 class="btn grd1 effect-1 btn-radius btn-brd"	href="<%=request.getContextPath()%>/customerGoodsList.jsp?currentPage=<%=y%>"><%=y%></a>
+							<a class="btn grd1 effect-1 btn-radius btn-brd"
+								href="<%=request.getContextPath()%>/customerGoodsList.jsp?currentPage=<%=y%>"><%=y%></a>
 							<%
 							}
 
 							if (pageEnd < lastPage) {
 							%>
 
-							<a
-							 class="btn grd1 effect-1 btn-radius btn-brd"	href="<%=request.getContextPath()%>/admin/adminGoodsList.jsp?currentPage=<%=pageBegin + rowPerPage%>">다음</a>
+							<a class="btn grd1 effect-1 btn-radius btn-brd"
+								href="<%=request.getContextPath()%>/admin/adminGoodsList.jsp?currentPage=<%=pageBegin + rowPerPage%>">다음</a>
 							<%
 							}
 							%>
-							</div>
+						</div>
 						<!-- end pane -->
 
 						<div class="tab-pane fade" id="tab2">

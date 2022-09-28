@@ -5,6 +5,7 @@
     pageEncoding="UTF-8"%>
 <%
 
+
 request.setCharacterEncoding("utf-8");
 String employeeId = request.getParameter("employeeId");
 String employeePass = request.getParameter("employeePass");

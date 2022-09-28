@@ -48,16 +48,22 @@ public class CustomerService {
 		}
 	 
 	 public boolean deleteAdminCustomer(Customer paramCustomer) {
-			Connection conn = null;
-			
+		 Connection conn = null;
 			
 			try{conn = new DBUtil().getConnection();
 			conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
 			
 			CustomerDao customerDao= new CustomerDao();
-			customerDao.adminDeleteCustomer(conn, paramCustomer);
 			
-		
+			
+			if (customerDao.adminDeleteCustomer(conn, paramCustomer)==1) {
+				OutIdDao outIdDao = new OutIdDao();
+				if(outIdDao.insertOutId(conn, paramCustomer.getCustomerId())!=1) {
+					throw new Exception();
+				}
+			}
+			
+			
 			conn.commit();
 			}catch(Exception e) {
 				e.printStackTrace(); // console에 예외메세지 출력

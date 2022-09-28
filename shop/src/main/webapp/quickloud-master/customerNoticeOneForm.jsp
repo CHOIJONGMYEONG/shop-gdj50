@@ -1,3 +1,4 @@
+<%@page import="service.CounterService"%>
 <%@page import="service.NoticeService"%>
 <%@page import="shop.vo.Notice"%>
 <%@page import="shop.vo.Employee"%>
@@ -12,27 +13,20 @@
 
 
 <%
-if (session.getAttribute("loginType") == null) {
+if (!(session.getAttribute("loginType").equals("customer"))) {
 	response.sendRedirect(request.getContextPath() + "/quickloud-master/loginForm.jsp");
 	return;
 }
 
-System.out.print(session.getAttribute("loginType") + ":session확인");
+Customer SessionCustomer = (Customer) session.getAttribute("loginCustomer");
+String Id = SessionCustomer.getCustomerId();
+String Name = SessionCustomer.getCustomerName();
 
-request.setCharacterEncoding("utf-8");
-String loginType = (String) session.getAttribute("loginType");
-String Id = "";
-String Name = "";
+CounterService counterService = new CounterService();
 
-if (loginType.equals("customer")) {
-	Id = ((Customer) session.getAttribute("loginCustomer")).getCustomerId();
-	Name = ((Customer) session.getAttribute("loginCustomer")).getCustomerName();
-} else if (loginType.equals("employee")) {
-
-	Id = ((Employee) session.getAttribute("loginEmployee")).getEmployeeId();
-	Name = ((Employee) session.getAttribute("loginEmployee")).getEmployeeName();
-
-}
+int totalCounter = counterService.getTotalCount();
+int todayCounter = counterService.getTodayCount();
+int currentCount = (Integer) (application.getAttribute("currentCounter"));
 
 int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
 Notice noticeParam = new Notice();
@@ -122,8 +116,10 @@ noticeParam = noticeService.getNoticeOne(noticeParam);
 	<header class="top-navbar">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="index.html"> <img
-					src="images/logo-hosting.png" alt="" />
+				<a class="navbar-brand"
+					href="<%=request.getContextPath()%>/quickloud-master/index.jsp">
+					<img style="width: 150px; height: 70px;"
+					src="images/electshop2.png" alt="" />
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 					data-target="#navbars-host" aria-controls="navbars-rs-food"
@@ -133,24 +129,41 @@ noticeParam = noticeService.getNoticeOne(noticeParam);
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-host">
 					<ul class="navbar-nav ml-auto">
-			
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerGoodsList.jsp">상품리스트</a></li>
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/admin/adminGoodsList.jsp">공지사항</a></li>
-						<li class="nav-item"><a class="nav-link" href="features.html">장바구니</a></li>
-						<li class="nav-item"><a class="nav-link" > <%=Name %>님 환영합니다</a></li>
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/customerOne.jsp" >내정보</a></li>
-					   
+
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/quickloud-master/customerGoodsList.jsp">상품리스트</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/quickloud-master/customerNoticeList.jsp">공지사항</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/quickloud-master/cart/cartList.jsp">장바구니</a></li>
+						<li class="nav-item"><a class="nav-link"> <%=Name%>님
+								환영합니다
+						</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/quickloud-master/customerOrderList.jsp">주문목록</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<%=request.getContextPath()%>/quickloud-master/customerOne.jsp">내정보</a></li>
+
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-					
-                        <li><a class="hover-btn-new log" href="<%=request.getContextPath()%>/quickloud-master/logout.jsp" ><span>Customer LogOut</span></a></li>
-                    </ul>
+
+						<li><a class="hover-btn-new log"
+							href="<%=request.getContextPath()%>/quickloud-master/logout.jsp"><span>Customer
+									LogOut</span></a></li>
+					</ul>
 				</div>
 			</div>
 		</nav>
 	</header>
 	<!-- End header -->
-
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		<ul class="navbar-nav">
+			<li class="nav-item active"><a class="nav-link">총접속자:<%=totalCounter%></a>
+			</li>
+			<li class="nav-item active"><a class="nav-link">오늘접속자:<%=todayCounter%></a></li>
+			<li class="nav-item active"><a class="nav-link">현재접속자:<%=currentCount%></a></li>
+		</ul>
+	</nav>
 
 
 
@@ -199,7 +212,7 @@ noticeParam = noticeService.getNoticeOne(noticeParam);
 				</div>
 				<a class="btn grd1 effect-1 btn-radius btn-brd"
 					href="<%=request.getContextPath()%>/quickloud-master/customerNoticeList.jsp">글목록</a>
-				
+
 
 
 			</div>

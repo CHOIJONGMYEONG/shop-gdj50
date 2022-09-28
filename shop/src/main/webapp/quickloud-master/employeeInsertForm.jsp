@@ -159,8 +159,8 @@
 	<header class="top-navbar">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="index.html">
-					<img src="images/logo-hosting.png" alt="" />
+				<a class="navbar-brand" href="<%=request.getContextPath()%>/quickloud-master/index.jsp">
+					<img style="width:150px;height:70px;" src="images/electshop2.png" alt="" />
 				</a>
 				<div class="collapse navbar-collapse" id="navbars-host">
 					<ul class="navbar-nav ml-auto">
@@ -217,7 +217,7 @@
                                     <input type="text" value="고객아이디" name="first_name" id="first_name" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text"  name="employeeId" id="employeeId" class="form-control" readonly placeholder="">
+                                    <input type="text"  name="employeeIdRe" id="employeeIdRe" class="form-control" readonly placeholder="">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                     <input type="email"value="비밀번호" name="email" id="email" class="form-control" readonly>
@@ -370,10 +370,10 @@ $('#idckBtn').click(function() {
 			success : function(json) {
 				// alert(json);
 				if(json == 'y') {
-					$('#employeeId').val($('#idck').val());
+					$('#employeeIdRe').val($('#idck').val());
 				} else {
 					alert('이미 사용중인 아이디 입니다.');
-					$('#employeeId').val('');
+					$('#employeeIdRe').val('');
 				}
 			}
 		});

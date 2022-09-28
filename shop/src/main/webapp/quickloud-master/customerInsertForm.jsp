@@ -162,8 +162,8 @@
 	<header class="top-navbar">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="index.html">
-					<img src="images/logo-hosting.png" alt="" />
+			<a class="navbar-brand" href="<%=request.getContextPath()%>/quickloud-master/index.jsp">
+					<img style="width:150px;height:70px;" src="images/electshop2.png" alt="" />
 				</a>
 				<div class="collapse navbar-collapse" id="navbars-host">
 					<ul class="navbar-nav ml-auto">
@@ -229,13 +229,13 @@
                                     <input type="text" value="고객아이디" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="text" name="customerId" id="CustomerId" class="form-control" readonly>
+                                    <input type="text" name="customerIRe" id="customerIRe" class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                     <input type="email"value="비밀번호"  class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                    <input type="password" name="CustomerPass" id="CustomerPass" class="form-control" placeholder="">
+                                    <input type="password" name="CustomerPassRe" id="CustomerPassRe" class="form-control" placeholder="">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                     <input type="text" value="이름" class="form-control" readonly>
@@ -400,10 +400,10 @@ $('#idckBtn').click(function() {
 			success : function(json) {
 				// alert(json);
 				if(json == 'y') {
-					$('#CustomerId').val($('#idck').val());
+					$('#customerIRe').val($('#idck').val());
 				} else {
 					alert('이미 사용중인 아이디 입니다.');
-					$('#CustomerId').val('');
+					$('#customerIRe').val('');
 				}
 			}
 		});
@@ -418,15 +418,15 @@ $('#idckBtn').click(function() {
 
 $(function(){
     $("#writeForm").submit(function(){
-       if($("#customerId").val()==""){
+       if($("#customerIRe").val()==""){
            alert("아이디가 빈칸입니다!");
-           $("#customerId").focus();
+           $("#customerIRe").focus();
            return false;
         }
        
-       if($("#CustomerPass").val()==""){
+       if($("#CustomerPassRe").val()==""){
            alert("비밀번호가 빈칸입니다!");
-           $("#CustomerPass").focus();
+           $("#CustomerPassRe").focus();
            return false;
         }
        

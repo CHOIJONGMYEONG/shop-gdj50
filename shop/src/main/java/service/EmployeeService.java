@@ -13,7 +13,39 @@ import shop.vo.Employee;
 
 
 public class EmployeeService {
-
+	public boolean modifyEmployee(Employee paramEmpolyee) {
+		Connection conn = null;
+		
+		
+		try{conn = new DBUtil().getConnection();
+		conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+		
+		EmployeeDao employeeDao= new EmployeeDao();
+		employeeDao.updateEmployee(conn, paramEmpolyee);
+		
+	
+		conn.commit();
+		}catch(Exception e) {
+			e.printStackTrace(); // console에 예외메세지 출력
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
+		
+	}
+	
+	
+	
 	public boolean removeEmployee(Employee paramEmployee) {
 		Connection conn = null;
 		
@@ -206,6 +238,34 @@ public class EmployeeService {
 		return totalRow;
 		
 	}
+	public Employee getOneEmployee(Employee paramEmployee) {
+		Connection conn = null;
+		Employee employee = new Employee();
+		try{conn = new DBUtil().getConnection();
+		conn.setAutoCommit(false);// executeUpdate() 실행시 자동 커밋을 막음
+		
+		EmployeeDao employeeDao= new EmployeeDao();
+		employee = employeeDao.selectOneEmployee(conn, paramEmployee);
+		
 	
+		conn.commit();
+		}catch(Exception e) {
+			e.printStackTrace(); // console에 예외메세지 출력
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return employee;
+		
+	}
 	
 }

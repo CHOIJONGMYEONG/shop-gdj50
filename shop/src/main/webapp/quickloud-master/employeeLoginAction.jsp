@@ -27,7 +27,7 @@
 	if ((paramEmployee = loginEmployee.getEmpolyee(paramEmployee))==null){
 	response.sendRedirect(request.getContextPath()+"/quickloud-master/loginForm.jsp");
 		
-	}
+	}else{
 	
 	
 	if(paramEmployee.getEmployeeId()!=null){
@@ -39,5 +39,5 @@
 	}else{response.sendRedirect(request.getContextPath()+"/quickloud-master/loginForm.jsp");
 	
 	}
-	
+	}
 %>

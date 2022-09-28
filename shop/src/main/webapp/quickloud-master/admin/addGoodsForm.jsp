@@ -4,26 +4,17 @@
     pageEncoding="UTF-8"%>
 <% 
  
-	if(session.getAttribute("loginType")==null){
+	if(!(session.getAttribute("loginType").equals("employee"))){
 		response.sendRedirect(request.getContextPath()+"/quickloud-master/loginForm.jsp");		
 		return;
 	}
 
  
- 
-   String loginType = (String)session.getAttribute("loginType");
-	String Id = "";
-	String Name = "";
-	
-   if (loginType.equals("customer")){
-	    Id= ((Customer)session.getAttribute("loginCustomer")).getCustomerId();
-	  Name= ((Customer)session.getAttribute("loginCustomer")).getCustomerName();   
-   }else if ( loginType.equals("employee")) {
-	   
-	   Id=((Employee)session.getAttribute("loginEmployee")).getEmployeeId();
-	    Name=((Employee)session.getAttribute("loginEmployee")).getEmployeeName();
-	   
-   }
+    Employee employee = (Employee)session.getAttribute("loginEmployee");
+	String Id = employee.getEmployeeId();
+	String Name = employee.getEmployeeName();
+	int lev =  employee.getLev();
+   
  
    
 %>   
@@ -99,14 +90,19 @@
 	<header class="top-navbar">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="index.html">
-					<img src="images/logo-hosting.png" alt="" />
+				<a class="navbar-brand" href="<%=request.getContextPath()%>/quickloud-master/admin/adminIndex.jsp">
+					<img style="width:150px;height:70px;" src="images/electshop2.png" alt="" />
 				</a>
 				<div class="collapse navbar-collapse" id="navbars-host">
 				
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminIndex.jsp">Home</a></li>
+						
+						<%if(lev==1) 
+						{%>
 						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/employeeList.jsp">사원관리</a></li>
+						<%
+						}
+						%>
 						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp">상품관리</a></li>
 						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminCustomerList.jsp">주문관리 </a></li>
 					
@@ -114,7 +110,7 @@
 						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminNoticeList.jsp">공지관리</a></li>
 						
 						<li class="nav-item"><a class="nav-link" > <%=Name %>님 환영합니다</a></li>
-						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/shopOne.jsp" >내정보</a></li>
+						<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/quickloud-master/admin/adminOneForm.jsp" >내정보</a></li>
 					   
 					</ul>
 					<ul class="nav navbar-nav navbar-right">

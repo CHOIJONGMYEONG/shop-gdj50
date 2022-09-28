@@ -12,27 +12,15 @@
 
 
 <%
-if (session.getAttribute("loginType") == null) {
+if (!(session.getAttribute("loginType").equals("employee"))) {
 	response.sendRedirect(request.getContextPath() + "/quickloud-master/loginForm.jsp");
 	return;
 }
 
-System.out.print(session.getAttribute("loginType") + ":session확인");
-
-request.setCharacterEncoding("utf-8");
-String loginType = (String) session.getAttribute("loginType");
-String Id = "";
-String Name = "";
-
-if (loginType.equals("customer")) {
-	Id = ((Customer) session.getAttribute("loginCustomer")).getCustomerId();
-	Name = ((Customer) session.getAttribute("loginCustomer")).getCustomerName();
-} else if (loginType.equals("employee")) {
-
-	Id = ((Employee) session.getAttribute("loginEmployee")).getEmployeeId();
-	Name = ((Employee) session.getAttribute("loginEmployee")).getEmployeeName();
-
-}
+Employee employee = (Employee) session.getAttribute("loginEmployee");
+String Id = employee.getEmployeeId();
+String Name = employee.getEmployeeName();
+int lev = employee.getLev();
 
 int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
 Notice noticeParam = new Notice();
@@ -122,8 +110,10 @@ noticeParam = noticeService.getNoticeOne(noticeParam);
 	<header class="top-navbar">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="index.html"> <img
-					src="images/logo-hosting.png" alt="" />
+				<a class="navbar-brand"
+					href="<%=request.getContextPath()%>/quickloud-master/admin/adminIndex.jsp">
+					<img style="width: 150px; height: 70px;"
+					src="images/electshop2.png" alt="" />
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 					data-target="#navbars-host" aria-controls="navbars-rs-food"
@@ -133,8 +123,14 @@ noticeParam = noticeService.getNoticeOne(noticeParam);
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-host">
 					<ul class="navbar-nav ml-auto">
+						<%
+						if (lev == 1) {
+						%>
 						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/quickloud-master/admin/employeeList.jsp">사원관리</a></li>
+						<%
+						}
+						%>
 						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/quickloud-master/admin/adminGoodsList.jsp">상품관리</a></li>
 						<li class="nav-item"><a class="nav-link"
@@ -149,7 +145,7 @@ noticeParam = noticeService.getNoticeOne(noticeParam);
 								환영합니다
 						</a></li>
 						<li class="nav-item"><a class="nav-link"
-							href="<%=request.getContextPath()%>/quickloud-master/shopOne.jsp">내정보</a></li>
+							href="<%=request.getContextPath()%>/quickloud-master/admin/adminOneForm.jsp">내정보</a></li>
 						<li class="nav-item"><a class="nav-link"
 							href="<%=request.getContextPath()%>/quickloud-master/logout.jsp">로그아웃</a></li>
 					</ul>
@@ -170,51 +166,55 @@ noticeParam = noticeService.getNoticeOne(noticeParam);
 
 				<div class="dmoain-pricing">
 					<div class="table-responsive-sm">
-						<form method="post" action="<%=request.getContextPath()%>/quickloud-master/admin/adminNoticeUpdateAction.jsp?noticeNo=<%=noticeParam.getNoticeNo()%>">
-						<table class="table">
-							<thead>
-								<tr>
+						<form method="post"
+							action="<%=request.getContextPath()%>/quickloud-master/admin/adminNoticeUpdateAction.jsp?noticeNo=<%=noticeParam.getNoticeNo()%>">
+							<table class="table">
+								<thead>
+									<tr>
 
-									<th scope="col" colspan="5">
-										<div><input name="noticeTitle" class="form-control" value="<%=noticeParam.getNoticeTitle()%>"></div>
-										<div style="text-align: right"><%=noticeParam.getCreateDate()%></div>
-									</th>
+										<th scope="col" colspan="5">
+											<div>
+												<input name="noticeTitle" class="form-control"
+													value="<%=noticeParam.getNoticeTitle()%>">
+											</div>
+											<div style="text-align: right"><%=noticeParam.getCreateDate()%></div>
+										</th>
 
 
-								</tr>
-							</thead>
-							<tbody>
+									</tr>
+								</thead>
+								<tbody>
 
 
-								<tr>
-									<td data-label="DOMAIN NAME" rowspan="30" colspan="5">
-										<div class="form-group">
-											<textarea name="noticeContent" class="form-control" rows="20" id="comment"><%=noticeParam.getNoticeContent()%>
+									<tr>
+										<td data-label="DOMAIN NAME" rowspan="30" colspan="5">
+											<div class="form-group">
+												<textarea name="noticeContent" class="form-control"
+													rows="20" id="comment"><%=noticeParam.getNoticeContent()%>
 											</textarea>
-										</div>
-									</td>
+											</div>
+										</td>
 
 
 
 
-								</tr>
-								
-								
+									</tr>
 
-							</tbody>
-							
-						</table>
-						<button type="submit" class="btn grd1 effect-1 btn-radius btn-brd"> 
-						수정
-						</button>
-						<a class="btn grd1 effect-1 btn-radius btn-brd" href="<%=request.getContextPath()%>/quickloud-master/admin/adminNoticeOneForm.jsp?noticeNo=<%=noticeParam.getNoticeNo()%>"> 
-						글상세페이지
-						</a>
-				</form>
+
+
+								</tbody>
+
+							</table>
+							<button type="submit"
+								class="btn grd1 effect-1 btn-radius btn-brd">수정</button>
+							<a class="btn grd1 effect-1 btn-radius btn-brd"
+								href="<%=request.getContextPath()%>/quickloud-master/admin/adminNoticeOneForm.jsp?noticeNo=<%=noticeParam.getNoticeNo()%>">
+								글상세페이지 </a>
+						</form>
 					</div>
 				</div>
-				
-				
+
+
 
 
 
